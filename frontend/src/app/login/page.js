@@ -1,40 +1,62 @@
 "use client";
-import { useState, useContext } from "react";
+
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AuthContext } from "@/context/AuthContext";
-import { loginUser } from "@/api/api";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useContext(AuthContext);
 
+  // États pour stocker les valeurs du formulaire
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // États pour gérer l'affichage des erreurs et le chargement
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
+    e.preventDefault(); // Empêche le rechargement de la page
+    setError("");       // Réinitialise les erreurs
+    setLoading(true);   // Active le bouton "Connexion..."
 
     try {
-      const data = await loginUser(email, password);
-      login(data.data.token);
+      // Envoie les identifiants à la route Next.js /api/login
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      // Récupère la réponse JSON (user ou erreur)
+      const data = await res.json();
+
+      // Si la réponse n'est pas OK → erreur
+      if (!res.ok) {
+        throw new Error(data.error || "Erreur de connexion");
+      }
+
+      // Si tout est bon → redirection vers /profile
       router.push("/profile");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <h1>Connexion</h1>
-      {error && <p>{error}</p>}
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
       <input
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
         autoComplete="email"
       />
+
       <input
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -42,7 +64,10 @@ export default function LoginPage() {
         type="password"
         autoComplete="current-password"
       />
-      <button>Se connecter</button>
+
+      <button disabled={loading}>
+        {loading ? "Connexion..." : "Se connecter"}
+      </button>
     </form>
   );
 }

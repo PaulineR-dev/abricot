@@ -1,28 +1,40 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/context/AuthContext";
-import { getProfile } from "@/api/api";
+
+import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
-  const { token } = useContext(AuthContext);
+  // Stocke les infos utilisateur renvoyées par /api/profile
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    if (!token) return;
+  // Stocke un éventuel message d'erreur
+  const [error, setError] = useState("");
 
-    async function load() {
+  useEffect(() => {
+    async function loadProfile() {
       try {
-        const data = await getProfile(token);
-        setUser(data.data.user);
-      } catch {
-        setUser(null);
+        // Appelle la route Next.js qui récupère le profil depuis le backend
+        const res = await fetch("/api/profile");
+
+        // Lit la réponse JSON (soit user, soit erreur)
+        const data = await res.json();
+
+        // Si la réponse n'est pas OK → erreur
+        if (!res.ok) {
+          throw new Error(data.error || "Impossible de charger le profil");
+        }
+
+        setUser(data);
+      } catch (err) {
+        setError(err.message);
       }
     }
 
-    load();
-  }, [token]);
+    loadProfile();
+  }, []);
 
-  if (!user) return <p>Impossible de charger le profil.</p>;
+  if (error) return <p>{error}</p>;
+
+  if (!user) return <p>Chargement du profil...</p>;
 
   return (
     <div>
