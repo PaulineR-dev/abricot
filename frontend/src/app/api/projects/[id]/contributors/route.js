@@ -3,32 +3,34 @@ import { cookies } from "next/headers";
 
 const API_URL = "http://localhost:8000";
 
-export async function POST(req, { params }) {
-  // Récupère le token de session pour authentifier la requête
-  const token = cookies().get("session")?.value;
+// Route pour ajouter un contributeur à un projet
+export async function POST(req, context) {
+  const { id } = await context.params;
+  // On récupère l'id du projet depuis l'URL
 
-  // Si pas de token → utilisateur non connecté
-  if (!token) return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session")?.value;
 
-  // Contenu de la requête contenant l'email du contributeur à ajouter
-  const body = await req.json();
+  const body = await req.json(); 
+  // Données envoyées par le frontend (email du contributeur)
 
-  // Appel au backend pour ajouter un contributeur au projet
-  const res = await fetch(`${API_URL}/projects/${params.id}/contributors`, {
+  // Appel backend pour ajouter un contributeur au projet
+  const res = await fetch(`${API_URL}/projects/${id}/contributors`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`, // Authentification backend
+      Authorization: `Bearer ${token}`, // Authentification
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body), // Envoie l'email du contributeur
+    body: JSON.stringify(body),
   });
 
-  // Lecture de la réponse backend
-  const data = await res.json();
+  const data = await res.json(); // Lecture de la réponse backend
 
-  // Si erreur backend → renvoie l'erreur au frontend
-  if (!res.ok) return NextResponse.json({ error: data.message }, { status: res.status });
+  // Si le backend renvoie une erreur : on la transmet
+  if (!res.ok) {
+    return NextResponse.json({ error: data.message }, { status: res.status });
+  }
 
-  // Succès → contributeur ajouté
+  // Succès : contributeur ajouté
   return NextResponse.json({ success: true });
 }

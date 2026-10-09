@@ -3,37 +3,42 @@ import { cookies } from "next/headers";
 
 const API_URL = "http://localhost:8000";
 
+// =========================
+//        GET PROJECT
+// =========================
 export async function GET(req, context) {
-  const { id } = await context.params; // Récupère l'ID du projet depuis l'URL
+  const { id } = await context.params; 
+  // id = projet à récupérer
 
-  const cookieStore = await cookies(); // Accès aux cookies
-  const token = cookieStore.get("session")?.value; // Token de session pour l'auth
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session")?.value;
 
-  // Si pas de token → utilisateur non authentifié
+  // Vérifie que l'utilisateur est authentifié
   if (!token) {
-    return NextResponse.json(
-      { error: "Non authentifié" },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
-  // Appel backend pour récupérer un projet spécifique
+  // Appel backend pour récupérer un projet
   const res = await fetch(`${API_URL}/projects/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
+  const raw = await res.text(); 
+  // Le backend peut renvoyer du texte : on lit avant de parser
+
   let data;
   try {
-    data = await res.json(); // Lecture de la réponse JSON
+    // On tente de convertir la réponse en JSON
+    data = JSON.parse(raw);
   } catch {
-    // Si le backend renvoie autre chose que du JSON → erreur
+    // Si ce n'est pas du JSON : erreur
     return NextResponse.json(
-      { error: "Réponse invalide du backend" },
+      { error: "Réponse backend non JSON", raw },
       { status: 500 }
     );
   }
 
-  // Si le backend renvoie une erreur → on la transmet au frontend
+  // Si le backend renvoie une erreur : on la transmet
   if (!res.ok) {
     return NextResponse.json(
       { error: data.message || "Erreur de récupération du projet" },
@@ -41,96 +46,109 @@ export async function GET(req, context) {
     );
   }
 
-  // Succès → renvoie le projet
-  return NextResponse.json(data.data.project);
+  // Renvoie les données du projet
+  return NextResponse.json(data.data);
 }
 
+// =========================
+//        UPDATE PROJECT
+// =========================
 export async function PUT(req, context) {
-  const { id } = await context.params; // ID du projet à modifier
+  const { id } = await context.params; 
+  // id = projet à mettre à jour
 
-  const cookieStore = await cookies(); // Récupère les cookies
-  const token = cookieStore.get("session")?.value; // Token de session
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session")?.value;
 
   // Vérifie l'authentification
   if (!token) {
-    return NextResponse.json(
-      { error: "Non authentifié" },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
-  const body = await req.json(); // Données envoyées pour la mise à jour
+  const body = await req.json(); 
+  // Données de mise à jour envoyées par le frontend
 
-  // Appel backend pour modifier le projet
+  // Appel backend pour mettre à jour le projet
   const res = await fetch(`${API_URL}/projects/${id}`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${token}`, // Authentification backend
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(body), // Envoie les modifications
+    body: JSON.stringify(body),
   });
+
+  const raw = await res.text(); 
+  // Lecture brute avant tentative de JSON
 
   let data;
   try {
-    data = await res.json(); // Lecture JSON
+    // On tente de lire la réponse en JSON
+    data = JSON.parse(raw);
   } catch {
     return NextResponse.json(
-      { error: "Réponse invalide du backend" },
+      { error: "Réponse backend non JSON", raw },
       { status: 500 }
     );
   }
 
-  // Si erreur backend → renvoie l'erreur
+  // Si erreur backend : on la transmet
   if (!res.ok) {
     return NextResponse.json(
-      { error: data.message || "Erreur de mise à jour du projet" },
+      { error: data.message || "Erreur lors de la mise à jour" },
       { status: res.status }
     );
   }
 
-  // Succès → renvoie le projet mis à jour
-  return NextResponse.json(data.data.project);
+  // Renvoie le projet mis à jour
+  return NextResponse.json(data.data);
 }
 
+// =========================
+//        DELETE PROJECT
+// =========================
 export async function DELETE(req, context) {
-  const { id } = await context.params; // ID du projet à supprimer
+  const { id } = await context.params; 
+  // id = projet à supprimer
 
-  const cookieStore = await cookies(); // Cookies utilisateur
-  const token = cookieStore.get("session")?.value; // Token de session
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session")?.value;
 
   // Vérifie l'authentification
   if (!token) {
-    return NextResponse.json(
-      { error: "Non authentifié" },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
   // Appel backend pour supprimer le projet
   const res = await fetch(`${API_URL}/projects/${id}`, {
     method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
+
+  const raw = await res.text(); 
+  // Lecture brute avant tentative de JSON
 
   let data;
   try {
-    data = await res.json(); // Lecture JSON
+    // On tente de lire la réponse en JSON
+    data = JSON.parse(raw);
   } catch {
     return NextResponse.json(
-      { error: "Réponse invalide du backend" },
+      { error: "Réponse backend non JSON", raw },
       { status: 500 }
     );
   }
 
-  // Si erreur backend → renvoie l'erreur
+  // Si erreur backend : on la transmet
   if (!res.ok) {
     return NextResponse.json(
-      { error: data.message || "Erreur de suppression du projet" },
+      { error: data.message || "Erreur lors de la suppression" },
       { status: res.status }
     );
   }
 
-  // Succès → projet supprimé
+  // Succès : projet supprimé
   return NextResponse.json({ success: true });
 }

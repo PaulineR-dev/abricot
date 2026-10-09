@@ -1,17 +1,35 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  // Stocke les infos utilisateur (null si non connecté)
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Indique si une action de login est en cours
-  const [loading, setLoading] = useState(false);
+  // Charge le profil automatiquement au démarrage
+  useEffect(() => {
+    async function loadProfile() {
+      try {
+        const res = await fetch("/api/profile");
+        if (!res.ok) {
+          setUser(null);
+        } else {
+          const data = await res.json();
+          setUser(data);
+        }
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  // Fonction de connexion : appelle /api/login
+    loadProfile();
+  }, []);
+
+  // Fonction de connexion
   const login = async (email, password) => {
     setLoading(true);
 
@@ -23,24 +41,26 @@ export function AuthProvider({ children }) {
 
     const data = await res.json();
 
-    // Si erreur → on arrête et on remonte l'erreur
     if (!res.ok) {
       setLoading(false);
       throw new Error(data.error || "Login failed");
     }
 
-    // Si OK → on stocke l'utilisateur dans le contexte
-    setUser(data.user);
+    // Le cookie HTTP-only est déjà créé côté serveur
+    // On recharge le profil pour remplir user
+    const profileRes = await fetch("/api/profile");
+    const profileData = await profileRes.json();
+    setUser(profileData);
+
     setLoading(false);
   };
 
-  // Fonction de déconnexion : appelle /api/logout
+  // Fonction de déconnexion
   const logout = async () => {
     await fetch("/api/logout", { method: "POST" });
-    setUser(null); // Supprime l'utilisateur du contexte
+    setUser(null);
   };
 
-  // Fournit les valeurs à tous les composants enfants
   return (
     <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}

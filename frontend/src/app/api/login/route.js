@@ -1,31 +1,30 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
+// Route POST — gère la connexion utilisateur
 export async function POST(req) {
-  // Récupère les données envoyées par le formulaire (email + password)
-  const { email, password } = await req.json();
+  const { email, password } = await req.json(); 
+  // On récupère les infos envoyées par le formulaire
 
-  // Envoie la requête de connexion au backend
   const res = await fetch("http://localhost:8000/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password }),   // Envoie les identifiants au backend
   });
 
-  // Essaye de lire la réponse JSON du backend
   let data;
   try {
+    // On tente de lire la réponse du backend en JSON
     data = await res.json();
   } catch {
-    // Si le backend renvoie autre chose que du JSON → erreur
+    // Si le backend renvoie autre chose que du JSON : erreur
     return NextResponse.json(
       { error: "Réponse invalide du serveur backend" },
       { status: 500 }
     );
   }
 
-  // Si la connexion échoue → renvoie l'erreur au front
+  // Si le backend renvoie une erreur HTTP : on la transmet au frontend
   if (!res.ok) {
     return NextResponse.json(
       { error: data.message || "Erreur de connexion" },
@@ -33,24 +32,22 @@ export async function POST(req) {
     );
   }
 
-  // Récupère le token et les informations utilisateur renvoyés par le backend
-  const token = data.data.token;
-  const user = data.data.user;
+  const token = data.data.token; // Token JWT renvoyé par le backend
+  const user = data.data.user;   // Informations utilisateur
 
-  // Accède au gestionnaire de cookies de Next.js (API async)
   const cookieStore = await cookies();
 
-  // Stocke le token dans un cookie HTTP-only sécurisé
+  // On stocke le token dans un cookie sécurisé
   cookieStore.set({
-    name: "session",      // nom du cookie
-    value: token,         // contenu = token JWT
-    httpOnly: true,       // inaccessible depuis le JavaScript du navigateur
-    secure: false,        // true en production (HTTPS)
-    sameSite: "lax",      // évite les problèmes de navigation
-    path: "/",            // cookie disponible sur tout le site
-    maxAge: 60 * 60 * 24 * 7, // expire dans 7 jours
+    name: "session",
+    value: token,
+    httpOnly: true,   // Protège le cookie contre l'accès JS
+    secure: false,    // À mettre sur true en production (HTTPS)
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7, // Expire dans 7 jours
   });
 
-  // Renvoie les infos utilisateur au front (sans le token)
+  // On renvoie les infos utilisateur au frontend
   return NextResponse.json({ user });
 }

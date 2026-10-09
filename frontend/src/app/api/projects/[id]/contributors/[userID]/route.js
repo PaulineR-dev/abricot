@@ -3,28 +3,36 @@ import { cookies } from "next/headers";
 
 const API_URL = "http://localhost:8000";
 
-export async function DELETE(req, { params }) {
-  // Récupère le token de session (authentification)
-  const token = cookies().get("session")?.value;
+// Route pour retirer un contributeur d'un projet
+export async function DELETE(req, context) {
+  const { id, userId } = await context.params;
+  // On récupère l'id du projet et l'id du contributeur à retirer
 
-  // Si pas de token → utilisateur non connecté
-  if (!token) return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session")?.value;
 
-  // Appel au backend pour retirer un contributeur du projet
-  const res = await fetch(
-    `${API_URL}/projects/${params.id}/contributors/${params.userId}`,
-    {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+  // Vérifie que l'utilisateur est authentifié
+  if (!token) {
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
 
-  // Lecture de la réponse backend
-  const data = await res.json();
+  // Appel backend pour retirer le contributeur du projet
+  const res = await fetch(`${API_URL}/projects/${id}/contributors/${userId}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-  // Si erreur backend → renvoie l’erreur au frontend
-  if (!res.ok) return NextResponse.json({ error: data.message }, { status: res.status });
+  const data = await res.json().catch(() => ({})); 
+  // On tente de lire la réponse, sinon on renvoie un objet vide
 
-  // Succès → contributeur retiré
+  // Si le backend renvoie une erreur : on la transmet
+  if (!res.ok) {
+    return NextResponse.json(
+      { error: data.message || "Erreur backend lors du retrait" },
+      { status: res.status }
+    );
+  }
+
+  // Succès : contributeur retiré
   return NextResponse.json({ success: true });
 }

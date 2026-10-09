@@ -8,7 +8,7 @@ export async function GET() {
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
-  // Si pas de token → utilisateur non connecté
+  // Si pas de token : utilisateur non connecté
   if (!token) {
     return NextResponse.json(
       { error: "Non authentifié" },
@@ -23,16 +23,16 @@ export async function GET() {
 
   let data;
   try {
-    data = await res.json(); // Lecture JSON
+    data = await res.json(); // On tente de lire la réponse en JSON
   } catch {
-    // Backend a renvoyé autre chose que du JSON
+    // Si le backend renvoie autre chose que du JSON : erreur
     return NextResponse.json(
       { error: "Réponse invalide du serveur backend" },
       { status: 500 }
     );
   }
 
-  // Si erreur backend → renvoie l’erreur au frontend
+  // Si erreur backend : renvoie l’erreur au frontend
   if (!res.ok) {
     return NextResponse.json(
       { error: data.message || "Erreur de récupération des projets" },
@@ -40,7 +40,7 @@ export async function GET() {
     );
   }
 
-  // Succès → renvoie la liste des projets
+  // Succès : renvoie la liste des projets
   return NextResponse.json(data.data.projects);
 }
 
@@ -64,7 +64,7 @@ export async function POST(req) {
   const res = await fetch(`${API_URL}/projects`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`, // Auth backend
+      Authorization: `Bearer ${token}`, 
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body), // Envoie les données du projet
@@ -74,13 +74,14 @@ export async function POST(req) {
   try {
     data = await res.json(); // Lecture JSON
   } catch {
+    // Si le backend renvoie autre chose que du JSON : erreur
     return NextResponse.json(
       { error: "Réponse invalide du serveur backend" },
       { status: 500 }
     );
   }
 
-  // Si erreur backend → renvoie l’erreur
+  // Si erreur backend : renvoie l’erreur
   if (!res.ok) {
     return NextResponse.json(
       { error: data.message || "Erreur de création du projet" },
@@ -88,6 +89,6 @@ export async function POST(req) {
     );
   }
 
-  // Succès → renvoie le projet créé
+  // Succès : renvoie le projet créé
   return NextResponse.json(data.data.project);
 }
