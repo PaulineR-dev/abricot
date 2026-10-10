@@ -1,8 +1,11 @@
+"use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { AuthProvider } from "@/context/AuthContext";
+import { usePathname } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,19 +17,27 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Abricot",
-  description: "Gestion de projet collaboratif",
-};
-
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+
+  // Pages qui doivent être SANS header/sidebar
+  const noLayoutPages = ["/login", "/signup"];
+
+  const hideLayout = noLayoutPages.includes(pathname);
+
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         <AuthProvider>
-          <Header />
-          <Sidebar />
-          <main>{children}</main>
+          {hideLayout ? (
+            children
+          ) : (
+            <>
+              <Header />
+              <Sidebar />
+              <main>{children}</main>
+            </>
+          )}
         </AuthProvider>
       </body>
     </html>

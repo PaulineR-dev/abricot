@@ -1,41 +1,36 @@
 "use client";
 
+import styles from "./login.module.css";
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
 
-  // États pour stocker les valeurs du formulaire
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // États pour gérer l'affichage des erreurs et le chargement
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
-    e.preventDefault(); // Empêche le rechargement de la page
-    setError("");       // Réinitialise les erreurs
-    setLoading(true);   // Active le bouton "Connexion..."
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-      // Envoie les identifiants à la route Next.js /api/login
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      // Récupère la réponse JSON (user ou erreur)
       const data = await res.json();
 
-      // Si la réponse n'est pas OK → erreur
       if (!res.ok) {
         throw new Error(data.error || "Erreur de connexion");
       }
 
-      // Si tout est bon → redirection vers /profile
       router.push("/profile");
     } catch (err) {
       setError(err.message);
@@ -45,29 +40,66 @@ export default function LoginPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Connexion</h1>
+    <div className={styles.page}>
+      <div className={styles.left}>
+        <form onSubmit={handleSubmit} className={styles.container}>
+          
+          {/* Logo */}
+          <Image
+            src="/images/logo.png"
+            alt="Logo Abricot"
+            width={252.568}
+            height={32.169}
+            className={styles.logo}
+          />
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+          {/* Titre */}
+          <h1 className={styles.title}>Connexion</h1>
 
-      <input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        autoComplete="email"
-      />
+          {/* Erreur */}
+          {error && <p className={styles.error}>{error}</p>}
 
-      <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Mot de passe"
-        type="password"
-        autoComplete="current-password"
-      />
+          {/* Label Email */}
+          <label className={styles.label}>Email</label>
 
-      <button disabled={loading}>
-        {loading ? "Connexion..." : "Se connecter"}
-      </button>
-    </form>
+          {/* Champ Email */}
+          <input
+            className={styles.input}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
+
+          {/* Label Mot de passe */}
+          <label className={styles.label}>Mot de passe</label>
+
+          {/* Champ Mot de passe */}
+          <input
+            className={styles.input}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            autoComplete="current-password"
+          />
+
+          {/* Bouton */}
+          <button className={styles.button} disabled={loading}>
+            {loading ? "Connexion..." : "Se connecter"}
+          </button>
+
+          {/* Mot de passe oublié */}
+          <p className={styles.forgot}>Mot de passe oublié ?</p>
+
+          {/* Créer un compte */}
+          <p className={styles.signup}>
+            Pas encore de compte ?
+            <span onClick={() => router.push("/signup")}>Créer un compte</span>
+          </p>
+
+        </form>
+      </div>
+
+      <div className={styles.right}></div>
+    </div>
   );
 }
