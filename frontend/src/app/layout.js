@@ -22,7 +22,6 @@ export default function RootLayout({ children }) {
 
   // Pages qui doivent être SANS header/sidebar
   const noLayoutPages = ["/login", "/signup"];
-
   const hideLayout = noLayoutPages.includes(pathname);
 
   return (
@@ -34,8 +33,12 @@ export default function RootLayout({ children }) {
           ) : (
             <>
               <Header />
+
+              <main style={{ flex: 1 }}>
+                {children}
+              </main>
+
               <Sidebar />
-              <main>{children}</main>
             </>
           )}
         </AuthProvider>

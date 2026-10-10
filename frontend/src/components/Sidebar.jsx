@@ -1,26 +1,28 @@
 "use client";
 
-import { useContext } from "react";
-import { AuthContext } from "@/context/AuthContext";
+import Image from "next/image";
+import styles from "./sidebar.module.css";
 
 export default function Sidebar() {
-  const { user, loading } = useContext(AuthContext);
-
   return (
-    <aside style={{ padding: "20px", background: "#ddd" }}>
-      <h3>Menu</h3>
+    <div className={styles.sidebar}>
+      
+      {/* Gauche */}
+      <div className={styles.left}>
+        <Image
+          src="/images/logo-sidebar.png"
+          alt="Logo Abricot Sidebar"
+          width={101}
+          height={12.86}
+          className={styles.logo}
+        />
+      </div>
 
-      {loading ? (
-        <p>Chargement...</p>
-      ) : user ? (
-        <ul>
-          <li>Mes projets</li>
-          <li>Mes tâches</li>
-          <li>Mon profil</li>
-        </ul>
-      ) : (
-        <p>Veuillez vous connecter</p>
-      )}
-    </aside>
+      {/* Droite */}
+      <div className={styles.right}>
+        <span className={styles.title}>Abricot 2025</span>
+      </div>
+
+    </div>
   );
 }

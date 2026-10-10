@@ -2,11 +2,13 @@
 
 import styles from "./login.module.css";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
+import { AuthContext } from "@/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,17 +21,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Erreur de connexion");
-      }
+      await login(email, password);
 
       router.push("/profile");
     } catch (err) {
@@ -44,7 +36,6 @@ export default function LoginPage() {
       <div className={styles.left}>
         <form onSubmit={handleSubmit} className={styles.container}>
           
-          {/* Logo */}
           <Image
             src="/images/logo.png"
             alt="Logo Abricot"
@@ -53,16 +44,12 @@ export default function LoginPage() {
             className={styles.logo}
           />
 
-          {/* Titre */}
           <h1 className={styles.title}>Connexion</h1>
 
-          {/* Erreur */}
           {error && <p className={styles.error}>{error}</p>}
 
-          {/* Label Email */}
           <label className={styles.label}>Email</label>
 
-          {/* Champ Email */}
           <input
             className={styles.input}
             value={email}
@@ -70,10 +57,8 @@ export default function LoginPage() {
             autoComplete="email"
           />
 
-          {/* Label Mot de passe */}
           <label className={styles.label}>Mot de passe</label>
 
-          {/* Champ Mot de passe */}
           <input
             className={styles.input}
             value={password}
@@ -82,15 +67,12 @@ export default function LoginPage() {
             autoComplete="current-password"
           />
 
-          {/* Bouton */}
           <button className={styles.button} disabled={loading}>
             {loading ? "Connexion..." : "Se connecter"}
           </button>
 
-          {/* Mot de passe oublié */}
           <p className={styles.forgot}>Mot de passe oublié ?</p>
 
-          {/* Créer un compte */}
           <p className={styles.signup}>
             Pas encore de compte ?
             <span onClick={() => router.push("/signup")}>Créer un compte</span>
