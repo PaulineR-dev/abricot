@@ -1,0 +1,95 @@
+.pageBackground {
+  background: #F9FAFB;
+  padding: 57px 0;
+}
+
+/* Bloc principal */
+.profileBlock {
+  width: 1215px;
+  min-height: 644px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 40px 59px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: Manrope, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 100%;
+  color: #1F1F1F;
+  margin-bottom: 8px;
+}
+
+.userName {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  color: #6B7280;
+  margin-bottom: 41px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #000000;
+  margin-bottom: 7px;
+  display: block;
+}
+
+.formGroup input {
+  width: 100%;
+  max-width: 1097px;
+  height: 53px;
+  margin-bottom: 24px;
+  padding: 19px 17px;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 4px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.submitButton {
+  width: 242px;
+  height: 50px;
+  background: #1F1F1F;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 17px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  opacity: 0.85;
+}
+
+.error {
+  color: #EF4444;
+  font-size: 14px;
+}
+
+.success {
+  color: var(--color-brand);
+  font-size: 14px;
+}

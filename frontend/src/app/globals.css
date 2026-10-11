@@ -1,7 +1,7 @@
 :root {
   /* Couleurs par défaut Next.js */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #F9FAFB;
 
   /* Polices */
   --font-title: "Manrope", sans-serif;
@@ -50,7 +50,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #F9FAFB;
     --foreground: #ededed;
   }
 }
