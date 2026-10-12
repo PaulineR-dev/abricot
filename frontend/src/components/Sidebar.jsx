@@ -12,8 +12,9 @@ export default function Sidebar() {
         <Image
           src="/images/logo-sidebar.png"
           alt="Logo Abricot Sidebar"
-          width={101}
-          height={12.86}
+          width={0}
+          height={0}
+          sizes="100vw"
           className={styles.logo}
         />
       </div>

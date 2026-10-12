@@ -54,6 +54,8 @@
 /* Icônes */
 .icon {
   display: block;
+  width: 29px;
+  height: 22.48px;
   transition: filter 0.2s ease;
 }
 

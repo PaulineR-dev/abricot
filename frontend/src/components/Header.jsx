@@ -31,8 +31,9 @@ export default function Header() {
         <Image
           src="/images/logo.png"
           alt="Logo Abricot"
-          width={147}
-          height={18.72}
+          width={0}
+          height={0}
+          sizes="100vw"
           className={styles.logo}
         />
       </div>
@@ -57,11 +58,12 @@ export default function Header() {
           className={styles.navItem}
           onClick={() => router.push("/projects")}
         >
-          <Image
+         <Image
             src="/images/projects-header.png"
             alt="Projects icon"
-            width={29}
-            height={22.48}
+            width={0}
+            height={0}
+            sizes="100vw"
             className={styles.icon}
           />
           <span className={styles.text}>Projets</span>
