@@ -1,10 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 // Page liste des projets
 export default function ProjectsPage() {
+  const router = useRouter(); 
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState("");
 
@@ -131,7 +133,7 @@ export default function ProjectsPage() {
       </div>
 
       <button
-        onClick={() => setShowModal(true)}
+        onClick={() => router.push("/projects/new")}
         style={{
           background: "black",
           color: "white",
