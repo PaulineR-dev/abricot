@@ -100,6 +100,7 @@
   padding-right: 59px;
   padding-bottom: 40px;
   border: 1px solid #E5E7EB;
+  margin-bottom: 48px;
 }
 
 .tasksSection.kanbanMode {
@@ -483,11 +484,9 @@
   height: 25px;
   border-radius: 50px;
   padding: 4px 16px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-family: Inter, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -496,6 +495,14 @@
   letter-spacing: 0%;
 }
 
+.kanbanColumn {
+  height: auto;
+}
+
+.kanbanGrid {
+  align-items: start;
+  margin-bottom: 155.85px;
+}
 
 .statusTODO {
   width: 75px;
