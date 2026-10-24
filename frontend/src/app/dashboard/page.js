@@ -1,16 +1,36 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
 import styles from "./dashboard.module.css";
+
+function normalizeTaskStatus(status) {
+  const normalized = String(status || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toUpperCase()
+    .replace(/[\s-]+/g, "_");
+
+  if (["TODO", "TO_DO", "A_FAIRE"].includes(normalized)) return "TODO";
+  if (["IN_PROGRESS", "INPROGRESS", "EN_COURS"].includes(normalized)) return "IN_PROGRESS";
+  if (["DONE", "COMPLETED", "TERMINE", "TERMINEE"].includes(normalized)) return "DONE";
+  return normalized;
+}
 
 export default function DashboardPage() {
   const [viewMode, setViewMode] = useState("list");
   const [tasks, setTasks] = useState([]);
+  const [taskSearch, setTaskSearch] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const visibleTasks = tasks.filter((task) =>
+    task.title?.toLowerCase().includes(taskSearch.trim().toLowerCase())
+  );
   const [showModal, setShowModal] = useState(false);
+  useEscapeKey(showModal, () => setShowModal(false));
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -20,6 +40,18 @@ export default function DashboardPage() {
 
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
+  const [showContributorSelector, setShowContributorSelector] = useState(false);
+
+  function openCreateProjectModal() {
+    setTitle("");
+    setDescription("");
+    setContributors([]);
+    setSelectedUsers([]);
+    setSearch("");
+    setResults([]);
+    setShowContributorSelector(false);
+    setShowModal(true);
+  }
 
   useEffect(() => {
     async function loadData() {
@@ -29,8 +61,12 @@ export default function DashboardPage() {
           fetch("/api/profile"),
         ]);
 
+        if (!tasksRes.ok) throw new Error("Impossible de charger vos tâches assignées.");
+        if (!userRes.ok) throw new Error("Impossible de charger votre profil.");
+
         const tasksData = await tasksRes.json();
         const userData = await userRes.json();
+        if (!Array.isArray(tasksData)) throw new Error("La liste des tâches reçue est invalide.");
 
         const prioOrder = { URGENT: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
 
@@ -51,29 +87,29 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    if (search.trim().length < 2) {
-      setResults([]);
-      return;
-    }
+    if (search.trim().length < 2) return;
+
+    let isCurrentSearch = true;
 
     async function searchUsers() {
       try {
         const res = await fetch(`/api/users?query=${search}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
-        setResults(data);
+        if (isCurrentSearch) setResults(data);
       } catch (err) {
         console.error(err);
       }
     }
 
     searchUsers();
+    return () => {
+      isCurrentSearch = false;
+    };
   }, [search]);
 
   async function handleCreateProject(e) {
     e.preventDefault();
-
-    const finalContributors = [...contributors, user?.email];
 
     try {
       const res = await fetch("/api/projects", {
@@ -82,7 +118,7 @@ export default function DashboardPage() {
         body: JSON.stringify({
           name: title,
           description: description,
-          contributors: finalContributors,
+          contributors,
         }),
       });
 
@@ -100,7 +136,7 @@ export default function DashboardPage() {
   if (error) return <div>Erreur : {error}</div>;
 
   return (
-  <main className={styles.dashboard}>
+  <main className={`${styles.dashboard} ${viewMode === "kanban" ? styles.kanbanView : ""}`}>
     <header className={styles.dashboardHeader}>
       <div className={styles.headerLeft}>
         <h1 className={styles.dashboardTitle}>Tableau de bord</h1>
@@ -111,42 +147,31 @@ export default function DashboardPage() {
       </div>
 
       <button
+        type="button"
+        aria-pressed={viewMode === "list"}
         className={styles.createProjectBtn}
-        onClick={() => setShowModal(true)}
+        onClick={openCreateProjectModal}
       >
         + Créer un projet
       </button>
     </header>
 
     {showModal && (
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          background: "rgba(0,0,0,0.4)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 1000,
-        }}
-      >
+      <div className={styles.projectCreateOverlay}>
         <div
-          style={{
-            background: "white",
-            padding: "24px",
-            borderRadius: "8px",
-            width: "400px",
-          }}
+          className={styles.projectCreateModal}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="dashboard-create-project-title"
         >
-          <h2 style={{ marginTop: 0 }}>Créer un projet</h2>
+          <button type="button" className={styles.projectCreateClose} aria-label="Fermer" onClick={() => setShowModal(false)}>×</button>
+          <h2 id="dashboard-create-project-title">Créer un projet</h2>
 
           <form onSubmit={handleCreateProject}>
             <div>
-              <label>Titre*</label>
+              <label htmlFor="dashboard-project-title">Titre*</label>
               <input
+                id="dashboard-project-title"
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -155,8 +180,9 @@ export default function DashboardPage() {
             </div>
 
             <div>
-              <label>Description*</label>
+              <label htmlFor="dashboard-project-description">Description*</label>
               <textarea
+                id="dashboard-project-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
@@ -164,28 +190,34 @@ export default function DashboardPage() {
             </div>
 
             <div>
-              <label>Ajouter un contributeur</label>
-              <input
+              <label htmlFor="dashboard-project-contributor">Contributeur</label>
+              <button
+                id="dashboard-project-contributor"
+                type="button"
+                className={styles.contributorSelector}
+                aria-expanded={showContributorSelector}
+                onClick={() => setShowContributorSelector((open) => !open)}
+              >
+                {selectedUsers.length ? `${selectedUsers.length} collaborateur${selectedUsers.length > 1 ? "s" : ""}` : "Choisir un ou plusieurs collaborateurs"}
+              </button>
+
+              {showContributorSelector && <input
+                id="dashboard-project-contributor-search"
                 type="text"
-                placeholder="Tape un nom ou email..."
+                className={styles.contributorSearch}
+                placeholder="Rechercher un collaborateur"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-              />
+                aria-label="Rechercher un collaborateur"
+              />}
 
-              {results.length > 0 && (
-                <div
-                  style={{
-                    border: "1px solid #ccc",
-                    marginTop: "4px",
-                    borderRadius: "4px",
-                    background: "#fff",
-                    maxHeight: "150px",
-                    overflowY: "auto",
-                  }}
-                >
+              {showContributorSelector && search.trim().length >= 2 && results.length > 0 && (
+                <div className={styles.projectContributorDropdown}>
                   {results.map((u) => (
-                    <div
+                    <button
+                      type="button"
                       key={u.id}
+                      className={styles.projectContributorOption}
                       onClick={() => {
                         if (!contributors.includes(u.email)) {
                           setContributors([...contributors, u.email]);
@@ -194,87 +226,60 @@ export default function DashboardPage() {
                         setSearch("");
                         setResults([]);
                       }}
-                      style={{
-                        padding: "8px",
-                        cursor: "pointer",
-                        borderBottom: "1px solid #eee",
-                      }}
                     >
                       {u.name} ({u.email})
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}
             </div>
 
-            <div
-              style={{
-                marginTop: "10px",
-                display: "flex",
-                gap: "6px",
-                flexWrap: "wrap",
-              }}
-            >
+            {selectedUsers.length > 0 && <div className={styles.projectSelectedContributors}>
               {selectedUsers.map((u) => (
-                <span
-                  key={u.id}
-                  style={{
-                    background: "#eee",
-                    padding: "4px 8px",
-                    borderRadius: "4px",
-                    fontSize: "12px",
-                  }}
-                >
-                  {u.name}
-                </span>
+                <div key={u.id} className={styles.projectSelectedContributor}>
+                  <span>{u.name}</span>
+                  <button
+                    type="button"
+                    className={styles.contributorRemoveBtn}
+                    onClick={() => {
+                      setContributors((current) => current.filter((email) => email !== u.email));
+                      setSelectedUsers((current) => current.filter((selected) => selected.id !== u.id));
+                    }}
+                  >
+                    Retirer
+                  </button>
+                </div>
               ))}
-            </div>
+            </div>}
 
             <button
               type="submit"
-              style={{
-                marginTop: "20px",
-                background: "black",
-                color: "white",
-                padding: "10px 16px",
-                borderRadius: "6px",
-                border: "none",
-                cursor: "pointer",
-              }}
+              className={styles.projectCreateSubmit}
+              disabled={!title.trim() || !description.trim()}
             >
               Ajouter un projet
             </button>
           </form>
 
-          <button
-            onClick={() => setShowModal(false)}
-            style={{
-              marginTop: "10px",
-              background: "#ddd",
-              padding: "8px 12px",
-              borderRadius: "6px",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            Annuler
-          </button>
         </div>
       </div>
     )}
 
     <div className={styles.switch}>
       <button
+        type="button"
         className={`${styles.switchBtn} ${styles.switchBtnList} ${
           viewMode === "list" ? styles.active : ""
         }`}
         onClick={() => setViewMode("list")}
       >
-        <img src="/images/icone-list.png" alt="Liste" />
+        <img src="/images/icone-list.png" alt="" aria-hidden="true" />
         <span>Liste</span>
       </button>
 
       <button
+        type="button"
+        aria-pressed={viewMode === "kanban"}
         className={`${styles.switchBtn} ${styles.switchBtnKanban} ${
           viewMode === "kanban" ? styles.active : ""
         }`}
@@ -282,20 +287,42 @@ export default function DashboardPage() {
       >
         <img
           src="/images/icone-kanban.png"
-          alt="Kanban"
+          alt=""
+          aria-hidden="true"
           style={{ width: "15px", height: "15.38px" }}
         />
         <span>Kanban</span>
       </button>
+
     </div>
 
     {viewMode === "list" && (
       <section className={styles.tasksSection}>
-        <h2 className={styles.sectionTitle}>Mes tâches assignées</h2>
-        <p className={styles.sectionSubtitle}>Par ordre de priorité</p>
-
+        <div className={styles.listHeading}>
+          <div>
+            <h2 className={styles.sectionTitle}>Mes tâches assignées</h2>
+            <p className={styles.sectionSubtitle}>Par ordre de priorité</p>
+          </div>
+          <label className={styles.taskSearchBox}>
+            <input
+              type="search"
+              value={taskSearch}
+              onChange={(e) => setTaskSearch(e.target.value)}
+              placeholder="Rechercher une tâche"
+              aria-label="Rechercher une tâche par nom"
+            />
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.8" />
+              <path d="m16 16 5 5" />
+            </svg>
+          </label>
+        </div>
         <ul className={styles.tasksList}>
-          {tasks.map((task) => {
+          {visibleTasks.length === 0 ? (
+            <li className={styles.emptySearch}>
+              {taskSearch.trim() ? "Aucune tâche trouvée." : "Aucune tâche assignée."}
+            </li>
+          ) : visibleTasks.map((task) => {
             const commentCount = task.comments?.length || 0;
 
             return (
@@ -373,11 +400,9 @@ export default function DashboardPage() {
       <section
         className={`${styles.tasksSection} ${styles.kanbanMode}`}
       >
-        <h2 className={styles.sectionTitle}>Kanban du mois</h2>
-
         <div className={styles.kanbanGrid}>
           {["TODO", "IN_PROGRESS", "DONE"].map((status) => {
-            const filtered = tasks.filter((t) => t.status === status);
+            const filtered = tasks.filter((task) => normalizeTaskStatus(task.status) === status);
 
             return (
               <div key={status} className={styles.kanbanColumn}>
@@ -438,10 +463,10 @@ export default function DashboardPage() {
                             className={`${styles.metaIconKanban} ${styles.calendar}`}
                           />
                           <span>
-                            {new Date(task.dueDate).toLocaleDateString("fr-FR", {
+                            {task.dueDate ? new Date(task.dueDate).toLocaleDateString("fr-FR", {
                               day: "numeric",
                               month: "long",
-                            })}
+                            }) : "Sans échéance"}
                           </span>
                         </div>
 

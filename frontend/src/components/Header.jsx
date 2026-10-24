@@ -3,12 +3,13 @@
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import styles from "./header.module.css";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function Header() {
   const { user, loading } = useContext(AuthContext);
   const router = useRouter();
+  const pathname = usePathname();
 
   const initials = (() => {
     if (!user) return "";
@@ -26,7 +27,6 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      {/* Logo */}
       <div className={styles.left}>
         <Image
           src="/images/logo.png"
@@ -38,10 +38,11 @@ export default function Header() {
         />
       </div>
 
-      {/* Navigation */}
-      <nav className={styles.center}>
-        <div
-          className={styles.navItem}
+      <nav className={styles.center} aria-label="Navigation principale">
+        <button
+          type="button"
+          className={`${styles.navItem} ${pathname === "/dashboard" ? styles.active : ""}`}
+          aria-current={pathname === "/dashboard" ? "page" : undefined}
           onClick={() => router.push("/dashboard")}
         >
           <Image
@@ -52,13 +53,15 @@ export default function Header() {
             className={styles.icon}
           />
           <span className={styles.text}>Tableau de bord</span>
-        </div>
+        </button>
 
-        <div
-          className={styles.navItem}
+        <button
+          type="button"
+          className={`${styles.navItem} ${pathname.startsWith("/projects") ? styles.active : ""}`}
+          aria-current={pathname.startsWith("/projects") ? "page" : undefined}
           onClick={() => router.push("/projects")}
         >
-         <Image
+          <Image
             src="/images/projects-header.png"
             alt="Projects icon"
             width={0}
@@ -67,19 +70,23 @@ export default function Header() {
             className={styles.icon}
           />
           <span className={styles.text}>Projets</span>
-        </div>
+        </button>
       </nav>
 
-      {/* Avatar */}
-      <div className={styles.right} onClick={() => router.push("/profile")}>
+      <button
+        type="button"
+        className={styles.right}
+        aria-label={`Ouvrir le profil de ${user?.name || user?.email || "l’utilisateur"}`}
+        onClick={() => router.push("/profile")}
+      >
         {loading ? (
-          <div className={styles.avatar}>…</div>
+          <div className={styles.avatar}>â€¦</div>
         ) : user ? (
           <div className={styles.avatar}>{initials}</div>
         ) : (
           <div className={styles.avatar}>?</div>
         )}
-      </div>
+      </button>
     </header>
   );
 }

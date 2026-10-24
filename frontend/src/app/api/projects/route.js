@@ -19,6 +19,7 @@ export async function GET() {
   // Appel backend pour récupérer tous les projets
   const res = await fetch(`${API_URL}/projects`, {
     headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
   });
 
   let data;
@@ -41,7 +42,9 @@ export async function GET() {
   }
 
   // Succès : renvoie la liste des projets
-  return NextResponse.json(data.data.projects);
+  return NextResponse.json(data.data.projects, {
+    headers: { "Cache-Control": "no-store, max-age=0" },
+  });
 }
 
 export async function POST(req) {

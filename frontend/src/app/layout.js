@@ -1,6 +1,6 @@
 "use client";
 
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -17,15 +17,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  // Pages qui doivent être SANS header/sidebar
   const noLayoutPages = ["/login", "/signup"];
   const hideLayout = noLayoutPages.includes(pathname);
 
   return (
-    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html 
+      lang="fr" 
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${manrope.variable}`}
+    >
       <body>
         <AuthProvider>
           {hideLayout ? (

@@ -21,10 +21,10 @@ export async function GET(req, context) {
   // Appel backend pour récupérer toutes les tâches du projet
   const res = await fetch(`${API_URL}/projects/${id}/tasks`, {
     headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
   });
 
   const raw = await res.text(); 
-  // Le backend peut renvoyer du texte : on le lit avant de tenter le JSON
 
   let data;
   try {
@@ -46,8 +46,9 @@ export async function GET(req, context) {
     );
   }
 
-  // Renvoie la liste des tâches
-  return NextResponse.json(data.data.tasks);
+  return NextResponse.json(data.data.tasks, {
+    headers: { "Cache-Control": "no-store, max-age=0" },
+  });
 }
 
 /* ============================
@@ -55,7 +56,6 @@ export async function GET(req, context) {
    ============================ */
 export async function POST(req, context) {
   const { id } = await context.params; 
-  // id = projet dans lequel on crée la tâche
 
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
@@ -66,7 +66,6 @@ export async function POST(req, context) {
   }
 
   const body = await req.json(); 
-  // Données de la nouvelle tâche envoyées par le frontend
 
   // Appel backend pour créer la tâche
   const res = await fetch(`${API_URL}/projects/${id}/tasks`, {

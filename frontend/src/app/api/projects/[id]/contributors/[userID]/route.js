@@ -3,36 +3,60 @@ import { cookies } from "next/headers";
 
 const API_URL = "http://localhost:8000";
 
-// Route pour retirer un contributeur d'un projet
 export async function DELETE(req, context) {
-  const { id, userId } = await context.params;
-  // On récupère l'id du projet et l'id du contributeur à retirer
+  try {
+    // 1. Récupérer proprement les paramètres de l'URL dynamiques
+    const params = await context.params;
+    const id = params?.id;
+    const userId = params?.userId;
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get("session")?.value;
+    if (!id || !userId) {
+      return NextResponse.json(
+        { error: "Paramètres manquants (id du projet ou userId)" },
+        { status: 400 }
+      );
+    }
 
-  // Vérifie que l'utilisateur est authentifié
-  if (!token) {
-    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
-  }
+    // 2. Récupérer le token de session dans les cookies
+    const cookieStore = await cookies();
+    const token = cookieStore.get("session")?.value;
 
-  // Appel backend pour retirer le contributeur du projet
-  const res = await fetch(`${API_URL}/projects/${id}/contributors/${userId}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+    if (!token) {
+      return NextResponse.json(
+        { error: "Non authentifié" },
+        { status: 401 }
+      );
+    }
 
-  const data = await res.json().catch(() => ({})); 
-  // On tente de lire la réponse, sinon on renvoie un objet vide
+    // 3. Appeler le back-end Express
+    const backendUrl = `${API_URL}/projects/${id}/contributors/${userId}`;
+    const res = await fetch(backendUrl, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  // Si le backend renvoie une erreur : on la transmet
-  if (!res.ok) {
+    const raw = await res.text();
+    let data = {};
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch {
+      data = { message: raw };
+    }
+
+    if (!res.ok) {
+      return NextResponse.json(
+        { error: data.message || data.error || "Erreur lors de la suppression" },
+        { status: res.status }
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
     return NextResponse.json(
-      { error: data.message || "Erreur backend lors du retrait" },
-      { status: res.status }
+      { error: "Erreur interne du serveur Next.js" },
+      { status: 500 }
     );
   }
-
-  // Succès : contributeur retiré
-  return NextResponse.json({ success: true });
 }

@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
 import styles from "./profile.module.css";
 
 export default function ProfilePage() {
+  const { updateUser } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [form, setForm] = useState(null);
   const [error, setError] = useState("");
@@ -19,7 +22,7 @@ export default function ProfilePage() {
 
         if (!res.ok) throw new Error(data.error || "Impossible de charger le profil");
 
-        const parts = data.name.split(" ");
+        const parts = String(data.name || "").split(" ");
         const firstName = parts[0] || "";
         const lastName = parts.slice(1).join(" ") || "";
 
@@ -47,6 +50,11 @@ export default function ProfilePage() {
     setError("");
     setSuccess("");
 
+    if (Boolean(currentPassword) !== Boolean(newPassword)) {
+      setError("Renseignez le mot de passe actuel et le nouveau mot de passe.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/profile", {
         method: "PUT",
@@ -57,11 +65,12 @@ export default function ProfilePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
-      const parts = data.name.split(" ");
+      const parts = String(data.name || "").split(" ");
       const firstName = parts[0] || "";
       const lastName = parts.slice(1).join(" ");
 
       setUser({ ...data, firstName, lastName });
+      updateUser?.(data);
 
       if (currentPassword && newPassword) {
         const pwdRes = await fetch("/api/password", {
@@ -100,8 +109,9 @@ export default function ProfilePage() {
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
-            <label>Nom</label>
+            <label htmlFor="profile-last-name">Nom</label>
             <input
+              id="profile-last-name"
               type="text"
               value={form.lastName}
               onChange={(e) => setForm({ ...form, lastName: e.target.value })}
@@ -109,8 +119,9 @@ export default function ProfilePage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Prénom</label>
+            <label htmlFor="profile-first-name">Prénom</label>
             <input
+              id="profile-first-name"
               type="text"
               value={form.firstName}
               onChange={(e) => setForm({ ...form, firstName: e.target.value })}
@@ -118,8 +129,9 @@ export default function ProfilePage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Email</label>
+            <label htmlFor="profile-email">Email</label>
             <input
+              id="profile-email"
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -127,8 +139,9 @@ export default function ProfilePage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Mot de passe actuel</label>
+            <label htmlFor="profile-current-password">Mot de passe actuel</label>
             <input
+              id="profile-current-password"
               type="password"
               value={currentPassword}
               placeholder="•••••••••••"
@@ -137,8 +150,9 @@ export default function ProfilePage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Nouveau mot de passe</label>
+            <label htmlFor="profile-new-password">Nouveau mot de passe</label>
             <input
+              id="profile-new-password"
               type="password"
               value={newPassword}
               placeholder="•••••••••••"

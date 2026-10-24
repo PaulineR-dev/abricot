@@ -1,6 +1,8 @@
 .sidebar {
   width: 100%;
   height: 68px;
+  min-height: 68px;
+  flex: 0 0 68px;
   background: #FFFFFF;
   display: flex;
   align-items: center;
@@ -18,7 +20,6 @@
   gap: 16px;
 }
 
-/* Logo avec les bonnes dimensions */
 .logo {
   width: 101px;
   height: 12.86px;
@@ -37,4 +38,10 @@
   line-height: 100%;
   letter-spacing: 0%;
   color: #000000;
+}
+
+@media (max-width: 600px) {
+  .sidebar { height: 68px; min-height: 68px; flex-basis: 68px; padding: 0 16px; }
+  .logo { width: 88px; height: auto; }
+  .title { font-size: 13px; }
 }

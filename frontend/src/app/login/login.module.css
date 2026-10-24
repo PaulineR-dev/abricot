@@ -5,7 +5,6 @@
   background: #F9FAFB;
 }
 
-/* Colonne gauche */
 .left {
   flex: 0 0 39.16%;
   display: flex;
@@ -15,14 +14,12 @@
   background: #F9FAFB;
 }
 
-/* Container 282px */
 .container {
   display: flex;
   flex-direction: column;
   width: 282px;
 }
 
-/* Logo */
 .logo {
   width: 252.568px !important;
   height: 32.169px !important;
@@ -32,23 +29,18 @@
   display: block;
 }
 
-/* Titre Connexion */
 .title {
   width: 282px;
   height: 55px;
-
   margin-top: 202px;
-
   font-family: var(--font-title);
   font-size: var(--manrope-xxl);
   font-weight: var(--weight-bold);
   line-height: var(--line-height-default);
-
   color: var(--color-brand);
   text-align: center;
 }
 
-/* Label Email + Mot de passe */
 .label {
   margin-top: 30px;
   font-family: var(--font-text);
@@ -58,23 +50,18 @@
   color: var(--neutral-black);
 }
 
-/* Champ Email + Mot de passe */
 .input {
   margin-top: 7px;
-
   width: 282px;
   height: 53px;
-
   padding: 19px 17px;
   border-radius: 4px;
   border: 1px solid #E5E7EB;
   background: var(--neutral-white);
-
   font-family: var(--font-text);
   font-size: var(--inter-md);
   font-weight: var(--weight-regular);
   line-height: var(--line-height-default);
-
   color: var(--neutral-black);
 }
 
@@ -86,63 +73,49 @@
   margin-top: 29px;
 }
 
-/* Bouton Se connecter */
 .button {
   margin-top: 29px;
-
   width: 249px;
   height: 50px;
-
   padding: 13px 74px;
-
   background: var(--neutral-dark);
   color: var(--neutral-white);
-
   border-radius: 10px;
   border: none;
   cursor: pointer;
-
   font-family: var(--font-text);
   font-size: var(--inter-lg);
   font-weight: var(--weight-regular);
   line-height: var(--line-height-default);
-
   text-align: center;
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Mot de passe oublié */
 .forgot {
   margin-top: 21px;
-
   font-family: var(--font-text);
   font-size: var(--inter-md);
   font-weight: var(--weight-regular);
   line-height: var(--line-height-default);
-
   text-decoration: underline;
   color: var(--color-brand);
-
   text-align: center;
   cursor: pointer;
 }
 
-/* Pas encore de compte */
 .signup {
   margin-top: 202px;
-
   font-family: var(--font-text);
   font-size: var(--inter-md);
   font-weight: var(--weight-regular);
   line-height: var(--line-height-default);
-
   text-align: center;
   color: var(--neutral-black);
 }
 
-.signup span {
+.signup a {
   display: inline;
   margin-left: 10px;
   font-family: var(--font-text);
@@ -154,7 +127,8 @@
   cursor: pointer;
 }
 
-/* Colonne droite */
+.signup a:focus-visible { outline: 3px solid #1D4ED8; outline-offset: 3px; }
+
 .right {
   flex: 1;
   height: 100vh;
@@ -164,7 +138,6 @@
   background-repeat: no-repeat;
 }
 
-/* Responsive */
 @media (max-width: 900px) {
   .page {
     flex-direction: column;
@@ -179,4 +152,27 @@
     height: 40vh;
     width: 100%;
   }
+}
+@media (max-width: 900px) {
+  .page { min-height: 100svh; height: auto; }
+  .left { flex: 1 1 60%; padding: 56px 24px; }
+  .right { flex: 1 1 40%; height: auto; min-height: 100svh; }
+  .title { margin-top: 90px; }
+  .signup { margin-top: 72px; }
+}
+
+@media (max-width: 600px) {
+  .page { min-height: 100svh; }
+  .left { width: 100%; min-height: 100svh; padding: 32px 24px; }
+  .right { display: none; }
+  .container { width: min(100%, 360px); }
+  .logo { width: min(252px, 100%) !important; height: auto !important; }
+  .title { width: 100%; height: auto; margin-top: 72px; font-size: 34px; }
+  .input { width: 100%; }
+  .button { width: min(100%, 280px); padding: 13px 16px; }
+  .signup { margin-top: 56px; line-height: 1.5; }
+}@media (min-width: 601px) and (max-width: 900px) {
+  .page { flex-direction: row; }
+  .left { width: 60%; min-height: 100svh; }
+  .right { width: 40%; min-height: 100svh; }
 }

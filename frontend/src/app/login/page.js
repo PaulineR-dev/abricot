@@ -2,6 +2,7 @@
 
 import styles from "./login.module.css";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/context/AuthContext";
@@ -23,7 +24,7 @@ export default function LoginPage() {
     try {
       await login(email, password);
 
-      router.push("/profile");
+      router.replace("/dashboard");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -46,20 +47,23 @@ export default function LoginPage() {
 
           <h1 className={styles.title}>Connexion</h1>
 
-          {error && <p className={styles.error}>{error}</p>}
+          {error && <p className={styles.error} role="alert">{error}</p>}
 
-          <label className={styles.label}>Email</label>
+          <label className={styles.label} htmlFor="login-email">Email</label>
 
           <input
+            id="login-email"
+            type="email"
             className={styles.input}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
           />
 
-          <label className={styles.label}>Mot de passe</label>
+          <label className={styles.label} htmlFor="login-password">Mot de passe</label>
 
           <input
+            id="login-password"
             className={styles.input}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -75,7 +79,7 @@ export default function LoginPage() {
 
           <p className={styles.signup}>
             Pas encore de compte ?
-            <span onClick={() => router.push("/signup")}>Créer un compte</span>
+            <Link href="/signup">Créer un compte</Link>
           </p>
 
         </form>

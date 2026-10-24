@@ -42,7 +42,7 @@ export async function POST(req) {
     name: "session",
     value: token,
     httpOnly: true,   // Protège le cookie contre l'accès JS
-    secure: false,    // À mettre sur true en production (HTTPS)
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7, // Expire dans 7 jours

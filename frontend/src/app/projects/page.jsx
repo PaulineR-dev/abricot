@@ -1,17 +1,24 @@
-"use client";
+﻿"use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
+import styles from "./projects.module.css";
 
+function getInitials(name) {
+  const parts = (name || "?").trim().split(/\s+/).filter(Boolean);
+  return parts.length > 1
+    ? `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
+    : (parts[0]?.slice(0, 2) || "?").toUpperCase();
+}
 // Page liste des projets
 export default function ProjectsPage() {
-  const router = useRouter(); 
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState("");
 
   // Modale de création
   const [showModal, setShowModal] = useState(false);
+  useEscapeKey(showModal, () => setShowModal(false));
 
   // Champs du formulaire de création
   const [title, setTitle] = useState("");
@@ -26,75 +33,100 @@ export default function ProjectsPage() {
   // Recherche utilisateurs
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
+  const [showContributorSelector, setShowContributorSelector] = useState(false);
 
-  // Charge les projets et le tri par priorité
+  function openCreateProjectModal() {
+    setTitle("");
+    setDescription("");
+    setContributors([]);
+    setSelectedUsers([]);
+    setSearch("");
+    setResults([]);
+    setShowContributorSelector(false);
+    setShowModal(true);
+  }
+
   useEffect(() => {
+    let active = true;
+
     async function loadProjects() {
       try {
-        const res = await fetch("/api/projects");
+        const res = await fetch("/api/projects", { cache: "no-store" });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
 
+        const projectsWithTasks = await Promise.all(
+          data.map(async (project) => {
+            const tasksRes = await fetch(`/api/projects/${project.id}/tasks`, {
+              cache: "no-store",
+            });
+            const tasks = await tasksRes.json();
+            if (!tasksRes.ok) throw new Error(tasks.error || "Impossible de charger les tâches du projet");
+            return { ...project, tasks: Array.isArray(tasks) ? tasks : [] };
+          })
+        );
+        if (!active) return;
+
         const prioOrder = { URGENT: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
-
-        const sorted = [...data].sort((a, b) => {
-          const minPrioA = Math.min(
-            ...(a.tasks || []).map(t => prioOrder[t.priority] ?? 99),
-            99
-          );
-
-          const minPrioB = Math.min(
-            ...(b.tasks || []).map(t => prioOrder[t.priority] ?? 99),
-            99
-          );
-
+        const sorted = [...projectsWithTasks].sort((a, b) => {
+          const minPrioA = Math.min(...(a.tasks || []).map((task) => prioOrder[task.priority] ?? 99), 99);
+          const minPrioB = Math.min(...(b.tasks || []).map((task) => prioOrder[task.priority] ?? 99), 99);
           if (minPrioA !== minPrioB) return minPrioA - minPrioB;
 
-          const minDateA = Math.min(
-            ...(a.tasks || []).map(t =>
-              t.dueDate ? new Date(t.dueDate).getTime() : Infinity
-            ),
-            Infinity
-          );
-
-          const minDateB = Math.min(
-            ...(b.tasks || []).map(t =>
-              t.dueDate ? new Date(t.dueDate).getTime() : Infinity
-            ),
-            Infinity
-          );
-
+          const minDateA = Math.min(...(a.tasks || []).map((task) => task.dueDate ? new Date(task.dueDate).getTime() : Infinity), Infinity);
+          const minDateB = Math.min(...(b.tasks || []).map((task) => task.dueDate ? new Date(task.dueDate).getTime() : Infinity), Infinity);
           return minDateA - minDateB;
         });
 
         setProjects(sorted);
+        setError("");
       } catch (err) {
-        setError(err.message);
+        if (active) setError(err.message);
       }
     }
 
-    loadProjects();
-  }, []);
+    const refreshProjects = () => loadProjects();
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === "visible") loadProjects();
+    };
 
+    loadProjects();
+    window.addEventListener("projects:refresh", refreshProjects);
+    window.addEventListener("popstate", refreshProjects);
+    window.addEventListener("pageshow", refreshProjects);
+    window.addEventListener("focus", refreshProjects);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+
+    return () => {
+      active = false;
+      window.removeEventListener("projects:refresh", refreshProjects);
+      window.removeEventListener("popstate", refreshProjects);
+      window.removeEventListener("pageshow", refreshProjects);
+      window.removeEventListener("focus", refreshProjects);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+    };
+  }, []);
   // Recherche dynamique des utilisateurs
   useEffect(() => {
-    if (search.trim().length < 2) {
-      setResults([]);
-      return;
-    }
+    if (search.trim().length < 2) return;
+
+    let isCurrentSearch = true;
 
     async function searchUsers() {
       try {
         const res = await fetch(`/api/users?query=${search}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
-        setResults(data);
+        if (isCurrentSearch) setResults(data);
       } catch (err) {
         console.error(err);
       }
     }
 
     searchUsers();
+    return () => {
+      isCurrentSearch = false;
+    };
   }, [search]);
 
   // Création d’un projet
@@ -125,23 +157,17 @@ export default function ProjectsPage() {
   if (error) return <p>{error}</p>;
 
   return (
-  <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+  <div className={styles.page}>
+    <div className={styles.header}>
       <div>
-        <h1 style={{ marginBottom: "4px" }}>Mes projets</h1>
-        <p style={{ marginTop: "0", color: "#555" }}>Gérez vos projets</p>
+        <h1 className={styles.pageHeaderTitle}>Mes projets</h1>
+        <p className={styles.pageHeaderSubtitle}>Gérez vos projets</p>
       </div>
 
       <button
-        onClick={() => router.push("/projects/new")}
-        style={{
-          background: "black",
-          color: "white",
-          padding: "10px 16px",
-          borderRadius: "6px",
-          border: "none",
-          cursor: "pointer",
-        }}
+        type="button"
+        onClick={openCreateProjectModal}
+        className={styles.createButton}
       >
         + Créer un projet
       </button>
@@ -150,33 +176,22 @@ export default function ProjectsPage() {
     {/* MODALE */}
     {showModal && (
       <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          background: "rgba(0,0,0,0.4)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 1000,
-        }}
+        className={styles.modalOverlay}
       >
         <div
-          style={{
-            background: "white",
-            padding: "24px",
-            borderRadius: "8px",
-            width: "400px",
-          }}
+          className={`${styles.modalCard} ${styles.projectCreateModal}`}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="projects-create-title"
         >
-          <h2 style={{ marginTop: 0 }}>Créer un projet</h2>
+          <button type="button" className={styles.projectModalClose} aria-label="Fermer" onClick={() => setShowModal(false)}>×</button>
+          <h2 id="projects-create-title">Créer un projet</h2>
 
           <form onSubmit={handleCreateProject}>
             <div>
-              <label>Titre*</label>
+              <label htmlFor="create-project-title">Titre*</label>
               <input
+                id="create-project-title"
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -185,8 +200,9 @@ export default function ProjectsPage() {
             </div>
 
             <div>
-              <label>Description*</label>
+              <label htmlFor="create-project-description">Description*</label>
               <textarea
+                id="create-project-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
@@ -195,29 +211,36 @@ export default function ProjectsPage() {
 
             {/* AUTOCOMPLETE */}
             <div>
-              <label>Ajouter un contributeur</label>
-              <input
-                type="text"
-                placeholder="Tape un nom ou email..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+              <label htmlFor="create-project-contributor">Contributeur</label>
+              <button
+                id="create-project-contributor"
+                type="button"
+                className={styles.contributorSelector}
+                aria-expanded={showContributorSelector}
+                onClick={() => setShowContributorSelector((open) => !open)}
+              >
+                {selectedUsers.length ? `${selectedUsers.length} collaborateur${selectedUsers.length > 1 ? "s" : ""}` : "Choisir un ou plusieurs collaborateurs"}
+              </button>
+
+              {showContributorSelector && (
+                <input
+                  className={styles.contributorSearch}
+                  type="text"
+                  placeholder="Rechercher un collaborateur"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  aria-label="Rechercher un collaborateur"
+                />
+              )}
 
               {/* Résultats */}
-              {results.length > 0 && (
-                <div
-                  style={{
-                    border: "1px solid #ccc",
-                    marginTop: "4px",
-                    borderRadius: "4px",
-                    background: "#fff",
-                    maxHeight: "150px",
-                    overflowY: "auto",
-                  }}
-                >
+              {showContributorSelector && search.trim().length >= 2 && results.length > 0 && (
+                <div className={styles.projectContributorDropdown}>
                   {results.map((u) => (
-                    <div
+                    <button
+                      type="button"
                       key={u.id}
+                      className={styles.projectContributorOption}
                       onClick={() => {
                         if (!contributors.includes(u.email)) {
                           setContributors([...contributors, u.email]);
@@ -226,83 +249,53 @@ export default function ProjectsPage() {
                         setSearch("");
                         setResults([]);
                       }}
-                      style={{
-                        padding: "8px",
-                        cursor: "pointer",
-                        borderBottom: "1px solid #eee",
-                      }}
                     >
                       {u.name} ({u.email})
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}
             </div>
 
             {/* Tags contributeurs */}
-            <div style={{ marginTop: "10px", display: "flex", gap: "6px", flexWrap: "wrap" }}>
+            {selectedUsers.length > 0 && <div className={styles.projectSelectedContributors}>
               {selectedUsers.map((u) => (
-                <span
-                  key={u.id}
-                  style={{
-                    background: "#eee",
-                    padding: "4px 8px",
-                    borderRadius: "4px",
-                    fontSize: "12px",
-                  }}
-                >
-                  {u.name}
-                </span>
+                <div key={u.id} className={styles.projectSelectedContributor}>
+                  <span>{u.name}</span>
+                  <button
+                    type="button"
+                    className={styles.contributorRemoveBtn}
+                    onClick={() => {
+                      setContributors((current) => current.filter((email) => email !== u.email));
+                      setSelectedUsers((current) => current.filter((selected) => selected.id !== u.id));
+                    }}
+                  >
+                    Retirer
+                  </button>
+                </div>
               ))}
-            </div>
+            </div>}
 
             <button
               type="submit"
-              style={{
-                marginTop: "20px",
-                background: "black",
-                color: "white",
-                padding: "10px 16px",
-                borderRadius: "6px",
-                border: "none",
-                cursor: "pointer",
-              }}
+              className={styles.projectModalSubmit}
+              disabled={!title.trim() || !description.trim()}
             >
               Ajouter un projet
             </button>
           </form>
-
-          <button
-            onClick={() => setShowModal(false)}
-            style={{
-              marginTop: "10px",
-              background: "#ddd",
-              padding: "8px 12px",
-              borderRadius: "6px",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            Annuler
-          </button>
         </div>
       </div>
     )}
 
     {/* Grille */}
-    <div
-      style={{
-        marginTop: "30px",
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: "20px",
-      }}
-    >
-      {projects
-        .filter(p => p.members.length > 0)
-        .map((p) => {
+    <div className={styles.projectsGrid}>
+      {projects.map((p) => {
+          const members = p.members || [];
+          const contributors = members.filter((member) => member.user?.id !== p.owner?.id);
+          const teamSize = contributors.length + (p.owner ? 1 : 0);
           const totalTasks = p.tasks?.length || 0;
-          const doneTasks = p.tasks?.filter((t) => t.status === "DONE").length || 0;
+          const doneTasks = p.tasks?.filter((task) => String(task.status || "").trim().toUpperCase() === "DONE").length || 0;
           const progression = totalTasks === 0 ? 0 : Math.round((doneTasks / totalTasks) * 100);
 
           return (
@@ -311,86 +304,49 @@ export default function ProjectsPage() {
               href={`/projects/${p.id}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <div
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  padding: "16px",
-                  background: "white",
-                  cursor: "pointer",
-                }}
-              >
-                <h3 style={{ marginTop: 0 }}>{p.name}</h3>
+              <div className={styles.projectCard}>
+                <div className={styles.projectIntro}>
+                  <h3 className={styles.projectName}>{p.name}</h3>
+                  <p className={styles.projectDescription}>{p.description}</p>
+                </div>
 
-                <p style={{ color: "#555", fontSize: "14px" }}>{p.description}</p>
-
-                <div style={{ marginTop: "10px" }}>
-                  <p style={{ margin: "0 0 4px 0" }}>Progression {progression}%</p>
-                  <div
-                    style={{
-                      height: "6px",
-                      background: "#eee",
-                      borderRadius: "4px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: `${progression}%`,
-                        height: "100%",
-                        background: "black",
-                      }}
-                    ></div>
+                <div className={styles.progressBlock}>
+                  <p className={styles.progressTitle}>
+                    <span>Progression</span>
+                    <span>{progression}%</span>
+                  </p>
+                  <div className={styles.progressTrack}>
+                    <div className={styles.progressFill} style={{ width: `${progression}%` }} />
                   </div>
-                  <p style={{ marginTop: "6px", fontSize: "13px", color: "#666" }}>
+                  <p className={styles.progressCount}>
                     {doneTasks}/{totalTasks} tâches terminées
                   </p>
                 </div>
 
-                <div style={{ marginTop: "16px" }}>
-                  <p style={{ marginBottom: "6px" }}>Équipe ({p.members.length})</p>
-
-                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                    {p.members.map((m) => {
-                      const initials = m.user.name
-                        .split(" ")
-                        .map((part) => part[0])
-                        .join("")
-                        .toUpperCase();
-
-                      const roleLabel = m.role === "OWNER" ? "Admin" : "Contributeur";
-
-                      return (
-                        <div
-                          key={m.id}
-                          style={{
-                            width: "32px",
-                            height: "32px",
-                            borderRadius: "50%",
-                            background: "#eee",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {initials}
+                <div className={styles.team}>
+                  <p className={styles.teamTitle}>
+                    <img src="/images/union.png" alt="Icône de l’équipe" />
+                    <span>Équipe ({teamSize})</span>
+                  </p>
+                  <div className={styles.teamMembers}>
+                    {p.owner && (
+                      <div className={styles.teamPerson}>
+                        <div className={styles.ownerInitials} role="img" aria-label={`Initiales de ${p.owner.name}`}>
+                          {getInitials(p.owner.name)}
                         </div>
-                      );
-                    })}
-
-                    <span
-                      style={{
-                        background: "#ffb347",
-                        padding: "4px 8px",
-                        borderRadius: "4px",
-                        fontSize: "12px",
-                        marginLeft: "8px",
-                      }}
-                    >
-                      {p.members.some((m) => m.role === "OWNER") ? "Admin" : "Contributeur"}
-                    </span>
+                        <span className={styles.ownerLabel}>Propriétaire</span>
+                      </div>
+                    )}
+                    {contributors.map((member) => (
+                      <div
+                        key={member.id}
+                        className={styles.contributorInitials}
+                        role="img"
+                        aria-label={`Initiales de ${member.user.name}`}
+                      >
+                        {getInitials(member.user.name)}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

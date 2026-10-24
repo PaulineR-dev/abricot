@@ -1,0 +1,1900 @@
+.pageWrapper {
+  width: 100%;
+  max-width: 1215px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.headerWrapper {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 78px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  min-width: 0;
+  margin-left: 0;
+}
+
+.backBtn {
+  width: 57px;
+  height: 57px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
+  cursor: pointer;
+  font-size: 20px;
+  color: #000000;
+}
+
+.ownerBadgeBubble {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 14px;
+  color: #D3590B;
+  background: #FFE8D9;
+  padding: 4px 12px;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.memberNameBubble {
+  background: #E5E7EB;
+  border-radius: 50px;
+  padding: 4px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  color: #6B7280;
+}
+
+.titleBlock {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.titleRow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.projectTitle {
+  font-family: Manrope;
+  font-weight: 600;
+  font-size: 24px;
+  color: #1F1F1F;
+  margin: 0;
+}
+
+.projectEditLink {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 14px;
+  color: #D3590B;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 14px;
+  margin-top: 5px;
+}
+
+.projectDescriptionHeader {
+  font-family: Inter;
+  font-size: 15px;
+  color: #6b7280;
+  max-width: 500px;
+  margin-bottom: 49px;
+  margin-top: 14px;
+}
+
+.contributorsLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contributorsTitle {
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #1F1F1F;
+}
+
+.contributorsCount {
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #6B7280;
+}
+
+.createTaskBtn {
+  width: 141px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1F1F1F;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-family: Inter;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.createTaskBtn:hover {
+  background-color: #000000;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.contributorsBlock {
+  width: 100%;
+  min-height: 67px;
+  background: #F3F4F6;
+  border-radius: 10px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.contributorsLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contributorsRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.personRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.adminInitial {
+  width: 27px;
+  height: 27px;
+  background: #FFE8D9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter;
+  font-size: 10px;
+  font-weight: 400;
+  color: #0F0F0F;
+  letter-spacing: 2%;
+}
+
+.memberInitial {
+  width: 27px;
+  height: 27px;
+  background: #E5E7EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter;
+  font-size: 10px;
+  font-weight: 400;
+  color: #0F0F0F;
+  border: 1px solid #FFFFFF;
+  letter-spacing: 2%;
+}
+
+.tasksSection {
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  gap: 41px;
+}
+
+.switchBtnProject {
+  height: 45px;
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+.switchBtnProject span {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 14px;
+  color: #D3590B;
+}
+
+.switchBtnProjectActive {
+  background: #FFE8D9;
+}
+
+.switchIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.tasksHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.tasksHeaderLeft {
+  padding-left: 59px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tasksTitle {
+  font-family: Manrope;
+  font-weight: 600;
+  font-size: 18px;
+  color: #1F1F1F;
+  margin: 0;
+}
+
+.tasksSubtitle {
+  font-family: Inter;
+  font-size: 16px;
+  color: #6B7280;
+  margin-top: 8px;
+}
+
+.tasksViewSwitch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 59px;
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  padding: 0 99px;
+}
+
+.taskCard {
+  width: 100%;
+  min-height: 263.538px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 25px 40px;
+  background: #FFFFFF;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
+  opacity: 1;
+}
+
+.taskTitle {
+  font-family: Manrope;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #1F1F1F;
+}
+
+.taskDescription {
+  font-family: Inter;
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.taskMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.metaIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.metaText {
+  font-size: 15px;
+  color: #333;
+}
+
+.assigneesRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.assigneeItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.assigneeAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #FFE8D9;
+  color: #B54708;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter;
+}
+
+.assigneeName {
+  background: #FFF7EF;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #333;
+  font-family: Inter;
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background: #E5E7EB;
+  margin: 20px 0;
+}
+
+.commentsHeader {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: Inter;
+  margin-bottom: 12px;
+}
+
+.commentsArrow {
+  width: 18px;
+  height: 18px;
+}
+
+.commentsContent {
+  margin-top: 12px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.commentItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.commentAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #FFE8D9;
+  color: #B54708;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter;
+}
+
+.commentBox {
+  background: #F3F4F6;
+  border-radius: 10px;
+  padding: 18px 14px;
+  width: 901px;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.commentHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.commentAuthor {
+  font-weight: 600;
+  font-size: 15px;
+  font-family: Inter;
+}
+
+.commentDate {
+  font-size: 13px;
+  color: #666;
+  font-family: Inter;
+}
+
+.commentText {
+  font-size: 15px;
+  color: #333;
+  font-family: Inter;
+}
+
+.addCommentRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.addCommentTextarea {
+  width: 901px;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 83px;
+  background: #F9FAFB;
+  border-radius: 10px;
+  padding: 18px 14px;
+  border: 1px solid #E5E7EB;
+  resize: vertical;
+  font-size: 15px;
+  font-family: Inter;
+}
+
+.sendCommentBtn {
+  margin-top: 4px;
+  background: #B54708;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: Inter;
+}
+
+.sendCommentBtn:hover {
+  background: #8A3500;
+}
+
+.calendarView {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.calendarView {
+  width: 100%;
+  gap: 17px;
+  padding: 0 99px;
+}
+
+.calendarTaskCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calendarDate {
+  font-family: Manrope;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+.calendarTaskContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calendarTaskTitle {
+  font-family: Manrope;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+.calendarTaskDesc {
+  font-family: Inter;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.calendarMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: Inter;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.calendarMetaItem strong {
+  font-weight: 600;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modalCard {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.modalInput,
+.modalTextarea {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.modalTextarea {
+  min-height: 80px;
+}
+
+.modalButtonsRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modalPrimaryBtn {
+  padding: 10px;
+  background: black;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.modalSecondaryBtn {
+  padding: 10px;
+  background: #cccccc;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.assigneeSelector {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #f9f9f9;
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.assigneeDropdown {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  padding: 10px;
+  margin-top: 5px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.assigneeOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.userResultsList {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.userResultItem {
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.contributorsEditList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contributorEditItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.contributorRemoveBtn {
+  padding: 6px 10px;
+  background: #D3590B;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: Inter;
+  font-size: 13px;
+}
+
+.taskActions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.taskEditBtn {
+  padding: 8px 12px;
+  background: #444444;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: Inter;
+  font-size: 13px;
+}
+
+.taskDeleteBtn {
+  padding: 8px 12px;
+  background: #b00000;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: Inter;
+  font-size: 13px;
+}
+
+.commentsBlock {
+  margin-top: 10px;
+  font-family: Inter;
+  font-size: 13px;
+  color: #111827;
+}
+
+.commentsList {
+  padding-left: 20px;
+  margin-top: 6px;
+}
+
+.commentItem {
+  margin-bottom: 4px;
+}
+
+.noComments {
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.commentInputBlock {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.commentTextarea {
+  width: 100%;
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-family: Inter;
+  font-size: 13px;
+}
+
+.commentAddBtn {
+  margin-top: 2px;
+  padding: 8px 12px;
+  background: #1f1f1f;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: Inter;
+  font-size: 13px;
+}
+
+.taskHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taskHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statusBubble {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: Inter;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.statusTodo {
+  background: #FFF7EF;
+  color: #B54708;
+}
+
+.statusProgress {
+  background: #E8F0FE;
+  color: #1A56DB;
+}
+
+.statusDone {
+  background: #E7F8ED;
+  color: #0F8A3B;
+}
+
+.taskMenuBtn {
+  width: 57px;
+  height: 57px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.taskMenuDots {
+  font-size: 24px;
+  color: #6B7280;
+  margin-top: -4px;
+}
+
+.taskMenuWrapper {
+  position: relative;
+}
+
+.taskMenuDropdown {
+  position: absolute;
+  top: 65px;
+  right: 0;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  width: 140px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  z-index: 10;
+}
+
+.taskMenuItem {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 12px;
+  font-family: Inter;
+  font-size: 14px;
+  cursor: pointer;
+  color: #1F1F1F;
+}
+
+.taskMenuItem:hover {
+  background: #F3F4F6;
+}
+
+.metaLabel {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1F1F1F;
+}
+
+.chevron {
+  width: 16px;
+  height: 8px;
+  border: solid #0F0F0F;
+  border-width: 0 0 2px 2px;
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(-180deg);
+}
+
+.vArrow {
+  opacity: 1;
+}
+
+.addCommentTextarea {
+  color: #333;        
+  font-size: 15px;    
+  font-family: Inter; 
+}
+
+.taskFilters {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: 24px;
+  margin-right: 59px;
+}
+
+.statusFilterWrapper {
+  position: relative;
+  width: 152px;
+  flex: 0 0 auto;
+}
+
+.statusFilterButton,
+.taskSearchBox {
+  height: 63px;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  background: #FFFFFF;
+  color: #6B7280;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.statusFilterButton {
+  width: 100%;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.statusFilterChevron {
+  width: 14px;
+  height: 14px;
+  border-right: 2px solid #6B7280;
+  border-bottom: 2px solid #6B7280;
+  transform: rotate(45deg) translateY(-4px);
+}
+
+.statusFilterDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 6px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.statusFilterOption {
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #4B5563;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.statusFilterOption:hover {
+  background: #F3F4F6;
+}
+
+.taskSearchBox {
+  width: 283px;
+  min-width: 283px;
+  flex: 0 0 283px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.taskSearchBox input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  color: #6B7280;
+  background: transparent;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.taskSearchBox input::placeholder {
+  color: #6B7280;
+  opacity: 1;
+}
+
+.taskSearchBox input:focus-visible {
+  outline: 3px solid #1D4ED8;
+  outline-offset: 2px;
+}
+
+.taskSearchBox svg {
+  width: 13.9px;
+  height: 13.9px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: #6B7280;
+  stroke-width: 1.7;
+}
+
+@media (max-width: 1300px) {
+  .tasksHeaderRow {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .tasksViewSwitch {
+    margin-left: auto;
+    margin-right: 59px;
+  }
+  .taskFilters {
+    width: calc(100% - 118px);
+    margin: 0 59px 0 auto;
+    justify-content: flex-end;
+  }
+
+}
+
+@media (max-width: 700px) {
+  .tasksHeaderRow {
+    align-items: flex-start;
+  }
+  .tasksViewSwitch {
+    margin-right: 16px;
+  }
+  .taskFilters {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    gap: 12px;
+  }
+  .statusFilterWrapper {
+    width: 38%;
+    flex: 0 0 38%;
+  }
+  .statusFilterButton,
+  .taskSearchBox {
+    height: 56px;
+    font-size: 14px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .taskSearchBox {
+    width: 62%;
+    min-width: 0;
+    flex: 1 1 0;
+    gap: 8px;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .pageWrapper { width: calc(100% - 40px); }
+  .headerWrapper { margin-top: 36px; gap: 20px; }
+  .headerLeft { margin-left: 0; gap: 14px; min-width: 0; }
+  .titleBlock { min-width: 0; }
+  .projectDescriptionHeader { max-width: 100%; }
+  .contributorsBlock { padding: 18px 24px; flex-wrap: wrap; }
+  .contributorsRight { flex-wrap: wrap; }
+  .tasksList { padding: 0 24px; }
+  .taskCard { min-height: 0; padding: 24px; }
+  .commentBox, .addCommentTextarea { width: 100%; min-width: 0; }
+  .commentItem, .addCommentRow { max-width: 100%; }
+}
+
+@media (max-width: 700px) {
+  .pageWrapper { width: calc(100% - 28px); }
+  .headerWrapper { flex-direction: column; align-items: stretch; margin-top: 24px; }
+  .headerLeft { width: 100%; }
+  .backBtn { width: 44px; height: 44px; flex: 0 0 auto; }
+  .titleRow { flex-wrap: wrap; gap: 8px; }
+  .projectTitle { font-size: 21px; overflow-wrap: anywhere; }
+  .projectEditLink { margin: 4px 0 0; }
+  .projectDescriptionHeader { margin-bottom: 20px; }
+  .createTaskBtn { width: 100%; }
+  .contributorsBlock { align-items: flex-start; padding: 16px; gap: 14px; }
+  .contributorsLeft { flex-wrap: wrap; }
+  .contributorsRight { gap: 8px; }
+  .tasksSection { gap: 24px; }
+  .tasksHeaderRow { margin-top: 24px; }
+  .tasksHeaderLeft { padding-left: 16px; }
+  .tasksSubtitle { font-size: 13px; }
+  .tasksViewSwitch { margin-right: 16px; gap: 4px; }
+  .switchBtnProject { padding: 10px; gap: 6px; }
+  .tasksList { padding: 0 14px; }
+  .taskCard { padding: 18px 16px; gap: 16px; }
+  .taskHeaderRow { align-items: flex-start; gap: 10px; }
+  .taskTitle { font-size: 17px; }
+  .taskHeaderRight { gap: 6px; }
+  .statusBubble { padding: 5px 9px; font-size: 11px; }
+  .taskMenuBtn { width: 40px; height: 40px; padding: 8px; }
+  .taskMetaRow, .assigneesRow { flex-wrap: wrap; }
+  .commentItem { gap: 8px; }
+  .commentAvatar { width: 34px; height: 34px; flex: 0 0 auto; }
+  .commentBox { padding: 12px; }
+  .commentHeader { flex-wrap: wrap; gap: 4px 10px; }
+  .commentText { overflow-wrap: anywhere; }
+  .addCommentRow { flex-wrap: wrap; }
+  .addCommentTextarea { flex: 1 1 calc(100% - 48px); }
+  .sendCommentBtn { margin-left: 42px; }
+  .modalOverlay { padding: 16px; overflow-y: auto; align-items: flex-start; }
+  .modalCard { width: 100%; max-width: 450px; max-height: calc(100svh - 32px); overflow-y: auto; margin: auto; padding: 20px; }
+  .modalButtonsRow { flex-wrap: wrap; }
+  .modalButtonsRow button { flex: 1 1 auto; }
+  .contributorsEditList, .contributorEditItem { min-width: 0; }
+  .contributorEditItem { gap: 10px; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 420px) {
+  .pageWrapper { width: calc(100% - 20px); }
+  .tasksViewSwitch { margin-right: 8px; }
+  .tasksViewSwitch span { font-size: 12px; }
+  .switchIcon { width: 14px; height: 14px; }
+  .tasksList { padding: 0 8px; }
+  .taskCard { padding: 16px 12px; }
+  .metaLabel, .metaText, .assigneeName { font-size: 12px; }
+}
+
+.createTaskActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aiTaskBtn {
+  width: 94px;
+  height: 50px;
+  flex: 0 0 94px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 23.5px;
+  border: 0;
+  border-radius: 10px;
+  background: #D3590B;
+  color: #fff;
+  font: 600 16px Inter, sans-serif;
+  cursor: pointer;
+}
+
+.aiTaskBtn img { display: block; width: 16px; height: 16px; flex: 0 0 16px; object-fit: contain; filter: brightness(0) invert(1); }
+.aiTaskBtn:hover { background: #B54708; }
+.aiTaskModal {
+  width: min(680px, 100%);
+  max-width: 680px;
+  max-height: calc(100svh - 48px);
+  overflow-y: auto;
+}
+
+.aiModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.aiModalHeader h2 { margin: 0; }
+.aiCloseBtn {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  color: #6B7280;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.aiCloseBtn:disabled { cursor: wait; opacity: .5; }
+.aiTaskModal > label { font-weight: 500; }
+.aiTaskModal > textarea { min-height: 100px; }
+.aiTaskModal > button:disabled { cursor: wait; opacity: .65; }
+.aiSuggestions {
+  display: grid;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.aiSuggestionCard {
+  padding: 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.aiSuggestionContent {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1F1F1F;
+  text-align: left;
+  cursor: pointer;
+}
+
+.aiSuggestionContent strong { font: 600 16px Manrope, sans-serif; }
+.aiSuggestionContent span { color: #555; font: 14px/1.5 Inter, sans-serif; }
+.aiSuggestionActions { display: flex; gap: 16px; margin-top: 12px; }
+.aiTextBtn { padding: 0; border: 0; background: none; color: #B54708; font: 500 14px Inter, sans-serif; cursor: pointer; }
+.aiEditFields { display: flex; flex-direction: column; gap: 10px; }
+.aiRestartBtn { align-self: flex-start; border: 0; padding: 4px 0; background: transparent; color: #B54708; font: 600 15px Inter, sans-serif; cursor: pointer; }
+.aiError { margin: 0; color: #B42318; font-size: 14px; }
+@media (max-width: 700px) {
+  .createTaskActions { width: 100%; }
+  .createTaskBtn { flex: 1; width: auto; }
+  .aiTaskBtn { flex: 0 0 auto; }
+  .aiTaskModal { max-width: 100%; max-height: calc(100svh - 24px); padding: 18px; }
+}
+
+.headerWrapper,
+.contentWrapper,
+.contributorsBlock,
+.tasksSection {
+  width: 100%;
+  max-width: 1215px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .calendarView { padding: 0 24px; }
+}
+
+@media (max-width: 700px) {
+  .calendarView { padding: 0 14px; }
+}
+
+@media (max-width: 420px) {
+  .calendarView { padding: 0 8px; }
+}
+
+.taskCard {
+  position: relative;
+  gap: 0;
+  padding: 24px 36px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.taskHeaderRow { justify-content: flex-start; gap: 10px; }
+.taskTitle { margin: 0; font-size: 16px; line-height: 1.4; }
+.statusBubble { padding: 4px 12px; font-size: 12px; line-height: 1.4; }
+.statusTodo { background: #FEE2E2; color: #EF4444; }
+.taskHeaderRight { margin-left: auto; }
+.taskMenuBtn { width: 54px; height: 54px; padding: 0; }
+.taskMenuDots { font-size: 20px; }
+.taskDescription { margin: 4px 70px 18px 0; color: #6B7280; font-size: 13px; line-height: 1.5; }
+.taskMetaRow { gap: 6px; margin: 0 0 16px; }
+.metaLabel { color: #6B7280; font-size: 11px; font-weight: 400; }
+.metaIcon { width: 14px; height: 14px; }
+.metaText { color: #1F1F1F; font-size: 11px; }
+.assigneesRow { align-items: center; gap: 6px; margin: 0; }
+.assigneeItem { gap: 6px; }
+.assigneeAvatar { width: 24px; height: 24px; background: #E5E7EB; color: #4B5563; font-size: 9px; }
+.assigneeName { padding: 5px 12px; background: #E5E7EB; color: #6B7280; font-size: 11px; }
+.noAssignee { color: #6B7280; font-size: 11px; }
+.separator { flex: 0 0 1px; margin: 20px 0 12px; }
+.commentsHeader {
+  margin: 0;
+  padding: 8px 0;
+  color: #1F1F1F;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.commentsContent { margin-top: 10px; }
+.commentItem { gap: 12px; margin-bottom: 12px; }
+.commentAvatar { flex: 0 0 24px; width: 24px; height: 24px; font-size: 9px; background: #E5E7EB; color: #4B5563; }
+.commentBox { width: auto; flex: 1 1 auto; min-width: 0; padding: 16px 14px; background: #F3F4F6; border-radius: 10px; }
+.commentHeader { align-items: center; margin-bottom: 18px; }
+.commentAuthor { color: #000000; font: 400 14px Inter, sans-serif; }
+.commentDate { font-size: 9px; }
+.commentText { margin: 0; color: #000000; font: 400 10px/1.6 Inter, sans-serif; }
+.noComments { margin: 0 0 12px 36px; color: #6B7280; font-size: 12px; }
+.addCommentRow { align-items: flex-start; gap: 12px; margin-top: 12px; }
+.addCommentRow .commentAvatar {
+  background: #FFE8D9;
+  color: #B54708;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.addCommentTextarea { width: auto; min-width: 0; flex: 1 1 auto; min-height: 78px; padding: 16px 14px; background: #F9FAFB; color: #000000; font: 400 10px Inter, sans-serif; }
+.addCommentTextarea::placeholder { color: #000000; opacity: 1; }
+.sendCommentBtn {
+  flex: 0 0 209px;
+  width: 209px;
+  height: 50px;
+  min-height: 50px;
+  align-self: flex-end;
+  padding: 0;
+  background: #E5E7EB;
+  color: #9CA3AF;
+  font: 400 16px Inter, sans-serif;
+}
+
+@media (max-width: 700px) {
+  .taskCard { padding: 20px 18px; }
+  .taskMenuBtn { width: 40px; height: 40px; }
+  .taskDescription { margin-right: 0; }
+  .sendCommentBtn { flex-basis: 150px; }
+}
+
+@media (max-width: 480px) {
+  .taskCard { padding: 18px 14px; }
+  .taskHeaderRow { flex-wrap: wrap; padding-right: 42px; }
+  .taskHeaderRight { position: absolute; top: 14px; right: 14px; }
+  .taskMenuBtn { width: 34px; height: 34px; }
+  .taskDescription { margin: 8px 0 16px; }
+  .addCommentRow { flex-wrap: wrap; }
+  .addCommentTextarea { flex-basis: calc(100% - 42px); }
+  .sendCommentBtn { flex-basis: 100%; margin-left: 36px; }
+}
+
+.modalOverlay {
+  padding: 8px;
+  overflow-y: auto;
+  background: rgba(31, 31, 31, 0.18);
+}
+
+.taskFormModal,
+.projectFormModal {
+  position: relative;
+  width: min(598px, calc(100vw - 16px));
+  max-width: 598px;
+  height: min(799px, calc(100svh - 16px));
+  max-height: calc(100svh - 16px);
+  min-height: 0;
+  overflow-y: auto;
+  padding: 88px clamp(32px, 12vw, 86px) 64px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  gap: 12px;
+}
+
+.taskFormModal h2,
+.projectFormModal h2 {
+  margin: 0 0 22px;
+  color: #1F1F1F;
+  font: 600 28px/1.3 Manrope, sans-serif;
+}
+
+.taskFormModal > label,
+.projectFormModal > label {
+  margin: 8px 0 -6px;
+  color: #000000;
+  font: 400 16px/1.4 Inter, sans-serif;
+}
+
+.taskFormModal .modalInput,
+.taskFormModal .modalTextarea,
+.taskFormModal .assigneeSelector,
+.projectFormModal .modalInput,
+.projectFormModal .modalTextarea {
+  width: 100%;
+  min-height: 62px;
+  margin: 0;
+  padding: 16px 18px;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  color: #6B7280;
+  font: 400 14px Inter, sans-serif;
+  box-sizing: border-box;
+}
+
+.taskFormModal .modalTextarea,
+.projectFormModal .modalTextarea { resize: vertical; }
+.taskFormModal .assigneeSelector { height: 62px; text-align: left; background: #FFFFFF; }
+.modalCloseBtn { position: absolute; top: 34px; right: 34px; width: 30px; height: 30px; padding: 0; border: 0; background: transparent; color: #6B7280; font: 300 32px/1 Inter, sans-serif; cursor: pointer; }
+.taskStatusFieldset { margin: 12px 0 0; padding: 0; border: 0; }
+.taskStatusFieldset legend { margin-bottom: 14px; color: #000000; font: 400 16px/1.4 Inter, sans-serif; }
+.taskStatusOptions { display: flex; flex-wrap: wrap; gap: 10px; }
+.taskStatusOption { min-width: 88px; padding: 6px 16px; border: 0; border-radius: 999px; font: 400 16px/1.4 Inter, sans-serif; cursor: pointer; }
+.taskStatusTODO { background: #FEE2E2; color: #EF4444; }
+.taskStatusIN_PROGRESS { background: #FFF0D7; color: #D97706; }
+.taskStatusDONE { background: #ECFDF3; color: #12A150; }
+.taskFormModal .modalButtonsRow,
+.projectFormModal .modalButtonsRow { margin-top: 44px; }
+.taskFormModal .modalPrimaryBtn,
+.projectFormModal .modalPrimaryBtn { min-width: 211px; min-height: 58px; padding: 0 20px; border-radius: 10px; background: #E5E7EB; color: #9CA3AF; font: 400 16px Inter, sans-serif; }
+.taskFormModal .modalPrimaryBtn:not(:disabled),
+.projectFormModal .modalPrimaryBtn:not(:disabled) { background: #1F1F1F; color: #FFFFFF; }
+.taskFormModal .modalPrimaryBtn:disabled { cursor: not-allowed; }
+.taskFormModal .modalSecondaryBtn,
+.projectFormModal .modalSecondaryBtn { display: none; }
+.projectEditOverlay { align-items: flex-start; }
+.projectFormModal { width: min(598px, calc(100vw - 16px)); height: min(616px, calc(100svh - 16px)); padding-right: clamp(32px, 11.8vw, 68px); padding-left: clamp(32px, 11.8vw, 68px); }
+.projectFormModal .userResultsList { margin-top: -8px; border-color: #E5E7EB; }
+.projectFormModal .contributorEditItem { border-color: #E5E7EB; }
+.aiTaskModal {
+  position: relative;
+  width: min(598px, calc(100vw - 16px));
+  height: min(797px, calc(100svh - 16px));
+  max-height: calc(100svh - 16px);
+  min-height: 0;
+  padding: 72px 48px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.aiModalHeader { justify-content: flex-start; }
+.aiModalHeader h2 { color: #1F1F1F; font: 600 24px/1.3 Manrope, sans-serif; }
+.aiModalHeader h2::before { content: "✦"; margin-right: 10px; color: #F97316; }
+.aiCloseBtn { position: absolute; top: 26px; right: 26px; }
+.aiPromptRow { display: flex; align-items: center; gap: 8px; margin-top: auto; padding: 10px 12px 10px 28px; border-radius: 999px; background: #F9FAFB; }
+.aiPromptRow .modalTextarea { flex: 1; min-width: 0; min-height: 36px; max-height: 100px; margin: 0; padding: 10px 0; resize: vertical; border: 0; outline: 0; background: transparent; color: #1F1F1F; font: 400 10px Inter, sans-serif; }
+.aiPromptRow .modalTextarea::placeholder { color: #1F1F1F; opacity: 1; }
+.aiPromptSubmit { display: flex; flex: 0 0 24px; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; background: #D3590B; color: #FFFFFF; font-size: 14px; cursor: pointer; }
+.aiPromptSubmit:disabled { cursor: not-allowed; opacity: 1; }
+.aiTaskModal .aiRestartBtn { margin-top: 12px; }
+@media (max-width: 700px) {
+  .taskFormModal,
+  .projectFormModal { padding: 72px 28px 36px; }
+  .aiTaskModal { padding: 64px 24px 36px; }
+  .modalCloseBtn { top: 22px; right: 22px; }
+}
+
+@media (max-width: 420px) {
+  .taskFormModal,
+  .projectFormModal { padding: 64px 20px 28px; }
+  .taskFormModal h2,
+  .projectFormModal h2 { font-size: 23px; }
+  .taskFormModal .modalButtonsRow,
+  .projectFormModal .modalButtonsRow { margin-top: 24px; }
+  .aiTaskModal { padding: 60px 18px 24px; }
+  .aiPromptRow { padding-left: 18px; }
+}
+
+.createTaskFormModal {
+  width: min(598px, calc(100vw - 16px));
+  height: min(799px, calc(100svh - 16px));
+  padding: 79px 73px 32px;
+  gap: 0;
+}
+
+.createTaskFormModal h2 {
+  margin: 0 0 40px;
+  font: 600 24px/1.3 Manrope, sans-serif;
+}
+
+.createTaskFormModal > label {
+  margin: 0 0 7px;
+  color: #000000;
+  font: 400 14px/1.4 Inter, sans-serif;
+}
+
+.createTaskFormModal .modalInput,
+.createTaskFormModal .modalTextarea {
+  width: 452px;
+  height: 53px;
+  min-height: 53px;
+  margin: 0 0 24px;
+  padding: 14px 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  color: #6B7280;
+  font: 400 14px Inter, sans-serif;
+}
+
+.createTaskFormModal .assigneeSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 452px;
+  height: 53px;
+  min-height: 53px;
+  margin: 0 0 24px;
+  padding: 0 18px;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  background: #FFFFFF;
+  color: #6B7280;
+  font: 400 12px Inter, sans-serif;
+}
+
+.createTaskFormModal .assigneeSelector::after {
+  width: 11px;
+  height: 11px;
+  border-right: 1.5px solid #0F0F0F;
+  border-bottom: 1.5px solid #0F0F0F;
+  content: "";
+  transform: translateY(-3px) rotate(45deg);
+}
+
+.createTaskFormModal .taskStatusFieldset { margin: 0; }
+.createTaskFormModal .taskStatusFieldset legend { margin: 0 0 16px; font: 400 14px/1.4 Inter, sans-serif; }
+.createTaskFormModal .taskStatusOptions { gap: 8px; }
+.createTaskFormModal .taskStatusOption { height: 25px; min-width: 0; padding: 0; font: 400 14px/25px Inter, sans-serif; }
+.createTaskFormModal .taskStatusTODO { width: 76px; background: #FFE0E0; color: #EF4444; }
+.createTaskFormModal .taskStatusIN_PROGRESS { width: 90px; background: #FFF0D7; color: #E08D00; }
+.createTaskFormModal .taskStatusDONE { width: 94px; background: #F1FFF7; color: #27AE60; }
+.createTaskFormModal .modalButtonsRow { margin-top: 56px; }
+.createTaskFormModal .modalPrimaryBtn {
+  width: 181px;
+  min-width: 181px;
+  height: 50px;
+  min-height: 50px;
+  padding: 0;
+  border-radius: 10px;
+  background: #E5E7EB;
+  color: #9CA3AF;
+  font: 400 16px Inter, sans-serif;
+}
+
+.createTaskFormModal .modalPrimaryBtn:not(:disabled) { background: #E5E7EB; color: #9CA3AF; }
+.createTaskFormModal .modalCloseBtn {
+  top: 37px;
+  right: 38.67px;
+  width: 14.33px;
+  height: 14.33px;
+  font-size: 0;
+}
+
+.createTaskFormModal .modalCloseBtn::before,
+.createTaskFormModal .modalCloseBtn::after {
+  position: absolute;
+  top: 6.66px;
+  left: 2.1px;
+  width: 10.13px;
+  height: 1px;
+  background: #6B7280;
+  content: "";
+}
+
+.createTaskFormModal .modalCloseBtn::before { transform: rotate(45deg); }
+.createTaskFormModal .modalCloseBtn::after { transform: rotate(-45deg); }
+.modalOverlay {
+  inset: 0;
+  width: auto;
+  height: auto;
+}
+
+@media (max-width: 620px) {
+  .createTaskFormModal { padding: 72px 28px 28px; }
+  .createTaskFormModal .modalInput,
+  .createTaskFormModal .modalTextarea,
+  .createTaskFormModal .assigneeSelector { width: 100%; }
+}
+
+.aiTaskModal {
+  width: min(598px, calc(100vw - 16px));
+  height: min(797px, calc(100svh - 16px));
+  padding: 79px 52px;
+}
+
+.aiModalHeader {
+  position: static;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 31px;
+}
+
+.aiTitleStar { display: block; width: 20px; height: 20px; flex: 0 0 20px; object-fit: contain; }
+.aiModalHeader h2 { margin: 0; color: #1F1F1F; font: 600 24px/31px Manrope, sans-serif; }
+.aiModalHeader h2::before { content: none; }
+.aiCloseBtn {
+  position: absolute;
+  top: 37px;
+  right: 38.67px;
+  width: 14.33px;
+  height: 14.33px;
+  padding: 0;
+  font-size: 0;
+}
+
+.aiCloseBtn::before,
+.aiCloseBtn::after {
+  position: absolute;
+  top: 6.66px;
+  left: 2.1px;
+  width: 10.13px;
+  height: 1px;
+  background: #6B7280;
+  content: "";
+}
+
+.aiCloseBtn::before { transform: rotate(45deg); }
+.aiCloseBtn::after { transform: rotate(-45deg); }
+.aiPromptRow {
+  position: absolute;
+  left: 52px;
+  bottom: 79px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 494px;
+  height: 60px;
+  margin: 0;
+  padding: 0 32px;
+  border-radius: 30px;
+  background: #F9FAFB;
+  box-sizing: border-box;
+}
+
+.aiPromptRow .modalTextarea {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 21px 0 0;
+  resize: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #000000;
+  font: 400 10px/18px Inter, sans-serif;
+  box-sizing: border-box;
+}
+
+.aiPromptRow .modalTextarea::placeholder { color: #000000; opacity: 1; }
+.aiPromptSubmit { flex: 0 0 24px; width: 24px; height: 24px; padding: 0; background: transparent; }
+.aiPromptSubmit img { display: block; width: 24px; height: 24px; object-fit: contain; }
+.aiPromptSubmit:disabled { opacity: 1; }
+@media (max-width: 620px) {
+  .aiTaskModal { padding: 79px clamp(24px, 8.7vw, 52px); }
+  .aiPromptRow { right: clamp(24px, 8.7vw, 52px); left: clamp(24px, 8.7vw, 52px); width: auto; }
+}
+
+.editTaskFormModal {
+  width: min(598px, calc(100vw - 16px));
+  height: min(799px, calc(100svh - 16px));
+  padding: 79px 73px 32px;
+  gap: 0;
+}
+
+.editTaskFormModal h2 {
+  margin: 0 0 40px;
+  color: #1F1F1F;
+  font: 600 24px/31px Manrope, sans-serif;
+}
+
+.editTaskFormModal > label {
+  margin: 0 0 7px;
+  color: #000000;
+  font: 400 14px/17px Inter, sans-serif;
+}
+
+.editTaskFormModal > .modalInput,
+.editTaskFormModal > .modalTextarea {
+  width: 452px;
+  height: 53px;
+  min-height: 53px;
+  margin: 0 0 24px;
+  padding: 14px 17px;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  background: #FFFFFF;
+  color: #6B7280;
+  font: 400 12px Inter, sans-serif;
+  box-sizing: border-box;
+}
+
+.editTaskFormModal > .modalTextarea { resize: none; }
+.editDueDateField {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 452px;
+  height: 53px;
+  margin-bottom: 24px;
+  padding: 0 17px;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  background: #FFFFFF;
+  box-sizing: border-box;
+}
+
+.editDueDateText { color: #6B7D80; font: 400 12px Inter, sans-serif; }
+.editDueDateIcon {
+  display: block;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  background: #6B7D80;
+  -webkit-mask: url("/images/icone-list.png") center / contain no-repeat;
+  mask: url("/images/icone-list.png") center / contain no-repeat;
+}
+
+.editDueDatePicker { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.editTaskFormModal .assigneeSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 452px;
+  height: 53px;
+  min-height: 53px;
+  margin: 0 0 24px;
+  padding: 0 17px;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  background: #FFFFFF;
+  color: #6B7D80;
+  font: 400 12px Inter, sans-serif;
+  text-align: left;
+}
+
+.editTaskFormModal .assigneeSelector::after {
+  width: 11px;
+  height: 11px;
+  border-right: 1.5px solid #0F0F0F;
+  border-bottom: 1.5px solid #0F0F0F;
+  content: "";
+  transform: translateY(-3px) rotate(45deg);
+}
+
+.editTaskFormModal .taskStatusFieldset { margin: 0; }
+.editTaskFormModal .taskStatusFieldset legend { margin: 0 0 16px; font: 400 14px/17px Inter, sans-serif; }
+.editTaskFormModal .taskStatusOptions { gap: 8px; }
+.editTaskFormModal .taskStatusOption { height: 25px; min-width: 0; padding: 0; font: 400 14px/25px Inter, sans-serif; }
+.editTaskFormModal .taskStatusTODO { width: 76px; background: #FFE0E0; color: #EF4444; }
+.editTaskFormModal .taskStatusIN_PROGRESS { width: 90px; background: #FFF0D7; color: #E08D00; }
+.editTaskFormModal .taskStatusDONE { width: 94px; background: #F1FFF7; color: #27AE60; }
+.editTaskFormModal .modalButtonsRow { margin-top: 56px; }
+.editTaskFormModal .modalPrimaryBtn,
+.editTaskFormModal .modalPrimaryBtn:not(:disabled) {
+  width: 244px;
+  min-width: 244px;
+  height: 50px;
+  min-height: 50px;
+  padding: 0;
+  border-radius: 10px;
+  background: #E5E7EB;
+  color: #9CA3AF;
+  font: 400 16px Inter, sans-serif;
+}
+
+.editTaskFormModal .modalCloseBtn {
+  top: 37px;
+  right: 38.67px;
+  width: 14.33px;
+  height: 14.33px;
+  font-size: 0;
+}
+
+.editTaskFormModal .modalCloseBtn::before,
+.editTaskFormModal .modalCloseBtn::after {
+  position: absolute;
+  top: 6.66px;
+  left: 2.1px;
+  width: 10.13px;
+  height: 1px;
+  background: #6B7D80;
+  content: "";
+}
+
+.editTaskFormModal .modalCloseBtn::before { transform: rotate(45deg); }
+.editTaskFormModal .modalCloseBtn::after { transform: rotate(-45deg); }
+@media (max-width: 620px) {
+  .editTaskFormModal { padding: 72px 28px 28px; }
+  .editTaskFormModal > .modalInput,
+  .editTaskFormModal > .modalTextarea,
+  .editDueDateField,
+  .editTaskFormModal .assigneeSelector { width: 100%; }
+}
+
+.tasksSection {
+  padding-bottom: 40px;
+  margin-bottom: 97.85px;
+  box-sizing: border-box;
+}
+
+.projectFormModal {
+  width: min(598px, calc(100vw - 16px));
+  height: auto;
+  min-height: 616px;
+  max-height: none;
+  margin: max(8px, calc((100svh - 616px) / 2)) auto 8px;
+  padding: 79px 73px;
+  overflow: visible;
+  border: 0;
+  border-radius: 10px;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  gap: 0;
+}
+
+.projectFormModal h2 {
+  margin: 0 0 40px;
+  color: #1F1F1F;
+  font: 600 24px/31px Manrope, sans-serif;
+}
+
+.projectFormFields { display: flex; flex-direction: column; gap: 24px; }
+.projectFormField { display: flex; flex-direction: column; gap: 7px; }
+.projectFormField > label { margin: 0; color: #000000; font: 400 14px/20px Inter, sans-serif; }
+.projectFormField > .modalInput,
+.projectFormField > .modalTextarea,
+.projectContributorSearch {
+  width: 100%;
+  height: 53px;
+  min-height: 53px;
+  margin: 0;
+  padding: 0 17px;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  background: #FFFFFF;
+  color: #6B7280;
+  font: 400 14px Inter, sans-serif;
+  box-sizing: border-box;
+}
+
+.projectFormField > .modalTextarea { padding: 17px; line-height: 18px; resize: none; }
+.projectContributorSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 53px;
+  padding: 0 17px;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  background: #FFFFFF;
+  color: #6B7280;
+  font: 400 12px Inter, sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+
+.projectContributorSelector::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-right: 1.5px solid #0F0F0F;
+  border-bottom: 1.5px solid #0F0F0F;
+  transform: rotate(45deg) translateY(-3px);
+}
+
+.projectFormField > .projectContributorSearch { margin-top: 1px; }
+.projectFormModal .userResultsList { margin: 4px 0 0; border: 1px solid #E5E7EB; border-radius: 5px; background: #FFFFFF; }
+.projectFormModal .userResultItem {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: 0;
+  border-bottom: 1px solid #E5E7EB;
+  background: #FFFFFF;
+  color: #6B7280;
+  text-align: left;
+  font: 400 14px Inter, sans-serif;
+  cursor: pointer;
+}
+
+.projectFormModal .userResultItem:hover { background: #F9FAFB; }
+.currentContributorsTitle { margin: 16px 0 8px; color: #6B7280; font: 400 12px Inter, sans-serif; }
+.projectFormModal .contributorsEditList { gap: 8px; }
+.projectFormModal .contributorEditItem { padding: 4px 8px; border-color: #E5E7EB; border-radius: 5px; background: #F3F4F6; color: #6B7280; font: 400 12px Inter, sans-serif; }
+.projectFormModal .contributorRemoveBtn { padding: 6px 10px; border: 0; border-radius: 5px; background: #D3590B; color: #FFFFFF; font: 400 13px Inter, sans-serif; cursor: pointer; }
+.projectFormModal .modalCloseBtn { top: 37px; right: 38.67px; width: 14.33px; height: 14.33px; padding: 0; color: #6B7280; font: 400 14.33px/14.33px Inter, sans-serif; }
+.projectFormModal .modalButtonsRow { margin-top: 56px; }
+.projectFormModal .modalPrimaryBtn,
+.projectFormModal .modalPrimaryBtn:not(:disabled) {
+  width: 181px;
+  min-width: 181px;
+  height: 50px;
+  min-height: 50px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: #E5E7EB;
+  color: #9CA3AF;
+  font: 400 16px Inter, sans-serif;
+  cursor: pointer;
+}
+
+.projectFormModal .modalPrimaryBtn:disabled { cursor: not-allowed; }
+.projectFormModal .modalSecondaryBtn { display: none; }
+@media (max-width: 700px) {
+  .projectFormModal { padding: 64px 24px 32px; }
+  .projectFormModal .modalCloseBtn { top: 18px; right: 20px; }
+}

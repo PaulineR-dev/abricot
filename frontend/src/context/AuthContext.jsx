@@ -32,37 +32,40 @@ export function AuthProvider({ children }) {
   // Fonction de connexion
   const login = async (email, password) => {
     setLoading(true);
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Échec de la connexion.");
 
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
+      const profileRes = await fetch("/api/profile");
+      const profileData = await profileRes.json();
+      if (!profileRes.ok) throw new Error(profileData.error || "Impossible de charger le profil.");
+      setUser(profileData);
+    } catch (error) {
+      setUser(null);
+      throw error;
+    } finally {
       setLoading(false);
-      throw new Error(data.error || "Login failed");
     }
-
-    // Le cookie HTTP-only est déjà créé côté serveur
-    // On recharge le profil pour remplir user
-    const profileRes = await fetch("/api/profile");
-    const profileData = await profileRes.json();
-    setUser(profileData);
-
-    setLoading(false);
   };
 
   // Fonction de déconnexion
   const logout = async () => {
-    await fetch("/api/logout", { method: "POST" });
-    setUser(null);
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } finally {
+      setUser(null);
+    }
   };
 
+  const updateUser = (updatedUser) => setUser(updatedUser);
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

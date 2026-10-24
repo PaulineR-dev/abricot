@@ -2,6 +2,7 @@
 
 import styles from "./signup.module.css";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -57,11 +58,12 @@ export default function SignupPage() {
           <h1 className={styles.title}>Inscription</h1>
 
           {/* Erreur */}
-          {error && <p className={styles.error}>{error}</p>}
+          {error && <p className={styles.error} role="alert">{error}</p>}
 
           {/* Label Nom */}
-          <label className={styles.label}>Nom</label>
+          <label className={styles.label} htmlFor="signup-name">Nom</label>
           <input
+            id="signup-name"
             className={styles.input}
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -70,8 +72,10 @@ export default function SignupPage() {
           />
 
           {/* Label Email */}
-          <label className={styles.label}>Email</label>
+          <label className={styles.label} htmlFor="signup-email">Email</label>
           <input
+            id="signup-email"
+            type="email"
             className={styles.input}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -80,8 +84,9 @@ export default function SignupPage() {
           />
 
           {/* Label Mot de passe */}
-          <label className={styles.label}>Mot de passe</label>
+          <label className={styles.label} htmlFor="signup-password">Mot de passe</label>
           <input
+            id="signup-password"
             className={styles.input}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -98,7 +103,7 @@ export default function SignupPage() {
           {/* Déjà inscrit ? */}
           <p className={styles.signup}>
             Déjà inscrit ?
-            <span onClick={() => router.push("/login")}>Se connecter</span>
+            <Link href="/login">Se connecter</Link>
           </p>
 
         </form>
