@@ -303,7 +303,7 @@ export default function DashboardPage() {
             <h2 className={styles.sectionTitle}>Mes tâches assignées</h2>
             <p className={styles.sectionSubtitle}>Par ordre de priorité</p>
           </div>
-          <label className={styles.taskSearchBox}>
+          <div className={styles.taskSearchBox}>
             <input
               type="search"
               value={taskSearch}
@@ -315,7 +315,7 @@ export default function DashboardPage() {
               <circle cx="10.8" cy="10.8" r="6.8" />
               <path d="m16 16 5 5" />
             </svg>
-          </label>
+          </div>
         </div>
         <ul className={styles.tasksList}>
           {visibleTasks.length === 0 ? (

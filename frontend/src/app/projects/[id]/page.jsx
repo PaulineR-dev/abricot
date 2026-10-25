@@ -390,7 +390,7 @@ export default function ProjectDetail(props) {
                 )}
               </div>
 
-              <label className={styles.taskSearchBox}>
+              <div className={styles.taskSearchBox}>
                 <input
                   type="search"
                   value={taskSearch}
@@ -402,7 +402,7 @@ export default function ProjectDetail(props) {
                   <circle cx="10.8" cy="10.8" r="6.8" />
                   <path d="m16 16 5 5" />
                 </svg>
-              </label>
+              </div>
             </div>
           </div>
 
@@ -752,7 +752,7 @@ export default function ProjectDetail(props) {
                 onChange={(e) => setTaskDescription(e.target.value)}
               />
 
-              <label>Échéance*</label>
+              <label htmlFor="create-task-due">Échéance*</label>
               <div className={styles.createDueDateControl}>
                 <button
                   id="create-task-due-trigger"
@@ -932,7 +932,7 @@ export default function ProjectDetail(props) {
                 }
               />
 
-              <label>Échéance*</label>
+              <label htmlFor="edit-task-due">Échéance*</label>
               <div className={styles.createDueDateControl}>
                 <button
                   id="edit-task-due-trigger"

@@ -41,8 +41,8 @@ export default function Header() {
       <nav className={styles.center} aria-label="Navigation principale">
         <button
           type="button"
-          className={`${styles.navItem} ${pathname === "/dashboard" ? styles.active : ""}`}
-          aria-current={pathname === "/dashboard" ? "page" : undefined}
+          className={`${styles.navItem} ${pathname.startsWith("/dashboard") ? styles.active : ""}`}
+          aria-current={pathname.startsWith("/dashboard") ? "page" : undefined}
           onClick={() => router.push("/dashboard")}
         >
           <Image
