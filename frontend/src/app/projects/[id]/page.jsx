@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
@@ -45,6 +45,8 @@ export default function ProjectDetail(props) {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDue, setTaskDue] = useState("");
+  const taskDueInputRef = useRef(null);
+  const editTaskDueInputRef = useRef(null);
   const [taskStatus, setTaskStatus] = useState("TODO");
   const [taskAssignees, setTaskAssignees] = useState([]);
 
@@ -179,6 +181,12 @@ export default function ProjectDetail(props) {
   const isOwner = ["owner", "admin"].includes(role);
   const isMember = ["contributor", "member"].includes(role);
   const canDeleteProject = project?.project?.owner?.id === currentUser?.id;
+  const editTaskDue = taskToEdit?.dueDate
+    ? new Date(taskToEdit.dueDate).toISOString().slice(0, 10)
+    : "";
+  const contributorCount = project?.project
+    ? project.project.members.filter((member) => member.user?.id !== project.project.owner?.id).length + 1
+    : 0;
   const assignableUsers = project?.project
     ? [project.project.owner, ...project.project.members.map((member) => member.user)]
         .filter((user, index, users) => user && users.findIndex((candidate) => candidate?.id === user.id) === index)
@@ -290,9 +298,9 @@ export default function ProjectDetail(props) {
           <div className={styles.contributorsLeft}>
             <span className={styles.contributorsTitle}>Contributeurs</span>
             <span className={styles.contributorsCount}>
-              {project.project.members.length === 1
+              {contributorCount === 1
                 ? "1 personne"
-                : `${project.project.members.length} personnes`}
+                : `${contributorCount} personnes`}
             </span>
           </div>
 
@@ -428,21 +436,26 @@ export default function ProjectDetail(props) {
 
                     {/* HEADER */}
                     <div className={styles.taskHeaderRow}>
-                      <h4 className={styles.taskTitle}>{task.title}</h4>
+                      <div className={styles.taskHeadingBlock}>
+                        <div className={styles.taskHeadingLine}>
+                          <h4 className={styles.taskTitle}>{task.title}</h4>
 
-                      <span
-                        className={`${styles.statusBubble} ${
-                          task.status === "DONE"
-                            ? styles.statusDone
-                            : task.status === "IN_PROGRESS"
-                            ? styles.statusProgress
-                            : styles.statusTodo
-                        }`}
-                      >
-                        {task.status === "DONE" && "Terminée"}
-                        {task.status === "IN_PROGRESS" && "En cours"}
-                        {task.status === "TODO" && "À faire"}
-                      </span>
+                          <span
+                            className={`${styles.statusBubble} ${
+                              task.status === "DONE"
+                                ? styles.statusDone
+                                : task.status === "IN_PROGRESS"
+                                ? styles.statusProgress
+                                : styles.statusTodo
+                            }`}
+                          >
+                            {task.status === "DONE" && "Terminée"}
+                            {task.status === "IN_PROGRESS" && "En cours"}
+                            {task.status === "TODO" && "À faire"}
+                          </span>
+                        </div>
+                        <p className={styles.taskDescription}>{task.description}</p>
+                      </div>
 
                       <div className={styles.taskHeaderRight}>
                         <div className={styles.taskMenuWrapper}>
@@ -508,9 +521,6 @@ export default function ProjectDetail(props) {
                         </div>
                       </div>
                     </div>
-
-                    {/* DESCRIPTION */}
-                    <p className={styles.taskDescription}>{task.description}</p>
 
                     {/* ÉCHÉANCE */}
                     {viewMode === "list" && <div className={styles.taskMetaRow}>
@@ -742,15 +752,47 @@ export default function ProjectDetail(props) {
                 onChange={(e) => setTaskDescription(e.target.value)}
               />
 
-              <label htmlFor="create-task-due">Échéance</label>
-              <input
-                id="create-task-due"
-                type="date"
-                className={styles.modalInput}
-                required
-                value={taskDue}
-                onChange={(e) => setTaskDue(e.target.value)}
-              />
+              <label>Échéance*</label>
+              <div className={styles.createDueDateControl}>
+                <button
+                  id="create-task-due-trigger"
+                  type="button"
+                  className={styles.createDueDateField}
+                  aria-label={`Choisir une échéance${taskDue ? `, date actuelle : ${new Date(`${taskDue}T00:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}` : ""}`}
+                  aria-haspopup="dialog"
+                  onClick={() => {
+                    const dateInput = taskDueInputRef.current;
+                    if (!dateInput) return;
+                    if (typeof dateInput.showPicker === "function") {
+                      try {
+                        dateInput.showPicker();
+                        return;
+                      } catch {
+                        // Fall back to the browser's native date input interaction.
+                      }
+                    }
+                    dateInput.focus();
+                    dateInput.click();
+                  }}
+                >
+                  <span className={styles.createDueDateText}>
+                    {taskDue
+                      ? new Date(`${taskDue}T00:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })
+                      : ""}
+                  </span>
+                  <img src="/images/calendrier.png" alt="" className={styles.createDueDateIcon} />
+                </button>
+                <input
+                  ref={taskDueInputRef}
+                  id="create-task-due"
+                  type="date"
+                  className={styles.createDueDatePicker}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                  value={taskDue}
+                  onChange={(e) => setTaskDue(e.target.value)}
+                />
+              </div>
 
               <label htmlFor="create-task-assignee-trigger">Assigner à :</label>
 
@@ -867,7 +909,7 @@ export default function ProjectDetail(props) {
               <button type="button" className={styles.modalCloseBtn} aria-label="Fermer" onClick={() => { setShowEditModal(false); setTaskToEdit(null); }}>×</button>
               <h2 id="edit-task-modal-title">Modifier</h2>
 
-              <label htmlFor="edit-task-title">Titre</label>
+              <label htmlFor="edit-task-title">Titre*</label>
               <input
                 id="edit-task-title"
                 className={styles.modalInput}
@@ -877,7 +919,7 @@ export default function ProjectDetail(props) {
                 }
               />
 
-              <label htmlFor="edit-task-description">Description</label>
+              <label htmlFor="edit-task-description">Description*</label>
               <textarea
                 id="edit-task-description"
                 className={styles.modalTextarea}
@@ -890,25 +932,49 @@ export default function ProjectDetail(props) {
                 }
               />
 
-              <label htmlFor="edit-task-due">Échéance</label>
-              <div className={styles.editDueDateField}>
-                <span className={styles.editDueDateText}>
-                  {taskToEdit.dueDate
-                    ? new Date(taskToEdit.dueDate).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })
-                    : "Choisir une date"}
-                </span>
-                <span aria-hidden="true" className={styles.editDueDateIcon} />
+              <label>Échéance*</label>
+              <div className={styles.createDueDateControl}>
+                <button
+                  id="edit-task-due-trigger"
+                  type="button"
+                  className={styles.createDueDateField}
+                  aria-label={`Choisir une échéance${editTaskDue ? `, date actuelle : ${new Date(`${editTaskDue}T00:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}` : ""}`}
+                  aria-haspopup="dialog"
+                  onClick={() => {
+                    const dateInput = editTaskDueInputRef.current;
+                    if (!dateInput) return;
+                    if (typeof dateInput.showPicker === "function") {
+                      try {
+                        dateInput.showPicker();
+                        return;
+                      } catch {
+                        // Fall back to the browser's native date input interaction.
+                      }
+                    }
+                    dateInput.focus();
+                    dateInput.click();
+                  }}
+                >
+                  <span className={styles.createDueDateText}>
+                    {editTaskDue
+                      ? new Date(`${editTaskDue}T00:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })
+                      : ""}
+                  </span>
+                  <img src="/images/calendrier.png" alt="" className={styles.createDueDateIcon} />
+                </button>
                 <input
+                  ref={editTaskDueInputRef}
                   id="edit-task-due"
                   type="date"
-                  aria-label="Modifier l’échéance"
-                  className={styles.editDueDatePicker}
-                  value={taskToEdit.dueDate ? new Date(taskToEdit.dueDate).toISOString().slice(0, 10) : ""}
+                  className={styles.createDueDatePicker}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                  value={editTaskDue}
                   onChange={(e) => setTaskToEdit({ ...taskToEdit, dueDate: e.target.value })}
                 />
               </div>
 
-              <label htmlFor="edit-task-assignee-trigger">Assigné à :</label>
+              <label htmlFor="edit-task-assignee-trigger">Assigner à :</label>
 
               <button
                 type="button"
@@ -921,8 +987,11 @@ export default function ProjectDetail(props) {
                 }
               >
                 {editAssignees.length === 0
-                  ? "Aucun collaborateur"
-                  : `${editAssignees.length} collaborateur${editAssignees.length > 1 ? "s" : ""}`}
+                  ? "Choisir un ou plusieurs collaborateurs"
+                  : assignableUsers
+                      .filter((user) => editAssignees.includes(user.id))
+                      .map((user) => user.name || user.email)
+                      .join(", ")}
               </button>
 
               {showEditAssigneeSelector && (
