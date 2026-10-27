@@ -1,15 +1,23 @@
 "use client";
 
 import { createContext, useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
 
   // Charge le profil automatiquement au démarrage
   useEffect(() => {
+    if (pathname === "/login" || pathname === "/signup") {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
     async function loadProfile() {
       try {
         const res = await fetch("/api/profile");
@@ -27,7 +35,7 @@ export function AuthProvider({ children }) {
     }
 
     loadProfile();
-  }, []);
+  }, [pathname]);
 
   // Fonction de connexion
   const login = async (email, password) => {

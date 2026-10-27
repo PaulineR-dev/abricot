@@ -18,7 +18,7 @@
 }
 
 .title {
-  font-family: Manrope, sans-serif;
+  font-family: var(--font-manrope), sans-serif;
   font-weight: 600;
   font-size: 18px;
   line-height: 100%;
@@ -84,6 +84,24 @@
   opacity: 0.85;
 }
 
+.logoutArea {
+  width: calc(100% - 40px);
+  max-width: 1215px;
+  margin: 24px auto 0;
+  padding: 0 59px;
+  box-sizing: border-box;
+}
+
+.logoutButton {
+  background: #D3590B;
+  margin-top: 0;
+}
+
+.logoutButton:hover {
+  background: #B54708;
+  opacity: 1;
+}
+
 .error {
   color: #B42318;
   font-size: 14px;
@@ -97,11 +115,13 @@
 @media (max-width: 900px) {
   .pageBackground { padding: 36px 24px; }
   .profileBlock { width: 100%; max-width: 760px; min-height: 0; padding: 32px; }
+  .logoutArea { width: 100%; max-width: 760px; padding: 0 32px; }
 }
 
 @media (max-width: 600px) {
   .pageBackground { padding: 20px 16px; }
   .profileBlock { padding: 24px 18px; }
+  .logoutArea { padding: 0 18px; }
   .userName { margin-bottom: 28px; overflow-wrap: anywhere; }
   .submitButton { width: 100%; }
 }

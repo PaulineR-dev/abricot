@@ -2,17 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { useContext } from "react";
+import { useRouter } from "next/navigation";
 import { AuthContext } from "@/context/AuthContext";
 import styles from "./profile.module.css";
 
 export default function ProfilePage() {
-  const { updateUser } = useContext(AuthContext);
+  const { updateUser, logout } = useContext(AuthContext);
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [form, setForm] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  async function handleLogout() {
+    await logout();
+    router.replace("/login");
+  }
 
   useEffect(() => {
     async function loadProfile() {
@@ -164,6 +171,13 @@ export default function ProfilePage() {
             Modifier les informations
           </button>
         </form>
+
+      </div>
+
+      <div className={styles.logoutArea}>
+        <button type="button" className={`${styles.submitButton} ${styles.logoutButton}`} onClick={handleLogout}>
+          Se déconnecter
+        </button>
       </div>
     </div>
   );

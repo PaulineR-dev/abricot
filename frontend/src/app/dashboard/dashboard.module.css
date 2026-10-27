@@ -198,7 +198,7 @@
   line-height: 100%;
   letter-spacing: 0%;
   color: #6B7280;
-  margin-bottom: 32.23px;
+  margin-bottom: 32px;
 }
 
 .taskMeta {
@@ -502,13 +502,13 @@
 
 .kanbanCard {
   width: min(371px, 100%);
-  height: 229.54px;
+  height: 222.31px;
   min-width: 0;
   box-sizing: border-box;
   background: #FFFFFF;
   border: 1px solid #E5E7EB;
   border-radius: 10px;
-  padding: 25px 24px;
+  padding: 25px 24px 25px 40px;
   margin-bottom: 32px;
   position: relative;
 }
@@ -525,7 +525,7 @@
 }
 
 .kanbanCard .cardTitle {
-  max-width: 200px;
+  max-width: 180px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -535,12 +535,13 @@
 .cardDesc {
   font-family: Inter, sans-serif;
   font-size: 14px;
+  line-height: 100%;
   color: #6B7280;
   margin-bottom: 32px;
 }
 
 .kanbanCard .cardDesc {
-  max-width: 200px;
+  max-width: 180px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -567,6 +568,10 @@
 
 .kanbanColumn {
   height: auto;
+}
+
+.kanbanCard:last-child {
+  margin-bottom: 0;
 }
 
 .kanbanGrid {
@@ -596,7 +601,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-bottom: 25px;
+  margin-bottom: 32.77px;
 }
 
 .metaItemKanban {
@@ -604,6 +609,7 @@
   align-items: center;
   gap: 8px;
   font-family: Inter, sans-serif;
+  font-weight: 400;
   font-size: 12px;
   color: #6B7280;
 }
@@ -615,11 +621,13 @@
 .metaIconKanban.folder {
   width: 18px;
   height: 13.96px;
+  filter: brightness(0) saturate(100%) invert(68%) sepia(8%) saturate(451%) hue-rotate(179deg) brightness(94%) contrast(87%);
 }
 
 .metaIconKanban.calendar {
   width: 15px;
   height: 16.54px;
+  filter: brightness(0) saturate(100%) invert(47%) sepia(8%) saturate(419%) hue-rotate(179deg) brightness(92%) contrast(87%);
 }
 
 .metaIconKanban.comment {
@@ -629,8 +637,8 @@
 
 .metaSeparatorKanban {
   width: 11px;
-  border-top: 1px solid #6B7280;
-  transform: rotate(-90deg);
+  border-top: 1px solid #9CA3AF;
+  transform: rotate(90deg);
 }
 
 .btnViewKanban {
@@ -691,17 +699,17 @@
 
   .kanbanCard {
     width: min(371px, 100%);
-    height: 229.54px;
-    padding: 25px 30px;
+    height: 222.31px;
+    padding: 25px 24px 25px 40px;
   }
 
   .statusBadgeKanban {
-    right: 30px;
+    right: 40px;
   }
 
   .kanbanCard .cardTitle,
   .kanbanCard .cardDesc {
-    max-width: 260px;
+    max-width: 180px;
   }
 }
 
@@ -714,53 +722,57 @@
   .kanbanColumn {
     width: 100%;
     padding: 32px 20px;
+    padding-bottom: 40px;
   }
 
   .kanbanCard {
     width: min(371px, 100%);
-    height: 229.54px;
-    padding: 25px 24px;
+    height: 222.31px;
+    padding: 25px 24px 25px 40px;
   }
 
   .statusBadgeKanban {
-    right: 24px;
+    right: 40px;
     top: 20px;
   }
 
   .kanbanCard .cardTitle,
   .kanbanCard .cardDesc {
-    max-width: 70%;
+    max-width: 180px;
   }
 
   .metaRowKanban {
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-wrap: nowrap;
+    gap: 15px;
   }
 }
 
 @media (max-width: 600px) {
   .kanbanColumn {
     padding: 24px 16px;
+    padding-bottom: 40px;
   }
 
   .kanbanCard {
     width: min(371px, 100%);
     height: auto;
-    min-height: 229.54px;
-    padding: 20px 16px;
+    min-height: 0;
+    padding: 25px 16px 25px 40px;
   }
 
   .statusBadgeKanban {
-    right: 16px;
+    right: 40px;
     top: 16px;
   }
 
   .kanbanCard .cardTitle,
   .kanbanCard .cardDesc {
-    max-width: 100%;
+    max-width: 180px;
   }
 
   .metaRowKanban {
+    position: static;
+    margin-bottom: 32.77px;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
@@ -769,18 +781,18 @@
   .btnViewKanban {
     width: 100%;
     height: 48px;
-    margin-top: 20px;
+    margin-top: 0;
   }
 }
 
 @media (max-width: 420px) {
   .kanbanCard {
-    padding: 16px 12px;
+    padding: 25px 24px 25px 40px;
   }
 
   .statusBadgeKanban {
-    right: 12px;
-    top: 12px;
+    right: 40px;
+    top: 25px;
     padding: 3px 12px;
     font-size: 12px;
   }
@@ -808,7 +820,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 31px;
 }
 
 .listHeading .sectionTitle { margin-bottom: 8px; }

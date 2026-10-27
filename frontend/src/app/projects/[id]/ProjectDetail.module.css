@@ -1012,7 +1012,7 @@
   stroke-width: 1.7;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 900px) {
   .tasksHeaderRow {
     flex-wrap: wrap;
     gap: 20px;
@@ -1234,6 +1234,28 @@
   box-sizing: border-box;
 }
 
+@media (min-width: 901px) {
+  .pageWrapper { width: calc(100% - 110px); }
+  .headerLeft { transform: translateX(-70px); }
+}
+
+@media (min-width: 1101px) {
+  .tasksHeaderRow { justify-content: flex-start; }
+  .tasksHeaderLeft { flex: 0 0 auto; margin-right: 216px; }
+  .tasksViewSwitch { flex: 0 0 auto; gap: 12px; margin: 0 16px 0 0; }
+  .taskFilters { flex: 0 0 auto; gap: 16px; margin: 0 59px 0 0; }
+}
+
+@media (min-width: 901px) and (max-width: 1200px) {
+  .tasksHeaderRow { flex-wrap: nowrap; justify-content: flex-start; gap: 0; }
+  .tasksHeaderLeft { flex: 0 0 auto; padding-left: 40px; margin-right: 216px; }
+  .tasksViewSwitch { flex: 0 0 auto; gap: 8px; margin: 0 16px 0 0; }
+  .switchBtnProject { gap: 8px; padding-right: 8px; padding-left: 8px; }
+  .taskFilters { flex: 0 0 auto; gap: 16px; width: auto; margin: 0 16px 0 0; }
+  .statusFilterWrapper { width: clamp(100px, 10vw, 120px); }
+  .taskSearchBox { width: clamp(160px, 17vw, 200px); min-width: 0; flex: 0 0 clamp(160px, 17vw, 200px); padding-right: 16px; padding-left: 16px; gap: 8px; }
+}
+
 @media (max-width: 900px) {
   .calendarView { padding: 0 24px; }
 }
@@ -1265,10 +1287,10 @@
 .taskMenuBtn { width: 57px; height: 57px; padding: 0; border: 1px solid #E5E7EB; border-radius: 10px; background: #FFFFFF; box-sizing: border-box; }
 .taskMenuDots { font-size: 20px; }
 .taskDescription { margin: 7px 0 0; color: #6B7280; font-size: 13px; line-height: 1.5; }
-.taskMetaRow { gap: 6px; margin: 32px 0 24px; }
+.taskMetaRow { gap: 8px; margin: 32px 0 24px; }
 .metaLabel { color: #6B7280; font-size: 11px; font-weight: 400; }
-.metaIcon { width: 14px; height: 14px; }
-.metaText { color: #1F1F1F; font-size: 11px; }
+.metaIcon { width: 15px; height: 16.54px; filter: brightness(0) opacity(0.88); }
+.metaText { color: #1F1F1F; font-family: Inter, sans-serif; font-size: 12px; font-weight: 400; }
 .assigneesRow { align-items: center; gap: 6px; margin: 0; }
 .assigneeItem { gap: 6px; }
 .assigneeAvatar { width: 24px; height: 24px; background: #E5E7EB; color: #4B5563; font-size: 9px; }

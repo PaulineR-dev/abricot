@@ -1,25 +1,25 @@
-"use client";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-import { useRouter } from "next/navigation";
+export default async function HomePage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session")?.value;
 
-export default function HomePage() {
-  const router = useRouter(); // Permet la navigation côté client
-
-  async function handleLogout() {
-    // Appelle l'API interne pour supprimer le cookie de session
-    await fetch("/api/logout", { method: "POST" });
-
-    // Redirige vers la page de connexion
-    router.push("/login");
+  if (!token) {
+    redirect("/login");
   }
 
-  return (
-    <div>
-      <h1>Accueil</h1>
+  let isAuthenticated = false;
 
-      <button onClick={handleLogout}>
-        Se déconnecter
-      </button>
-    </div>
-  );
+  try {
+    const response = await fetch("http://localhost:8000/auth/profile", {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    isAuthenticated = response.ok;
+  } catch {
+    isAuthenticated = false;
+  }
+
+  redirect(isAuthenticated ? "/profile" : "/login");
 }

@@ -80,6 +80,11 @@
   text-transform: uppercase;
 }
 
+.avatarActive {
+  background: #D3590B;
+  color: #FFFFFF;
+}
+
 .navItem:focus-visible,
 .right:focus-visible {
   outline: 3px solid #1D4ED8;

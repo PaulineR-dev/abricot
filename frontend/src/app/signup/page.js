@@ -8,7 +8,8 @@ import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
   const router = useRouter();
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,6 +21,7 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
+      const name = `${firstName.trim()} ${lastName.trim()}`.trim();
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -49,6 +51,7 @@ export default function SignupPage() {
           <Image
             src="/images/logo.png"
             alt="Logo Abricot"
+            loading="eager"
             width={252.568}
             height={32.169}
             className={styles.logo}
@@ -60,15 +63,27 @@ export default function SignupPage() {
           {/* Erreur */}
           {error && <p className={styles.error} role="alert">{error}</p>}
 
-          {/* Label Nom */}
-          <label className={styles.label} htmlFor="signup-name">Nom</label>
+          {/* Nom et prénom */}
+          <label className={styles.label} htmlFor="signup-last-name">Nom</label>
           <input
-            id="signup-name"
+            id="signup-last-name"
             className={styles.input}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             placeholder="Nom"
-            autoComplete="name"
+            autoComplete="family-name"
+            required
+          />
+
+          <label className={styles.label} htmlFor="signup-first-name">Prénom</label>
+          <input
+            id="signup-first-name"
+            className={styles.input}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="Prénom"
+            autoComplete="given-name"
+            required
           />
 
           {/* Label Email */}

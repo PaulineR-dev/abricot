@@ -40,6 +40,7 @@ export default function LoginPage() {
           <Image
             src="/images/logo.png"
             alt="Logo Abricot"
+            loading="eager"
             width={252.568}
             height={32.169}
             className={styles.logo}
@@ -75,7 +76,7 @@ export default function LoginPage() {
             {loading ? "Connexion..." : "Se connecter"}
           </button>
 
-          <p className={styles.forgot}>Mot de passe oublié ?</p>
+          <p className={styles.forgot}>Mot de passe oublié?</p>
 
           <p className={styles.signup}>
             Pas encore de compte ?

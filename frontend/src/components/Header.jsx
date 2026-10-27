@@ -31,6 +31,7 @@ export default function Header() {
         <Image
           src="/images/logo.png"
           alt="Logo Abricot"
+          loading="eager"
           width={0}
           height={0}
           sizes="100vw"
@@ -82,7 +83,7 @@ export default function Header() {
         {loading ? (
           <div className={styles.avatar}>â€¦</div>
         ) : user ? (
-          <div className={styles.avatar}>{initials}</div>
+          <div className={`${styles.avatar} ${pathname.startsWith("/profile") ? styles.avatarActive : ""}`}>{initials}</div>
         ) : (
           <div className={styles.avatar}>?</div>
         )}

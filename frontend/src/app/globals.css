@@ -66,8 +66,6 @@ body {
 }
 
 html {
-  scrollbar-gutter: stable;
-}
 
 body {
   min-height: 100%;
