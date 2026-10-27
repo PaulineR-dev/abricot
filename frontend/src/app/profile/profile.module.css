@@ -113,15 +113,43 @@
 }
 
 @media (max-width: 900px) {
-  .pageBackground { padding: 36px 24px; }
-  .profileBlock { width: 100%; max-width: 760px; min-height: 0; padding: 32px; }
-  .logoutArea { width: 100%; max-width: 760px; padding: 0 32px; }
+  .pageBackground {
+    padding: 36px 24px;
+  }
+
+  .profileBlock {
+    width: 100%;
+    max-width: 760px;
+    min-height: 0;
+    padding: 32px;
+  }
+
+  .logoutArea {
+    width: 100%;
+    max-width: 760px;
+    padding: 0 32px;
+  }
 }
 
 @media (max-width: 600px) {
-  .pageBackground { padding: 20px 16px; }
-  .profileBlock { padding: 24px 18px; }
-  .logoutArea { padding: 0 18px; }
-  .userName { margin-bottom: 28px; overflow-wrap: anywhere; }
-  .submitButton { width: 100%; }
+  .pageBackground {
+    padding: 20px 16px;
+  }
+
+  .profileBlock {
+    padding: 24px 18px;
+  }
+
+  .logoutArea {
+    padding: 0 18px;
+  }
+
+  .userName {
+    margin-bottom: 28px;
+    overflow-wrap: anywhere;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
 }

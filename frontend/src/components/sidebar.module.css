@@ -41,7 +41,19 @@
 }
 
 @media (max-width: 600px) {
-  .sidebar { height: 68px; min-height: 68px; flex-basis: 68px; padding: 0 16px; }
-  .logo { width: 88px; height: auto; }
-  .title { font-size: 13px; }
+  .sidebar {
+    height: 68px;
+    min-height: 68px;
+    flex-basis: 68px;
+    padding: 0 16px;
+  }
+
+  .logo {
+    width: 88px;
+    height: auto;
+  }
+
+  .title {
+    font-size: 13px;
+  }
 }

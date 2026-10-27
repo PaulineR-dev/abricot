@@ -728,10 +728,58 @@ export default function ProjectDetail(props) {
             </div>
           </div>
         )}
+        
         {/* MODALE CRÉATION TÂCHE */}
         {showTaskModal && (
           <div className={styles.modalOverlay}>
-            <div className={`${styles.modalCard} ${styles.taskFormModal} ${styles.createTaskFormModal}`} role="dialog" aria-modal="true" aria-labelledby="create-task-modal-title">
+            <form
+              className={`${styles.modalCard} ${styles.taskFormModal} ${styles.createTaskFormModal}`}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="create-task-modal-title"
+              onSubmit={async (event) => {
+                event.preventDefault();
+
+                const body = {
+                  title: taskTitle,
+                  description: taskDescription,
+                  dueDate: taskDue || null,
+                  status: taskStatus,
+                  assigneeIds:
+                    taskAssignees.length > 0
+                      ? taskAssignees.map((u) => u.id)
+                      : [],
+                };
+
+                const res = await fetch(`/api/projects/${id}/tasks`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(body),
+                });
+
+                const newTask = await res.json();
+
+                if (res.ok) {
+                  if (taskStatus !== "TODO") {
+                    const statusRes = await fetch(`/api/projects/${id}/tasks/${newTask.id}`, {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ status: taskStatus }),
+                    });
+                    if (!statusRes.ok) {
+                      const statusError = await statusRes.json().catch(() => ({}));
+                      alert(statusError.error || "La tâche a été créée, mais son statut n'a pas pu être enregistré.");
+                      await reloadTasks(Date.now());
+                      setShowTaskModal(false);
+                      return;
+                    }
+                  }
+
+                  await reloadTasks(Date.now());
+                  setShowTaskModal(false);
+                }
+              }}
+            >
               <button type="button" className={styles.modalCloseBtn} aria-label="Fermer" onClick={() => setShowTaskModal(false)}>×</button>
               <h2 id="create-task-modal-title">Créer une tâche</h2>
 
@@ -843,62 +891,22 @@ export default function ProjectDetail(props) {
 
               <div className={styles.modalButtonsRow}>
                 <button
+                  type="submit"
                   className={styles.modalPrimaryBtn}
                   disabled={!taskTitle.trim() || !taskDescription.trim() || !taskDue}
-                  onClick={async () => {
-                    const body = {
-                      title: taskTitle,
-                      description: taskDescription,
-                      dueDate: taskDue || null,
-                      status: taskStatus,
-                      assigneeIds:
-                        taskAssignees.length > 0
-                          ? taskAssignees.map((u) => u.id)
-                          : [],
-                    };
-
-                    const res = await fetch(`/api/projects/${id}/tasks`, {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(body),
-                    });
-
-                    const newTask = await res.json();
-
-                    if (res.ok) {
-                      if (taskStatus !== "TODO") {
-                        const statusRes = await fetch(`/api/projects/${id}/tasks/${newTask.id}`, {
-                          method: "PUT",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ status: taskStatus }),
-                        });
-                        if (!statusRes.ok) {
-                          const statusError = await statusRes.json().catch(() => ({}));
-                          alert(statusError.error || "La tâche a été créée, mais son statut n'a pas pu être enregistré.");
-                          await reloadTasks(Date.now());
-                          setShowTaskModal(false);
-                          return;
-                        }
-                      }
-
-                      await reloadTasks(Date.now());
-
-                      setShowTaskModal(false);
-                    }
-
-                  }}
                 >
                   + Ajouter une tâche
                 </button>
 
                 <button
+                  type="button"
                   className={styles.modalSecondaryBtn}
                   onClick={() => setShowTaskModal(false)}
                 >
                   Fermer
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         )}
 

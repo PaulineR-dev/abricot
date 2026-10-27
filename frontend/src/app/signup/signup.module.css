@@ -115,7 +115,10 @@
   cursor: pointer;
 }
 
-.signup a:focus-visible { outline: 3px solid #1D4ED8; outline-offset: 3px; }
+.signup a:focus-visible {
+  outline: 3px solid #1D4ED8;
+  outline-offset: 3px;
+}
 
 .right {
   flex: 1;
@@ -141,26 +144,92 @@
     width: 100%;
   }
 }
+
 @media (max-width: 900px) {
-  .page { min-height: 100svh; height: auto; }
-  .left { flex: 1 1 60%; padding: 56px 24px; }
-  .right { flex: 1 1 40%; height: auto; min-height: 100svh; }
-  .title { margin-top: 90px; }
-  .signup { margin-top: 72px; }
+  .page {
+    min-height: 100svh;
+    height: auto;
+  }
+
+  .left {
+    flex: 1 1 60%;
+    padding: 56px 24px;
+  }
+
+  .right {
+    flex: 1 1 40%;
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .title {
+    margin-top: 90px;
+  }
+
+  .signup {
+    margin-top: 72px;
+  }
+
 }
 
 @media (max-width: 600px) {
-  .page { min-height: 100svh; }
-  .left { width: 100%; min-height: 100svh; padding: 32px 24px; }
-  .right { display: none; }
-  .container { width: min(100%, 360px); }
-  .logo { width: min(252px, 100%) !important; height: auto !important; }
-  .title { width: 100%; height: auto; margin-top: 56px; font-size: 40px; }
-  .input { width: 100%; }
-  .button { width: min(100%, 280px); padding: 13px 16px; }
-  .signup { margin-top: 48px; line-height: 1.5; }
-}@media (min-width: 601px) and (max-width: 900px) {
-  .page { flex-direction: row; }
-  .left { width: 60%; min-height: 100svh; }
-  .right { width: 40%; min-height: 100svh; }
+  .page {
+    min-height: 100svh;
+  }
+
+  .left {
+    width: 100%;
+    min-height: 100svh;
+    padding: 32px 24px;
+  }
+
+  .right {
+    display: none;
+  }
+
+  .container {
+    width: min(100%, 360px);
+  }
+
+  .logo {
+    width: min(252px, 100%) !important;
+    height: auto !important;
+  }
+
+  .title {
+    width: 100%;
+    height: auto;
+    margin-top: 56px;
+    font-size: 40px;
+  }
+
+  .input {
+    width: 100%;
+  }
+
+  .button {
+    width: min(100%, 280px);
+    padding: 13px 16px;
+  }
+
+  .signup {
+    margin-top: 48px;
+    line-height: 1.5;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .page {
+    flex-direction: row;
+  }
+
+  .left {
+    width: 60%;
+    min-height: 100svh;
+  }
+
+  .right {
+    width: 40%;
+    min-height: 100svh;
+  }
 }

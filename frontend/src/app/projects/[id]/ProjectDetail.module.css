@@ -407,8 +407,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .commentItem {
@@ -587,7 +594,6 @@
   font-family: Inter;
   font-size: 14px;
 }
-
 .modalInput,
 .modalTextarea {
   padding: 8px;
@@ -894,9 +900,9 @@
 }
 
 .addCommentTextarea {
-  color: #333;        
-  font-size: 15px;    
-  font-family: Inter; 
+  color: #333;
+  font-size: 15px;
+  font-family: Inter;
 }
 
 .taskFilters {
@@ -912,7 +918,6 @@
   width: 152px;
   flex: 0 0 auto;
 }
-
 .statusFilterButton,
 .taskSearchBox {
   height: 63px;
@@ -1017,34 +1022,39 @@
     flex-wrap: wrap;
     gap: 20px;
   }
+
   .tasksViewSwitch {
     margin-left: auto;
     margin-right: 59px;
   }
+
   .taskFilters {
     width: calc(100% - 118px);
     margin: 0 59px 0 auto;
     justify-content: flex-end;
   }
-
 }
 
 @media (max-width: 700px) {
   .tasksHeaderRow {
     align-items: flex-start;
   }
+
   .tasksViewSwitch {
     margin-right: 16px;
   }
+
   .taskFilters {
     width: calc(100% - 32px);
     margin: 0 16px;
     gap: 12px;
   }
+
   .statusFilterWrapper {
     width: 38%;
     flex: 0 0 38%;
   }
+
   .statusFilterButton,
   .taskSearchBox {
     height: 56px;
@@ -1052,80 +1062,286 @@
     padding-left: 16px;
     padding-right: 16px;
   }
+
   .taskSearchBox {
     width: 62%;
     min-width: 0;
     flex: 1 1 0;
     gap: 8px;
   }
-
 }
 
 @media (max-width: 900px) {
-  .pageWrapper { width: calc(100% - 40px); }
-  .headerWrapper { margin-top: 36px; gap: 20px; }
-  .headerLeft { margin-left: 0; gap: 14px; min-width: 0; }
-  .titleBlock { min-width: 0; }
-  .projectDescriptionHeader { max-width: 100%; }
-  .contributorsBlock { padding: 18px 24px; flex-wrap: wrap; }
-  .contributorsRight { flex-wrap: wrap; }
-  .tasksList { padding: 0 24px; }
-  .taskCard { min-height: 0; padding: 24px; }
-  .commentBox, .addCommentTextarea { width: 100%; min-width: 0; }
-  .commentItem, .addCommentRow { max-width: 100%; }
+  .pageWrapper {
+    width: calc(100% - 40px);
+  }
+
+  .headerWrapper {
+    margin-top: 36px;
+    gap: 20px;
+  }
+
+  .headerLeft {
+    margin-left: 0;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .titleBlock {
+    min-width: 0;
+  }
+
+  .projectDescriptionHeader {
+    max-width: 100%;
+  }
+
+  .contributorsBlock {
+    padding: 18px 24px;
+    flex-wrap: wrap;
+  }
+
+  .contributorsRight {
+    flex-wrap: wrap;
+  }
+
+  .tasksList {
+    padding: 0 24px;
+  }
+
+  .taskCard {
+    min-height: 0;
+    padding: 24px;
+  }
+
+  .commentBox, .addCommentTextarea {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .commentItem, .addCommentRow {
+    max-width: 100%;
+  }
+
 }
 
 @media (max-width: 700px) {
-  .pageWrapper { width: calc(100% - 28px); }
-  .headerWrapper { flex-direction: column; align-items: stretch; margin-top: 24px; }
-  .headerLeft { width: 100%; }
-  .backBtn { width: 44px; height: 44px; flex: 0 0 auto; }
-  .titleRow { flex-wrap: wrap; gap: 8px; }
-  .projectTitle { font-size: 21px; overflow-wrap: anywhere; }
-  .projectEditLink { margin: 4px 0 0; }
-  .projectDescriptionHeader { margin-bottom: 20px; }
-  .createTaskBtn { width: 100%; }
-  .contributorsBlock { align-items: flex-start; padding: 16px; gap: 14px; }
-  .contributorsLeft { flex-wrap: wrap; }
-  .contributorsRight { gap: 8px; }
-  .tasksSection { gap: 24px; }
-  .tasksHeaderRow { margin-top: 24px; }
-  .tasksHeaderLeft { padding-left: 16px; }
-  .tasksSubtitle { font-size: 13px; }
-  .tasksViewSwitch { margin-right: 16px; gap: 4px; }
-  .switchBtnProject { padding: 10px; gap: 6px; }
-  .tasksList { padding: 0 14px; }
-  .taskCard { padding: 18px 16px; gap: 16px; }
-  .taskHeaderRow { align-items: flex-start; gap: 10px; }
-  .taskTitle { font-size: 17px; }
-  .taskHeaderRight { gap: 6px; }
-  .statusBubble { padding: 5px 9px; font-size: 11px; }
-  .taskMenuBtn { width: 40px; height: 40px; padding: 8px; }
-  .taskMetaRow, .assigneesRow { flex-wrap: wrap; }
-  .commentItem { gap: 8px; }
-  .commentAvatar { width: 34px; height: 34px; flex: 0 0 auto; }
-  .commentBox { padding: 12px; }
-  .commentHeader { flex-wrap: wrap; gap: 4px 10px; }
-  .commentText { overflow-wrap: anywhere; }
-  .addCommentRow { flex-wrap: wrap; }
-  .addCommentTextarea { flex: 1 1 calc(100% - 48px); }
-  .sendCommentBtn { margin-left: 42px; }
-  .modalOverlay { padding: 16px; overflow-y: auto; align-items: flex-start; }
-  .modalCard { width: 100%; max-width: 450px; max-height: calc(100svh - 32px); overflow-y: auto; margin: auto; padding: 20px; }
-  .modalButtonsRow { flex-wrap: wrap; }
-  .modalButtonsRow button { flex: 1 1 auto; }
-  .contributorsEditList, .contributorEditItem { min-width: 0; }
-  .contributorEditItem { gap: 10px; overflow-wrap: anywhere; }
+  .pageWrapper {
+    width: calc(100% - 28px);
+  }
+
+  .headerWrapper {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 24px;
+  }
+
+  .headerLeft {
+    width: 100%;
+  }
+
+  .backBtn {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
+  }
+
+  .titleRow {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .projectTitle {
+    font-size: 21px;
+    overflow-wrap: anywhere;
+  }
+
+  .projectEditLink {
+    margin: 4px 0 0;
+  }
+
+  .projectDescriptionHeader {
+    margin-bottom: 20px;
+  }
+
+  .createTaskBtn {
+    width: 100%;
+  }
+
+  .contributorsBlock {
+    align-items: flex-start;
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .contributorsLeft {
+    flex-wrap: wrap;
+  }
+
+  .contributorsRight {
+    gap: 8px;
+  }
+
+  .tasksSection {
+    gap: 24px;
+  }
+
+  .tasksHeaderRow {
+    margin-top: 24px;
+  }
+
+  .tasksHeaderLeft {
+    padding-left: 16px;
+  }
+
+  .tasksSubtitle {
+    font-size: 13px;
+  }
+
+  .tasksViewSwitch {
+    margin-right: 16px;
+    gap: 4px;
+  }
+
+  .switchBtnProject {
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .tasksList {
+    padding: 0 14px;
+  }
+
+  .taskCard {
+    padding: 18px 16px;
+    gap: 16px;
+  }
+
+  .taskHeaderRow {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .taskTitle {
+    font-size: 17px;
+  }
+
+  .taskHeaderRight {
+    gap: 6px;
+  }
+
+  .statusBubble {
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+
+  .taskMenuBtn {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+  }
+
+  .taskMetaRow, .assigneesRow {
+    flex-wrap: wrap;
+  }
+
+  .commentItem {
+    gap: 8px;
+  }
+
+  .commentAvatar {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+  }
+
+  .commentBox {
+    padding: 12px;
+  }
+
+  .commentHeader {
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+
+  .commentText {
+    overflow-wrap: anywhere;
+  }
+
+  .addCommentRow {
+    flex-wrap: wrap;
+  }
+
+  .addCommentTextarea {
+    flex: 1 1 calc(100% - 48px);
+  }
+
+  .sendCommentBtn {
+    margin-left: 42px;
+  }
+
+  .modalOverlay {
+    padding: 16px;
+    overflow-y: auto;
+    align-items: flex-start;
+  }
+
+  .modalCard {
+    width: 100%;
+    max-width: 450px;
+    max-height: calc(100svh - 32px);
+    overflow-y: auto;
+    margin: auto;
+    padding: 20px;
+  }
+
+  .modalButtonsRow {
+    flex-wrap: wrap;
+  }
+
+  .modalButtonsRow button {
+    flex: 1 1 auto;
+  }
+
+  .contributorsEditList, .contributorEditItem {
+    min-width: 0;
+  }
+
+  .contributorEditItem {
+    gap: 10px;
+    overflow-wrap: anywhere;
+  }
 }
 
 @media (max-width: 420px) {
-  .pageWrapper { width: calc(100% - 20px); }
-  .tasksViewSwitch { margin-right: 8px; }
-  .tasksViewSwitch span { font-size: 12px; }
-  .switchIcon { width: 14px; height: 14px; }
-  .tasksList { padding: 0 8px; }
-  .taskCard { padding: 16px 12px; }
-  .metaLabel, .metaText, .assigneeName { font-size: 12px; }
+  .pageWrapper {
+    width: calc(100% - 20px);
+  }
+
+  .tasksViewSwitch {
+    margin-right: 8px;
+  }
+
+  .tasksViewSwitch span {
+    font-size: 12px;
+  }
+
+  .switchIcon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .tasksList {
+    padding: 0 8px;
+  }
+
+  .taskCard {
+    padding: 16px 12px;
+  }
+
+  .metaLabel, .metaText, .assigneeName {
+    font-size: 12px;
+  }
+
 }
 
 .createTaskActions {
@@ -1151,8 +1367,19 @@
   cursor: pointer;
 }
 
-.aiTaskBtn img { display: block; width: 16px; height: 16px; flex: 0 0 16px; object-fit: contain; filter: brightness(0) invert(1); }
-.aiTaskBtn:hover { background: #B54708; }
+.aiTaskBtn img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.aiTaskBtn:hover {
+  background: #B54708;
+}
+
 .aiTaskModal {
   width: min(680px, 100%);
   max-width: 680px;
@@ -1167,7 +1394,10 @@
   gap: 16px;
 }
 
-.aiModalHeader h2 { margin: 0; }
+.aiModalHeader h2 {
+  margin: 0;
+}
+
 .aiCloseBtn {
   width: 36px;
   height: 36px;
@@ -1179,10 +1409,24 @@
   cursor: pointer;
 }
 
-.aiCloseBtn:disabled { cursor: wait; opacity: .5; }
-.aiTaskModal > label { font-weight: 500; }
-.aiTaskModal > textarea { min-height: 100px; }
-.aiTaskModal > button:disabled { cursor: wait; opacity: .65; }
+.aiCloseBtn:disabled {
+  cursor: wait;
+  opacity: .5;
+}
+
+.aiTaskModal > label {
+  font-weight: 500;
+}
+
+.aiTaskModal > textarea {
+  min-height: 100px;
+}
+
+.aiTaskModal > button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
 .aiSuggestions {
   display: grid;
   gap: 12px;
@@ -1209,18 +1453,71 @@
   cursor: pointer;
 }
 
-.aiSuggestionContent strong { font: 600 16px Manrope, sans-serif; }
-.aiSuggestionContent span { color: #555; font: 14px/1.5 Inter, sans-serif; }
-.aiSuggestionActions { display: flex; gap: 16px; margin-top: 12px; }
-.aiTextBtn { padding: 0; border: 0; background: none; color: #B54708; font: 500 14px Inter, sans-serif; cursor: pointer; }
-.aiEditFields { display: flex; flex-direction: column; gap: 10px; }
-.aiRestartBtn { align-self: flex-start; border: 0; padding: 4px 0; background: transparent; color: #B54708; font: 600 15px Inter, sans-serif; cursor: pointer; }
-.aiError { margin: 0; color: #B42318; font-size: 14px; }
+.aiSuggestionContent strong {
+  font: 600 16px Manrope, sans-serif;
+}
+
+.aiSuggestionContent span {
+  color: #555;
+  font: 14px/1.5 Inter, sans-serif;
+}
+
+.aiSuggestionActions {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.aiTextBtn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #B54708;
+  font: 500 14px Inter, sans-serif;
+  cursor: pointer;
+}
+
+.aiEditFields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aiRestartBtn {
+  align-self: flex-start;
+  border: 0;
+  padding: 4px 0;
+  background: transparent;
+  color: #B54708;
+  font: 600 15px Inter, sans-serif;
+  cursor: pointer;
+}
+
+.aiError {
+  margin: 0;
+  color: #B42318;
+  font-size: 14px;
+}
+
 @media (max-width: 700px) {
-  .createTaskActions { width: 100%; }
-  .createTaskBtn { flex: 1; width: auto; }
-  .aiTaskBtn { flex: 0 0 auto; }
-  .aiTaskModal { max-width: 100%; max-height: calc(100svh - 24px); padding: 18px; }
+  .createTaskActions {
+    width: 100%;
+  }
+
+  .createTaskBtn {
+    flex: 1;
+    width: auto;
+  }
+
+  .aiTaskBtn {
+    flex: 0 0 auto;
+  }
+
+  .aiTaskModal {
+    max-width: 100%;
+    max-height: calc(100svh - 24px);
+    padding: 18px;
+  }
 }
 
 .headerWrapper,
@@ -1235,37 +1532,100 @@
 }
 
 @media (min-width: 901px) {
-  .pageWrapper { width: calc(100% - 110px); }
-  .headerLeft { transform: translateX(-70px); }
+  .pageWrapper {
+    width: calc(100% - 110px);
+  }
+
+  .headerLeft {
+    transform: translateX(-70px);
+  }
 }
 
 @media (min-width: 1101px) {
-  .tasksHeaderRow { justify-content: flex-start; }
-  .tasksHeaderLeft { flex: 0 0 auto; margin-right: 216px; }
-  .tasksViewSwitch { flex: 0 0 auto; gap: 12px; margin: 0 16px 0 0; }
-  .taskFilters { flex: 0 0 auto; gap: 16px; margin: 0 59px 0 0; }
+  .tasksHeaderRow {
+    justify-content: flex-start;
+  }
+
+  .tasksHeaderLeft {
+    flex: 0 0 auto;
+    margin-right: 216px;
+  }
+
+  .tasksViewSwitch {
+    flex: 0 0 auto;
+    gap: 12px;
+    margin: 0 16px 0 0;
+  }
+
+  .taskFilters {
+    flex: 0 0 auto;
+    gap: 16px;
+    margin: 0 59px 0 0;
+  }
 }
 
 @media (min-width: 901px) and (max-width: 1200px) {
-  .tasksHeaderRow { flex-wrap: nowrap; justify-content: flex-start; gap: 0; }
-  .tasksHeaderLeft { flex: 0 0 auto; padding-left: 40px; margin-right: 216px; }
-  .tasksViewSwitch { flex: 0 0 auto; gap: 8px; margin: 0 16px 0 0; }
-  .switchBtnProject { gap: 8px; padding-right: 8px; padding-left: 8px; }
-  .taskFilters { flex: 0 0 auto; gap: 16px; width: auto; margin: 0 16px 0 0; }
-  .statusFilterWrapper { width: clamp(100px, 10vw, 120px); }
-  .taskSearchBox { width: clamp(160px, 17vw, 200px); min-width: 0; flex: 0 0 clamp(160px, 17vw, 200px); padding-right: 16px; padding-left: 16px; gap: 8px; }
+  .tasksHeaderRow {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .tasksHeaderLeft {
+    flex: 0 0 auto;
+    padding-left: 40px;
+    margin-right: 216px;
+  }
+
+  .tasksViewSwitch {
+    flex: 0 0 auto;
+    gap: 8px;
+    margin: 0 16px 0 0;
+  }
+
+  .switchBtnProject {
+    gap: 8px;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .taskFilters {
+    flex: 0 0 auto;
+    gap: 16px;
+    width: auto;
+    margin: 0 16px 0 0;
+  }
+
+  .statusFilterWrapper {
+    width: clamp(100px, 10vw, 120px);
+  }
+
+  .taskSearchBox {
+    width: clamp(160px, 17vw, 200px);
+    min-width: 0;
+    flex: 0 0 clamp(160px, 17vw, 200px);
+    padding-right: 16px;
+    padding-left: 16px;
+    gap: 8px;
+  }
 }
 
 @media (max-width: 900px) {
-  .calendarView { padding: 0 24px; }
+  .calendarView {
+    padding: 0 24px;
+  }
 }
 
 @media (max-width: 700px) {
-  .calendarView { padding: 0 14px; }
+  .calendarView {
+    padding: 0 14px;
+  }
 }
 
 @media (max-width: 420px) {
-  .calendarView { padding: 0 8px; }
+  .calendarView {
+    padding: 0 8px;
+  }
 }
 
 .taskCard {
@@ -1277,26 +1637,130 @@
   box-sizing: border-box;
 }
 
-.taskHeaderRow { position: relative; display: block; }
-.taskHeadingBlock { width: calc(100% - 77px); min-width: 0; }
-.taskHeadingLine { display: flex; align-items: center; gap: 8px; min-height: 25px; }
-.taskTitle { margin: 0; color: #000000; font: 600 16px/1.4 Montserrat, sans-serif; }
-.statusBubble { padding: 4px 12px; font-size: 12px; line-height: 1.4; }
-.statusTodo { background: #FEE2E2; color: #EF4444; }
-.taskHeaderRight { position: absolute; top: 0; right: 0; margin: 0; }
-.taskMenuBtn { width: 57px; height: 57px; padding: 0; border: 1px solid #E5E7EB; border-radius: 10px; background: #FFFFFF; box-sizing: border-box; }
-.taskMenuDots { font-size: 20px; }
-.taskDescription { margin: 7px 0 0; color: #6B7280; font-size: 13px; line-height: 1.5; }
-.taskMetaRow { gap: 8px; margin: 32px 0 24px; }
-.metaLabel { color: #6B7280; font-size: 11px; font-weight: 400; }
-.metaIcon { width: 15px; height: 16.54px; filter: brightness(0) opacity(0.88); }
-.metaText { color: #1F1F1F; font-family: Inter, sans-serif; font-size: 12px; font-weight: 400; }
-.assigneesRow { align-items: center; gap: 6px; margin: 0; }
-.assigneeItem { gap: 6px; }
-.assigneeAvatar { width: 24px; height: 24px; background: #E5E7EB; color: #4B5563; font-size: 9px; }
-.assigneeName { padding: 5px 12px; background: #E5E7EB; color: #6B7280; font-size: 11px; }
-.noAssignee { color: #6B7280; font-size: 11px; }
-.separator { flex: 0 0 1px; width: min(942px, 100%); height: 1px; margin: 24px 0; background: #E5E7EB; }
+.taskHeaderRow {
+  position: relative;
+  display: block;
+}
+
+.taskHeadingBlock {
+  width: calc(100% - 77px);
+  min-width: 0;
+}
+
+.taskHeadingLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 25px;
+}
+
+.taskTitle {
+  margin: 0;
+  color: #000000;
+  font: 600 16px/1.4 Montserrat, sans-serif;
+}
+
+.statusBubble {
+  padding: 4px 12px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.statusTodo {
+  background: #FEE2E2;
+  color: #EF4444;
+}
+
+.taskHeaderRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+}
+
+.taskMenuBtn {
+  width: 57px;
+  height: 57px;
+  padding: 0;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  background: #FFFFFF;
+  box-sizing: border-box;
+}
+
+.taskMenuDots {
+  font-size: 20px;
+}
+
+.taskDescription {
+  margin: 7px 0 0;
+  color: #6B7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.taskMetaRow {
+  gap: 8px;
+  margin: 32px 0 24px;
+}
+
+.metaLabel {
+  color: #6B7280;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.metaIcon {
+  width: 15px;
+  height: 16.54px;
+  filter: brightness(0) opacity(0.88);
+}
+
+.metaText {
+  color: #1F1F1F;
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.assigneesRow {
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.assigneeItem {
+  gap: 6px;
+}
+
+.assigneeAvatar {
+  width: 24px;
+  height: 24px;
+  background: #E5E7EB;
+  color: #4B5563;
+  font-size: 9px;
+}
+
+.assigneeName {
+  padding: 5px 12px;
+  background: #E5E7EB;
+  color: #6B7280;
+  font-size: 11px;
+}
+
+.noAssignee {
+  color: #6B7280;
+  font-size: 11px;
+}
+
+.separator {
+  flex: 0 0 1px;
+  width: min(942px, 100%);
+  height: 1px;
+  margin: 24px 0;
+  background: #E5E7EB;
+}
+
 .commentsHeader {
   margin: 0;
   padding: 0;
@@ -1306,15 +1770,59 @@
   font-weight: 400;
 }
 
-.commentsContent { margin-top: 10px; }
-.commentItem { gap: 12px; margin-bottom: 12px; }
-.commentAvatar { flex: 0 0 24px; width: 24px; height: 24px; font-size: 9px; background: #E5E7EB; color: #4B5563; }
-.commentBox { width: auto; flex: 1 1 auto; min-width: 0; padding: 16px 14px; background: #F3F4F6; border-radius: 10px; }
-.commentHeader { align-items: center; margin-bottom: 18px; }
-.commentAuthor { color: #000000; font: 400 14px Inter, sans-serif; }
-.commentDate { font-size: 9px; }
-.commentText { margin: 0; color: #000000; font: 400 10px/1.6 Inter, sans-serif; }
-.noComments { margin: 0 0 12px 36px; color: #6B7280; font-size: 12px; }
+.commentsContent {
+  margin-top: 10px;
+}
+
+.commentItem {
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.commentAvatar {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  font-size: 9px;
+  background: #E5E7EB;
+  color: #4B5563;
+}
+
+.commentBox {
+  width: auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 16px 14px;
+  background: #F3F4F6;
+  border-radius: 10px;
+}
+
+.commentHeader {
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.commentAuthor {
+  color: #000000;
+  font: 400 14px Inter, sans-serif;
+}
+
+.commentDate {
+  font-size: 9px;
+}
+
+.commentText {
+  margin: 0;
+  color: #000000;
+  font: 400 10px/1.6 Inter, sans-serif;
+}
+
+.noComments {
+  margin: 0 0 12px 36px;
+  color: #6B7280;
+  font-size: 12px;
+}
+
 .addCommentRow {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
@@ -1324,7 +1832,12 @@
   row-gap: 16px;
   margin-top: 12px;
 }
-.addCommentRow .commentAvatar { grid-column: 1; grid-row: 1; }
+
+.addCommentRow .commentAvatar {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 .addCommentRow .commentAvatar {
   background: #FFE8D9;
   color: #B54708;
@@ -1336,8 +1849,23 @@
   font-weight: 400;
 }
 
-.addCommentTextarea { grid-column: 2; grid-row: 1; width: 100%; min-width: 0; min-height: 78px; padding: 16px 14px; background: #F9FAFB; color: #000000; font: 400 10px Inter, sans-serif; }
-.addCommentTextarea::placeholder { color: #000000; opacity: 1; }
+.addCommentTextarea {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 78px;
+  padding: 16px 14px;
+  background: #F9FAFB;
+  color: #000000;
+  font: 400 10px Inter, sans-serif;
+}
+
+.addCommentTextarea::placeholder {
+  color: #000000;
+  opacity: 1;
+}
+
 .sendCommentBtn {
   grid-column: 2;
   grid-row: 2;
@@ -1355,20 +1883,54 @@
 }
 
 @media (max-width: 700px) {
-  .taskCard { padding: 24px 34px 24px 39px; }
-  .taskMenuBtn { width: 57px; height: 57px; }
-  .taskDescription { margin-right: 0; }
-  .sendCommentBtn { flex-basis: 150px; }
+  .taskCard {
+    padding: 24px 34px 24px 39px;
+  }
+
+  .taskMenuBtn {
+    width: 57px;
+    height: 57px;
+  }
+
+  .taskDescription {
+    margin-right: 0;
+  }
+
+  .sendCommentBtn {
+    flex-basis: 150px;
+  }
 }
 
 @media (max-width: 480px) {
-  .taskCard { padding: 24px 34px 24px 39px; }
-  .taskHeaderRow { padding-right: 0; }
-  .taskMenuBtn { width: 57px; height: 57px; }
-  .taskHeadingLine { flex-wrap: wrap; }
-  .addCommentRow { flex-wrap: wrap; }
-  .addCommentTextarea { flex-basis: calc(100% - 42px); }
-  .sendCommentBtn { flex-basis: 100%; margin: 0; }
+  .taskCard {
+    padding: 24px 34px 24px 39px;
+  }
+
+  .taskHeaderRow {
+    padding-right: 0;
+  }
+
+  .taskMenuBtn {
+    width: 57px;
+    height: 57px;
+  }
+
+  .taskHeadingLine {
+    flex-wrap: wrap;
+  }
+
+  .addCommentRow {
+    flex-wrap: wrap;
+  }
+
+  .addCommentTextarea {
+    flex-basis: calc(100% - 42px);
+  }
+
+  .sendCommentBtn {
+    flex-basis: 100%;
+    margin: 0;
+  }
 }
 
 .modalOverlay {
@@ -1376,7 +1938,6 @@
   overflow-y: auto;
   background: rgba(31, 31, 31, 0.18);
 }
-
 .taskFormModal,
 .projectFormModal {
   position: relative;
@@ -1424,29 +1985,123 @@
 }
 
 .taskFormModal .modalTextarea,
-.projectFormModal .modalTextarea { resize: vertical; }
-.taskFormModal .assigneeSelector { height: 62px; text-align: left; background: #FFFFFF; }
-.modalCloseBtn { position: absolute; top: 34px; right: 34px; width: 30px; height: 30px; padding: 0; border: 0; background: transparent; color: #6B7280; font: 300 32px/1 Inter, sans-serif; cursor: pointer; }
-.taskStatusFieldset { margin: 12px 0 0; padding: 0; border: 0; }
-.taskStatusFieldset legend { margin-bottom: 14px; color: #000000; font: 400 16px/1.4 Inter, sans-serif; }
-.taskStatusOptions { display: flex; flex-wrap: wrap; gap: 10px; }
-.taskStatusOption { min-width: 88px; padding: 6px 16px; border: 0; border-radius: 999px; font: 400 16px/1.4 Inter, sans-serif; cursor: pointer; }
-.taskStatusTODO { background: #FEE2E2; color: #EF4444; }
-.taskStatusIN_PROGRESS { background: #FFF0D7; color: #D97706; }
-.taskStatusDONE { background: #ECFDF3; color: #12A150; }
+.projectFormModal .modalTextarea {
+  resize: vertical;
+}
+
+.taskFormModal .assigneeSelector {
+  height: 62px;
+  text-align: left;
+  background: #FFFFFF;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 34px;
+  right: 34px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #6B7280;
+  font: 300 32px/1 Inter, sans-serif;
+  cursor: pointer;
+}
+
+.taskStatusFieldset {
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.taskStatusFieldset legend {
+  margin-bottom: 14px;
+  color: #000000;
+  font: 400 16px/1.4 Inter, sans-serif;
+}
+
+.taskStatusOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.taskStatusOption {
+  min-width: 88px;
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 999px;
+  font: 400 16px/1.4 Inter, sans-serif;
+  cursor: pointer;
+}
+
+.taskStatusTODO {
+  background: #FEE2E2;
+  color: #EF4444;
+}
+
+.taskStatusIN_PROGRESS {
+  background: #FFF0D7;
+  color: #D97706;
+}
+
+.taskStatusDONE {
+  background: #ECFDF3;
+  color: #12A150;
+}
+
 .taskFormModal .modalButtonsRow,
-.projectFormModal .modalButtonsRow { margin-top: 44px; }
+.projectFormModal .modalButtonsRow {
+  margin-top: 44px;
+}
+
 .taskFormModal .modalPrimaryBtn,
-.projectFormModal .modalPrimaryBtn { min-width: 211px; min-height: 58px; padding: 0 20px; border-radius: 10px; background: #E5E7EB; color: #9CA3AF; font: 400 16px Inter, sans-serif; }
+.projectFormModal .modalPrimaryBtn {
+  min-width: 211px;
+  min-height: 58px;
+  padding: 0 20px;
+  border-radius: 10px;
+  background: #E5E7EB;
+  color: #9CA3AF;
+  font: 400 16px Inter, sans-serif;
+}
+
 .taskFormModal .modalPrimaryBtn:not(:disabled),
-.projectFormModal .modalPrimaryBtn:not(:disabled) { background: #1F1F1F; color: #FFFFFF; }
-.taskFormModal .modalPrimaryBtn:disabled { cursor: not-allowed; }
+.projectFormModal .modalPrimaryBtn:not(:disabled) {
+  background: #1F1F1F;
+  color: #FFFFFF;
+}
+
+.taskFormModal .modalPrimaryBtn:disabled {
+  cursor: not-allowed;
+}
+
 .taskFormModal .modalSecondaryBtn,
-.projectFormModal .modalSecondaryBtn { display: none; }
-.projectEditOverlay { align-items: flex-start; }
-.projectFormModal { width: min(598px, calc(100vw - 16px)); height: min(616px, calc(100svh - 16px)); padding-right: clamp(32px, 11.8vw, 68px); padding-left: clamp(32px, 11.8vw, 68px); }
-.projectFormModal .userResultsList { margin-top: -8px; border-color: #E5E7EB; }
-.projectFormModal .contributorEditItem { border-color: #E5E7EB; }
+.projectFormModal .modalSecondaryBtn {
+  display: none;
+}
+
+.projectEditOverlay {
+  align-items: flex-start;
+}
+
+.projectFormModal {
+  width: min(598px, calc(100vw - 16px));
+  height: min(616px, calc(100svh - 16px));
+  padding-right: clamp(32px, 11.8vw, 68px);
+  padding-left: clamp(32px, 11.8vw, 68px);
+}
+
+.projectFormModal .userResultsList {
+  margin-top: -8px;
+  border-color: #E5E7EB;
+}
+
+.projectFormModal .contributorEditItem {
+  border-color: #E5E7EB;
+}
+
 .aiTaskModal {
   position: relative;
   width: min(598px, calc(100vw - 16px));
@@ -1458,33 +2113,121 @@
   box-sizing: border-box;
 }
 
-.aiModalHeader { justify-content: flex-start; }
-.aiModalHeader h2 { color: #1F1F1F; font: 600 24px/1.3 Manrope, sans-serif; }
-.aiModalHeader h2::before { content: "✦"; margin-right: 10px; color: #F97316; }
-.aiCloseBtn { position: absolute; top: 26px; right: 26px; }
-.aiPromptRow { display: flex; align-items: center; gap: 8px; margin-top: auto; padding: 10px 12px 10px 28px; border-radius: 999px; background: #F9FAFB; }
-.aiPromptRow .modalTextarea { flex: 1; min-width: 0; min-height: 36px; max-height: 100px; margin: 0; padding: 10px 0; resize: vertical; border: 0; outline: 0; background: transparent; color: #1F1F1F; font: 400 10px Inter, sans-serif; }
-.aiPromptRow .modalTextarea::placeholder { color: #1F1F1F; opacity: 1; }
-.aiPromptSubmit { display: flex; flex: 0 0 24px; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; background: #D3590B; color: #FFFFFF; font-size: 14px; cursor: pointer; }
-.aiPromptSubmit:disabled { cursor: not-allowed; opacity: 1; }
-.aiTaskModal .aiRestartBtn { margin-top: 12px; }
+.aiModalHeader {
+  justify-content: flex-start;
+}
+
+.aiModalHeader h2 {
+  color: #1F1F1F;
+  font: 600 24px/1.3 Manrope, sans-serif;
+}
+
+.aiModalHeader h2::before {
+  content: "✦";
+  margin-right: 10px;
+  color: #F97316;
+}
+
+.aiCloseBtn {
+  position: absolute;
+  top: 26px;
+  right: 26px;
+}
+
+.aiPromptRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 10px 12px 10px 28px;
+  border-radius: 999px;
+  background: #F9FAFB;
+}
+
+.aiPromptRow .modalTextarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 36px;
+  max-height: 100px;
+  margin: 0;
+  padding: 10px 0;
+  resize: vertical;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #1F1F1F;
+  font: 400 10px Inter, sans-serif;
+}
+
+.aiPromptRow .modalTextarea::placeholder {
+  color: #1F1F1F;
+  opacity: 1;
+}
+
+.aiPromptSubmit {
+  display: flex;
+  flex: 0 0 24px;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #D3590B;
+  color: #FFFFFF;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.aiPromptSubmit:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.aiTaskModal .aiRestartBtn {
+  margin-top: 12px;
+}
 
 @media (max-width: 700px) {
   .taskFormModal,
-  .projectFormModal { padding: 72px 28px 36px; }
-  .aiTaskModal { padding: 64px 24px 36px; }
-  .modalCloseBtn { top: 22px; right: 22px; }
+  .projectFormModal {
+    padding: 72px 28px 36px;
+  }
+
+  .aiTaskModal {
+    padding: 64px 24px 36px;
+  }
+
+  .modalCloseBtn {
+    top: 22px;
+    right: 22px;
+  }
 }
 
 @media (max-width: 420px) {
   .taskFormModal,
-  .projectFormModal { padding: 64px 20px 28px; }
+  .projectFormModal {
+    padding: 64px 20px 28px;
+  }
+
   .taskFormModal h2,
-  .projectFormModal h2 { font-size: 23px; }
+  .projectFormModal h2 {
+    font-size: 23px;
+  }
+
   .taskFormModal .modalButtonsRow,
-  .projectFormModal .modalButtonsRow { margin-top: 24px; }
-  .aiTaskModal { padding: 60px 18px 24px; }
-  .aiPromptRow { padding-left: 18px; }
+  .projectFormModal .modalButtonsRow {
+    margin-top: 24px;
+  }
+
+  .aiTaskModal {
+    padding: 60px 18px 24px;
+  }
+
+  .aiPromptRow {
+    padding-left: 18px;
+  }
 }
 
 .createTaskFormModal {
@@ -1506,7 +2249,6 @@
   color: #000000;
   font: 400 14px/1.4 Inter, sans-serif;
 }
-
 .createTaskFormModal .modalInput,
 .createTaskFormModal .modalTextarea {
   width: 452px;
@@ -1549,7 +2291,11 @@
   outline-offset: 2px;
 }
 
-.createDueDateText { color: #6B7280; font: 400 14px Inter, sans-serif; }
+.createDueDateText {
+  color: #6B7280;
+  font: 400 14px Inter, sans-serif;
+}
+
 .createDueDateIcon {
   display: block;
   flex: 0 0 15px;
@@ -1558,6 +2304,7 @@
   object-fit: contain;
   filter: grayscale(1) brightness(0) saturate(100%) invert(47%) sepia(8%) saturate(568%) hue-rotate(182deg) brightness(91%) contrast(86%);
 }
+
 .createDueDatePicker {
   position: absolute;
   width: 1px;
@@ -1611,7 +2358,10 @@
 }
 
 .createTaskFormModal .assigneeOption:last-child,
-.editTaskFormModal .assigneeOption:last-child { margin-bottom: 0; }
+.editTaskFormModal .assigneeOption:last-child {
+  margin-bottom: 0;
+}
+
 .createTaskFormModal .assigneeOption input,
 .editTaskFormModal .assigneeOption input {
   position: relative;
@@ -1626,6 +2376,7 @@
   background: #FFFFFF;
   cursor: pointer;
 }
+
 .createTaskFormModal .assigneeOption input::before,
 .editTaskFormModal .assigneeOption input::before {
   position: absolute;
@@ -1638,29 +2389,73 @@
   content: "";
   transform: translate(-50%, -65%) rotate(-45deg) scale(0);
 }
+
 .createTaskFormModal .assigneeOption input:checked,
 .editTaskFormModal .assigneeOption input:checked {
   border-color: #D3590B;
   background: #D3590B;
 }
+
 .createTaskFormModal .assigneeOption input:checked::before,
-.editTaskFormModal .assigneeOption input:checked::before { transform: translate(-50%, -65%) rotate(-45deg) scale(1); }
+.editTaskFormModal .assigneeOption input:checked::before {
+  transform: translate(-50%, -65%) rotate(-45deg) scale(1);
+}
+
 .createTaskFormModal .assigneeOption input:focus-visible,
 .editTaskFormModal .assigneeOption input:focus-visible {
   outline: 2px solid #D3590B;
   outline-offset: 2px;
 }
 
-.createTaskFormModal .taskStatusFieldset { margin: 16px 0 0; }
-.createTaskFormModal .taskStatusFieldset legend { margin: 0 0 16px; font: 400 14px/1.4 Inter, sans-serif; }
-.createTaskFormModal .taskStatusOptions { gap: 8px; }
-.createTaskFormModal .taskStatusOption { height: 25px; min-width: 0; padding: 0; border: 1px solid transparent; box-sizing: border-box; font: 400 14px/25px Inter, sans-serif; }
+.createTaskFormModal .taskStatusFieldset {
+  margin: 16px 0 0;
+}
+
+.createTaskFormModal .taskStatusFieldset legend {
+  margin: 0 0 16px;
+  font: 400 14px/1.4 Inter, sans-serif;
+}
+
+.createTaskFormModal .taskStatusOptions {
+  gap: 8px;
+}
+
+.createTaskFormModal .taskStatusOption {
+  height: 25px;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  font: 400 14px/25px Inter, sans-serif;
+}
+
 .createTaskFormModal .taskStatusOption[aria-pressed="true"],
-.editTaskFormModal .taskStatusOption[aria-pressed="true"] { border-color: #D3590B; }
-.createTaskFormModal .taskStatusTODO { width: 76px; background: #FFE0E0; color: #EF4444; }
-.createTaskFormModal .taskStatusIN_PROGRESS { width: 90px; background: #FFF0D7; color: #E08D00; }
-.createTaskFormModal .taskStatusDONE { width: 94px; background: #F1FFF7; color: #27AE60; }
-.createTaskFormModal .modalButtonsRow { margin-top: 56px; }
+.editTaskFormModal .taskStatusOption[aria-pressed="true"] {
+  border-color: #D3590B;
+}
+
+.createTaskFormModal .taskStatusTODO {
+  width: 76px;
+  background: #FFE0E0;
+  color: #EF4444;
+}
+
+.createTaskFormModal .taskStatusIN_PROGRESS {
+  width: 90px;
+  background: #FFF0D7;
+  color: #E08D00;
+}
+
+.createTaskFormModal .taskStatusDONE {
+  width: 94px;
+  background: #F1FFF7;
+  color: #27AE60;
+}
+
+.createTaskFormModal .modalButtonsRow {
+  margin-top: 56px;
+}
+
 .createTaskFormModal .modalPrimaryBtn {
   width: 181px;
   min-width: 181px;
@@ -1673,7 +2468,11 @@
   font: 400 16px Inter, sans-serif;
 }
 
-.createTaskFormModal .modalPrimaryBtn:not(:disabled) { background: #E5E7EB; color: #9CA3AF; }
+.createTaskFormModal .modalPrimaryBtn:not(:disabled) {
+  background: #E5E7EB;
+  color: #9CA3AF;
+}
+
 .createTaskFormModal .modalCloseBtn {
   top: 37px;
   right: 38.67px;
@@ -1693,8 +2492,14 @@
   content: "";
 }
 
-.createTaskFormModal .modalCloseBtn::before { transform: rotate(45deg); }
-.createTaskFormModal .modalCloseBtn::after { transform: rotate(-45deg); }
+.createTaskFormModal .modalCloseBtn::before {
+  transform: rotate(45deg);
+}
+
+.createTaskFormModal .modalCloseBtn::after {
+  transform: rotate(-45deg);
+}
+
 .modalOverlay {
   inset: 0;
   width: auto;
@@ -1702,11 +2507,16 @@
 }
 
 @media (max-width: 620px) {
-  .createTaskFormModal { padding: 72px 28px 28px; }
+  .createTaskFormModal {
+    padding: 72px 28px 28px;
+  }
+
   .createTaskFormModal .modalInput,
   .createTaskFormModal .modalTextarea,
   .createTaskFormModal .assigneeSelector,
-  .createDueDateControl { width: 100%; }
+  .createDueDateControl {
+    width: 100%;
+  }
 }
 
 .aiTaskModal {
@@ -1722,9 +2532,24 @@
   min-height: 31px;
 }
 
-.aiTitleStar { display: block; width: 20px; height: 20px; flex: 0 0 20px; object-fit: contain; }
-.aiModalHeader h2 { margin: 0; color: #1F1F1F; font: 600 24px/31px Manrope, sans-serif; }
-.aiModalHeader h2::before { content: none; }
+.aiTitleStar {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  object-fit: contain;
+}
+
+.aiModalHeader h2 {
+  margin: 0;
+  color: #1F1F1F;
+  font: 600 24px/31px Manrope, sans-serif;
+}
+
+.aiModalHeader h2::before {
+  content: none;
+}
+
 .aiCloseBtn {
   position: absolute;
   top: 37px;
@@ -1734,7 +2559,6 @@
   padding: 0;
   font-size: 0;
 }
-
 .aiCloseBtn::before,
 .aiCloseBtn::after {
   position: absolute;
@@ -1746,8 +2570,14 @@
   content: "";
 }
 
-.aiCloseBtn::before { transform: rotate(45deg); }
-.aiCloseBtn::after { transform: rotate(-45deg); }
+.aiCloseBtn::before {
+  transform: rotate(45deg);
+}
+
+.aiCloseBtn::after {
+  transform: rotate(-45deg);
+}
+
 .aiPromptRow {
   position: absolute;
   left: 52px;
@@ -1782,14 +2612,40 @@
   box-sizing: border-box;
 }
 
-.aiPromptRow .modalTextarea::placeholder { color: #000000; opacity: 1; }
-.aiPromptSubmit { flex: 0 0 24px; width: 24px; height: 24px; padding: 0; background: transparent; }
-.aiPromptSubmit img { display: block; width: 24px; height: 24px; object-fit: contain; }
-.aiPromptSubmit:disabled { opacity: 1; }
+.aiPromptRow .modalTextarea::placeholder {
+  color: #000000;
+  opacity: 1;
+}
+
+.aiPromptSubmit {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+}
+
+.aiPromptSubmit img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.aiPromptSubmit:disabled {
+  opacity: 1;
+}
 
 @media (max-width: 620px) {
-  .aiTaskModal { padding: 79px clamp(24px, 8.7vw, 52px); }
-  .aiPromptRow { right: clamp(24px, 8.7vw, 52px); left: clamp(24px, 8.7vw, 52px); width: auto; }
+  .aiTaskModal {
+    padding: 79px clamp(24px, 8.7vw, 52px);
+  }
+
+  .aiPromptRow {
+    right: clamp(24px, 8.7vw, 52px);
+    left: clamp(24px, 8.7vw, 52px);
+    width: auto;
+  }
 }
 
 .editTaskFormModal {
@@ -1828,7 +2684,10 @@
   box-sizing: border-box;
 }
 
-.editTaskFormModal > .modalTextarea { resize: vertical; }
+.editTaskFormModal > .modalTextarea {
+  resize: vertical;
+}
+
 .editDueDateField {
   position: relative;
   display: flex;
@@ -1844,7 +2703,11 @@
   box-sizing: border-box;
 }
 
-.editDueDateText { color: #6B7D80; font: 400 12px Inter, sans-serif; }
+.editDueDateText {
+  color: #6B7D80;
+  font: 400 12px Inter, sans-serif;
+}
+
 .editDueDateIcon {
   display: block;
   flex: 0 0 16px;
@@ -1855,7 +2718,15 @@
   mask: url("/images/icone-list.png") center / contain no-repeat;
 }
 
-.editDueDatePicker { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.editDueDatePicker {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
 .editTaskFormModal .assigneeSelector {
   display: flex;
   align-items: center;
@@ -1882,14 +2753,50 @@
   transform: translateY(-3px) rotate(45deg);
 }
 
-.editTaskFormModal .taskStatusFieldset { margin: 16px 0 0; }
-.editTaskFormModal .taskStatusFieldset legend { margin: 0 0 16px; font: 400 14px/17px Inter, sans-serif; }
-.editTaskFormModal .taskStatusOptions { gap: 8px; }
-.editTaskFormModal .taskStatusOption { height: 25px; min-width: 0; padding: 0; border: 1px solid transparent; box-sizing: border-box; font: 400 14px/25px Inter, sans-serif; }
-.editTaskFormModal .taskStatusTODO { width: 76px; background: #FFE0E0; color: #EF4444; }
-.editTaskFormModal .taskStatusIN_PROGRESS { width: 90px; background: #FFF0D7; color: #E08D00; }
-.editTaskFormModal .taskStatusDONE { width: 94px; background: #F1FFF7; color: #27AE60; }
-.editTaskFormModal .modalButtonsRow { margin-top: 56px; }
+.editTaskFormModal .taskStatusFieldset {
+  margin: 16px 0 0;
+}
+
+.editTaskFormModal .taskStatusFieldset legend {
+  margin: 0 0 16px;
+  font: 400 14px/17px Inter, sans-serif;
+}
+
+.editTaskFormModal .taskStatusOptions {
+  gap: 8px;
+}
+
+.editTaskFormModal .taskStatusOption {
+  height: 25px;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  font: 400 14px/25px Inter, sans-serif;
+}
+
+.editTaskFormModal .taskStatusTODO {
+  width: 76px;
+  background: #FFE0E0;
+  color: #EF4444;
+}
+
+.editTaskFormModal .taskStatusIN_PROGRESS {
+  width: 90px;
+  background: #FFF0D7;
+  color: #E08D00;
+}
+
+.editTaskFormModal .taskStatusDONE {
+  width: 94px;
+  background: #F1FFF7;
+  color: #27AE60;
+}
+
+.editTaskFormModal .modalButtonsRow {
+  margin-top: 56px;
+}
+
 .editTaskFormModal .modalPrimaryBtn,
 .editTaskFormModal .modalPrimaryBtn:not(:disabled) {
   width: 244px;
@@ -1922,16 +2829,26 @@
   content: "";
 }
 
-.editTaskFormModal .modalCloseBtn::before { transform: rotate(45deg); }
-.editTaskFormModal .modalCloseBtn::after { transform: rotate(-45deg); }
+.editTaskFormModal .modalCloseBtn::before {
+  transform: rotate(45deg);
+}
+
+.editTaskFormModal .modalCloseBtn::after {
+  transform: rotate(-45deg);
+}
 
 @media (max-width: 620px) {
-  .editTaskFormModal { padding: 72px 28px 28px; }
+  .editTaskFormModal {
+    padding: 72px 28px 28px;
+  }
+
   .editTaskFormModal > .modalInput,
   .editTaskFormModal > .modalTextarea,
   .createDueDateControl,
   .editDueDateField,
-  .editTaskFormModal .assigneeSelector { width: 100%; }
+  .editTaskFormModal .assigneeSelector {
+    width: 100%;
+  }
 }
 
 .tasksSection {
@@ -1961,9 +2878,24 @@
   font: 600 24px/31px Manrope, sans-serif;
 }
 
-.projectFormFields { display: flex; flex-direction: column; gap: 24px; }
-.projectFormField { display: flex; flex-direction: column; gap: 7px; }
-.projectFormField > label { margin: 0; color: #000000; font: 400 14px/20px Inter, sans-serif; }
+.projectFormFields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.projectFormField {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.projectFormField > label {
+  margin: 0;
+  color: #000000;
+  font: 400 14px/20px Inter, sans-serif;
+}
+
 .projectFormField > .modalInput,
 .projectFormField > .modalTextarea,
 .projectContributorSearch {
@@ -1980,7 +2912,12 @@
   box-sizing: border-box;
 }
 
-.projectFormField > .modalTextarea { padding: 17px; line-height: 18px; resize: none; }
+.projectFormField > .modalTextarea {
+  padding: 17px;
+  line-height: 18px;
+  resize: none;
+}
+
 .projectContributorSelector {
   display: flex;
   align-items: center;
@@ -2006,8 +2943,17 @@
   transform: rotate(45deg) translateY(-3px);
 }
 
-.projectFormField > .projectContributorSearch { margin-top: 1px; }
-.projectFormModal .userResultsList { margin: 4px 0 0; border: 1px solid #E5E7EB; border-radius: 5px; background: #FFFFFF; }
+.projectFormField > .projectContributorSearch {
+  margin-top: 1px;
+}
+
+.projectFormModal .userResultsList {
+  margin: 4px 0 0;
+  border: 1px solid #E5E7EB;
+  border-radius: 5px;
+  background: #FFFFFF;
+}
+
 .projectFormModal .userResultItem {
   display: block;
   width: 100%;
@@ -2021,13 +2967,53 @@
   cursor: pointer;
 }
 
-.projectFormModal .userResultItem:hover { background: #F9FAFB; }
-.currentContributorsTitle { margin: 16px 0 8px; color: #6B7280; font: 400 12px Inter, sans-serif; }
-.projectFormModal .contributorsEditList { gap: 8px; }
-.projectFormModal .contributorEditItem { padding: 4px 8px; border-color: #E5E7EB; border-radius: 5px; background: #F3F4F6; color: #6B7280; font: 400 12px Inter, sans-serif; }
-.projectFormModal .contributorRemoveBtn { padding: 6px 10px; border: 0; border-radius: 5px; background: #D3590B; color: #FFFFFF; font: 400 13px Inter, sans-serif; cursor: pointer; }
-.projectFormModal .modalCloseBtn { top: 37px; right: 38.67px; width: 14.33px; height: 14.33px; padding: 0; color: #6B7280; font: 400 14.33px/14.33px Inter, sans-serif; }
-.projectFormModal .modalButtonsRow { margin-top: 56px; }
+.projectFormModal .userResultItem:hover {
+  background: #F9FAFB;
+}
+
+.currentContributorsTitle {
+  margin: 16px 0 8px;
+  color: #6B7280;
+  font: 400 12px Inter, sans-serif;
+}
+
+.projectFormModal .contributorsEditList {
+  gap: 8px;
+}
+
+.projectFormModal .contributorEditItem {
+  padding: 4px 8px;
+  border-color: #E5E7EB;
+  border-radius: 5px;
+  background: #F3F4F6;
+  color: #6B7280;
+  font: 400 12px Inter, sans-serif;
+}
+
+.projectFormModal .contributorRemoveBtn {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: #D3590B;
+  color: #FFFFFF;
+  font: 400 13px Inter, sans-serif;
+  cursor: pointer;
+}
+
+.projectFormModal .modalCloseBtn {
+  top: 37px;
+  right: 38.67px;
+  width: 14.33px;
+  height: 14.33px;
+  padding: 0;
+  color: #6B7280;
+  font: 400 14.33px/14.33px Inter, sans-serif;
+}
+
+.projectFormModal .modalButtonsRow {
+  margin-top: 56px;
+}
+
 .projectFormModal .modalPrimaryBtn,
 .projectFormModal .modalPrimaryBtn:not(:disabled) {
   width: 181px;
@@ -2043,10 +3029,21 @@
   cursor: pointer;
 }
 
-.projectFormModal .modalPrimaryBtn:disabled { cursor: not-allowed; }
-.projectFormModal .modalSecondaryBtn { display: none; }
+.projectFormModal .modalPrimaryBtn:disabled {
+  cursor: not-allowed;
+}
+
+.projectFormModal .modalSecondaryBtn {
+  display: none;
+}
 
 @media (max-width: 700px) {
-  .projectFormModal { padding: 64px 24px 32px; }
-  .projectFormModal .modalCloseBtn { top: 18px; right: 20px; }
+  .projectFormModal {
+    padding: 64px 24px 32px;
+  }
+
+  .projectFormModal .modalCloseBtn {
+    top: 18px;
+    right: 20px;
+  }
 }

@@ -14,8 +14,17 @@
   background: #FFFFFF;
 }
 
-.left { display: flex; align-items: center; flex: 0 0 auto; }
-.logo { display: block; width: 147px; height: 18.72px; }
+.left {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.logo {
+  display: block;
+  width: 147px;
+  height: 18.72px;
+}
 
 .center {
   width: 512px;
@@ -54,15 +63,44 @@
 }
 
 .navItem:hover,
-.navItem.active { background: #111111; }
-.icon { display: block; width: 29px; height: 22.48px; flex: 0 0 auto; transition: filter 0.2s ease; }
-.navItem:hover .icon,
-.navItem.active .icon { filter: brightness(0) invert(1); }
-.text { color: #D3590B; transition: color 0.2s ease; }
-.navItem:hover .text,
-.navItem.active .text { color: #FFFFFF; }
+.navItem.active {
+  background: #111111;
+}
 
-.right { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.icon {
+  display: block;
+  width: 29px;
+  height: 22.48px;
+  flex: 0 0 auto;
+  transition: filter 0.2s ease;
+}
+
+.navItem:hover .icon,
+.navItem.active .icon {
+  filter: brightness(0) invert(1);
+}
+
+.text {
+  color: #D3590B;
+  transition: color 0.2s ease;
+}
+
+.navItem:hover .text,
+.navItem.active .text {
+  color: #FFFFFF;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
 .avatar {
   width: 65px;
   height: 65px;
@@ -92,45 +130,144 @@
 }
 
 @media (max-width: 1100px) {
-  .header { gap: 16px; }
-  .logo { width: 125px; height: auto; }
-  .center { gap: 8px; }
-  .navItem { gap: 8px; padding: 0 8px; }
+  .header {
+    gap: 16px;
+  }
+
+  .logo {
+    width: 125px;
+    height: auto;
+  }
+
+  .center {
+    gap: 8px;
+  }
+
+  .navItem {
+    gap: 8px;
+    padding: 0 8px;
+  }
 }
 
 @media (max-width: 900px) {
-  .header { height: 60px; padding: 0 clamp(24px, 6.7vw, 58px); gap: 0; }
-  .logo { width: 90px; height: auto; }
-  .center { width: 321px; flex: 0 0 321px; gap: 35px; }
-  .navItem { height: 47px; padding: 0 8px; gap: 8px; border-radius: 7px; font-size: 11px; }
-  .navItem:first-child { flex: 0 0 135px; }
-  .navItem:last-child { flex: 0 0 151px; }
-  .icon { width: 16px; height: 16px; }
-  .avatar { width: 40px; height: 40px; font-size: 10px; }
+  .header {
+    height: 60px;
+    padding: 0 clamp(24px, 6.7vw, 58px);
+    gap: 0;
+  }
+
+  .logo {
+    width: 90px;
+    height: auto;
+  }
+
+  .center {
+    width: 321px;
+    flex: 0 0 321px;
+    gap: 35px;
+  }
+
+  .navItem {
+    height: 47px;
+    padding: 0 8px;
+    gap: 8px;
+    border-radius: 7px;
+    font-size: 11px;
+  }
+
+  .navItem:first-child {
+    flex: 0 0 135px;
+  }
+
+  .navItem:last-child {
+    flex: 0 0 151px;
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+  }
 }
 
 @media (max-width: 600px) {
-  .header { padding: 0 16px; gap: 8px; }
-  .logo { width: 82px; }
-  .center { width: auto; flex: 1 1 auto; gap: 4px; }
+  .header {
+    padding: 0 16px;
+    gap: 8px;
+  }
+
+  .logo {
+    width: 82px;
+  }
+
+  .center {
+    width: auto;
+    flex: 1 1 auto;
+    gap: 4px;
+  }
+
   .navItem,
   .navItem:first-child,
-  .navItem:last-child { height: 44px; flex: 1 1 0; padding: 0 4px; gap: 4px; font-size: 10px; }
-  .icon { width: 14px; height: 14px; }
-  .avatar { width: 36px; height: 36px; }
+  .navItem:last-child {
+    height: 44px;
+    flex: 1 1 0;
+    padding: 0 4px;
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  .icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 @media (max-width: 420px) {
-  .header { padding: 0 10px; gap: 4px; }
-  .logo { width: 68px; }
-  .center { gap: 2px; }
+  .header {
+    padding: 0 10px;
+    gap: 4px;
+  }
+
+  .logo {
+    width: 68px;
+  }
+
+  .center {
+    gap: 2px;
+  }
+
   .navItem,
   .navItem:first-child,
-  .navItem:last-child { padding: 0 2px; gap: 3px; font-size: 9px; }
-  .icon { width: 12px; height: 12px; }
-  .avatar { width: 32px; height: 32px; font-size: 9px; }
+  .navItem:last-child {
+    padding: 0 2px;
+    gap: 3px;
+    font-size: 9px;
+  }
+
+  .icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 9px;
+  }
 }
 
 @media (max-width: 360px) {
-  .left { display: none; }
+  .left {
+    display: none;
+  }
 }
