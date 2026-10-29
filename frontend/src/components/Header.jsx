@@ -51,7 +51,7 @@ export default function Header() {
             alt="Dashboard icon"
             width={24}
             height={24}
-            className={styles.icon}
+            className={`${styles.icon} ${styles.dashboardIcon}`}
           />
           <span className={styles.text}>Tableau de bord</span>
         </button>
@@ -68,7 +68,7 @@ export default function Header() {
             width={0}
             height={0}
             sizes="100vw"
-            className={styles.icon}
+            className={`${styles.icon} ${styles.projectsIcon}`}
           />
           <span className={styles.text}>Projets</span>
         </button>

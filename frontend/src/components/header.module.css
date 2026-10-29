@@ -69,10 +69,18 @@
 
 .icon {
   display: block;
-  width: 29px;
-  height: 22.48px;
   flex: 0 0 auto;
   transition: filter 0.2s ease;
+}
+
+.dashboardIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.projectsIcon {
+  width: 29px;
+  height: 22.49px;
 }
 
 .navItem:hover .icon,
@@ -183,11 +191,6 @@
     flex: 0 0 151px;
   }
 
-  .icon {
-    width: 16px;
-    height: 16px;
-  }
-
   .avatar {
     width: 40px;
     height: 40px;
@@ -221,11 +224,6 @@
     font-size: 10px;
   }
 
-  .icon {
-    width: 14px;
-    height: 14px;
-  }
-
   .avatar {
     width: 36px;
     height: 36px;
@@ -252,11 +250,6 @@
     padding: 0 2px;
     gap: 3px;
     font-size: 9px;
-  }
-
-  .icon {
-    width: 12px;
-    height: 12px;
   }
 
   .avatar {

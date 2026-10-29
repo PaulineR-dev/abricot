@@ -333,7 +333,7 @@ export default function ProjectDetail(props) {
           <div className={styles.contributorsRight}>
             <div className={styles.personRow}>
               <div className={styles.adminInitial}>
-                {project.project.owner.name.slice(0, 2).toUpperCase()}
+                {getInitialsFull(project.project.owner.name || project.project.owner.email)}
               </div>
               <div className={styles.ownerBadgeBubble}>Propriétaire</div>
             </div>
@@ -341,7 +341,7 @@ export default function ProjectDetail(props) {
             {project.project.members.filter((m) => m.user.id !== project.project.owner.id).map((m) => (
               <div key={m.id} className={styles.personRow}>
                 <div className={styles.memberInitial}>
-                  {m.user.name.slice(0, 2).toUpperCase()}
+                  {getInitialsFull(m.user.name || m.user.email)}
                 </div>
                 <div className={styles.memberNameBubble}>{m.user.name}</div>
               </div>
