@@ -39,7 +39,9 @@ export default function ProjectDetail(props) {
   const [showAiTaskModal, setShowAiTaskModal] = useState(false);
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiTasks, setAiTasks] = useState([]);
+  const [selectedAiTasks, setSelectedAiTasks] = useState([]);
   const [aiLoading, setAiLoading] = useState(false);
+  const [aiSaving, setAiSaving] = useState(false);
   const [aiError, setAiError] = useState("");
   const [editingAiTask, setEditingAiTask] = useState(null);
   const [taskTitle, setTaskTitle] = useState("");
@@ -119,6 +121,7 @@ export default function ProjectDetail(props) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Impossible de générer les tâches.");
       setAiTasks(data.tasks);
+      setSelectedAiTasks([]);
       setEditingAiTask(null);
     } catch (err) {
       setAiError(err.message || "Une erreur est survenue.");
@@ -127,14 +130,37 @@ export default function ProjectDetail(props) {
     }
   }
 
-  function selectAiTask(task) {
-    setTaskTitle(task.title);
-    setTaskDescription(task.description);
-    setTaskDue("");
-    setTaskStatus("TODO");
-    setTaskAssignees([]);
-    setShowAiTaskModal(false);
-    setShowTaskModal(true);
+  function toggleAiTask(index) {
+    setSelectedAiTasks((selected) => selected.includes(index)
+      ? selected.filter((item) => item !== index)
+      : [...selected, index]);
+  }
+
+  async function addSelectedAiTasks() {
+    if (!selectedAiTasks.length || aiSaving) return;
+    setAiSaving(true);
+    setAiError("");
+    try {
+      for (const index of selectedAiTasks) {
+        const task = aiTasks[index];
+        const res = await fetch(`/api/projects/${id}/tasks`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: task.title, description: task.description, dueDate: null, status: "TODO", assigneeIds: [] }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || data.message || `Impossible d'ajouter « ${task.title} ».`);
+      }
+      await reloadTasks(Date.now());
+      setShowAiTaskModal(false);
+      setAiTasks([]);
+      setSelectedAiTasks([]);
+    } catch (err) {
+      setAiError(err.message || "Impossible d'ajouter les tâches sélectionnées.");
+      try { await reloadTasks(Date.now()); } catch { /* Keep the original creation error visible. */ }
+    } finally {
+      setAiSaving(false);
+    }
   }
   async function reloadTasks(force) {
     const res = await fetch(`/api/projects/${id}/tasks?force=${force}`);
@@ -689,10 +715,10 @@ export default function ProjectDetail(props) {
 
         {showAiTaskModal && (
           <div className={styles.modalOverlay} onMouseDown={(e) => { if (e.target === e.currentTarget && !aiLoading) setShowAiTaskModal(false); }}>
-            <div className={`${styles.modalCard} ${styles.aiTaskModal}`} role="dialog" aria-modal="true" aria-labelledby="ai-task-modal-title">
+            <div className={`${styles.modalCard} ${styles.aiTaskModal} ${aiTasks.length ? styles.aiTaskModalWithResults : ""}`} role="dialog" aria-modal="true" aria-labelledby="ai-task-modal-title">
               <div className={styles.aiModalHeader}>
                 <Image src="/images/Star.png" alt="" aria-hidden="true" width={20} height={20} className={styles.aiTitleStar} />
-                <h2 id="ai-task-modal-title">Créer une tâche</h2>
+                <h2 id="ai-task-modal-title">Créer des tâches</h2>
                 <button className={styles.aiCloseBtn} aria-label="Fermer" disabled={aiLoading} onClick={() => setShowAiTaskModal(false)}>×</button>
               </div>
               <div className={styles.aiPromptRow}>
@@ -703,27 +729,32 @@ export default function ProjectDetail(props) {
               </div>
               {aiError && <p className={styles.aiError} role="alert">{aiError}</p>}
               {aiTasks.length > 0 && (
+                <>
                 <div className={styles.aiSuggestions}>
                   {aiTasks.map((task, index) => (
-                    <article className={styles.aiSuggestionCard} key={`${index}-${task.title}`}>
+                    <article className={`${styles.aiSuggestionCard} ${selectedAiTasks.includes(index) ? styles.aiSuggestionSelected : ""}`} key={`${index}-${task.title}`}>
                       {editingAiTask === index ? (
                         <div className={styles.aiEditFields}>
                           <input className={styles.modalInput} aria-label="Titre de la tâche proposée" value={task.title} onChange={(e) => setAiTasks((items) => items.map((item, i) => i === index ? { ...item, title: e.target.value } : item))} />
                           <textarea className={styles.modalTextarea} aria-label="Description de la tâche proposée" value={task.description} onChange={(e) => setAiTasks((items) => items.map((item, i) => i === index ? { ...item, description: e.target.value } : item))} />
-                          <button className={styles.aiTextBtn} onClick={() => setEditingAiTask(null)}>Terminé</button>
                         </div>
                       ) : (
-                        <button className={styles.aiSuggestionContent} onClick={() => selectAiTask(task)}>
+                        <button type="button" className={styles.aiSuggestionContent} aria-pressed={selectedAiTasks.includes(index)} onClick={() => toggleAiTask(index)}>
                           <strong>{task.title}</strong><span>{task.description}</span>
                         </button>
                       )}
                       <div className={styles.aiSuggestionActions}>
-                        <button className={styles.aiTextBtn} onClick={() => setAiTasks((items) => items.filter((_, i) => i !== index))}>Supprimer</button>
-                        {editingAiTask !== index && <button className={styles.aiTextBtn} onClick={() => setEditingAiTask(index)}>Modifier</button>}
+                        <button type="button" className={styles.aiTextBtn} onClick={() => { setAiTasks((items) => items.filter((_, i) => i !== index)); setSelectedAiTasks((items) => items.filter((i) => i !== index).map((i) => i > index ? i - 1 : i)); }}><img src="/images/suppr.png" alt="" />Supprimer</button>
+                        {editingAiTask !== index && <button type="button" className={styles.aiTextBtn} onClick={() => setEditingAiTask(index)}><img src="/images/pencil.png" alt="" />Modifier</button>}
+                        {editingAiTask === index && <button type="button" className={styles.aiTextBtn} onClick={() => setEditingAiTask(null)}>Terminé</button>}
                       </div>
                     </article>
                   ))}
                 </div>
+                <button type="button" className={styles.aiAddTasksBtn} disabled={!selectedAiTasks.length || aiSaving} onClick={addSelectedAiTasks}>
+                  {aiSaving ? "Ajout en cours…" : "Ajouter les tâches"}
+                </button>
+                </>
               )}
             </div>
           </div>
