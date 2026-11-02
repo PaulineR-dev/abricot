@@ -5,14 +5,16 @@ import Link from "next/link";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import styles from "./projects.module.css";
 
+// Crée les initiales affichées à côté du nom de chaque personne.
 function getInitials(name) {
   const parts = (name || "?").trim().split(/\s+/).filter(Boolean);
   return parts.length > 1
     ? `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
     : (parts[0]?.slice(0, 2) || "?").toUpperCase();
 }
-// Page liste des projets
+// Affiche la liste des projets et permet de créer un nouveau projet.
 export default function ProjectsPage() {
+  // Mémorise les projets affichés et les éventuelles erreurs de chargement.
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState("");
 
@@ -35,6 +37,7 @@ export default function ProjectsPage() {
   const [results, setResults] = useState([]);
   const [showContributorSelector, setShowContributorSelector] = useState(false);
 
+  // Vide les champs du formulaire puis ouvre la fenêtre de création.
   function openCreateProjectModal() {
     setTitle("");
     setDescription("");
@@ -46,15 +49,19 @@ export default function ProjectsPage() {
     setShowModal(true);
   }
 
+  // Charge les projets et leurs tâches, puis actualise la liste lorsqu’elle change.
   useEffect(() => {
+    // Évite de mettre à jour la page si elle a été quittée avant la fin du chargement.
     let active = true;
 
+    // Récupère la liste des projets, puis ajoute à chacun la liste de ses tâches.
     async function loadProjects() {
       try {
         const res = await fetch("/api/projects", { cache: "no-store" });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
 
+        // Attend que les tâches de tous les projets soient récupérées avant de continuer.
         const projectsWithTasks = await Promise.all(
           data.map(async (project) => {
             const tasksRes = await fetch(`/api/projects/${project.id}/tasks`, {
@@ -67,12 +74,15 @@ export default function ProjectsPage() {
         );
         if (!active) return;
 
+        // Classe d’abord les projets selon leur tâche la plus prioritaire, puis selon l’échéance la plus proche.
         const prioOrder = { URGENT: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
         const sorted = [...projectsWithTasks].sort((a, b) => {
+          // Un chiffre plus petit correspond à une priorité plus élevée ; 99 place les priorités inconnues après les autres.
           const minPrioA = Math.min(...(a.tasks || []).map((task) => prioOrder[task.priority] ?? 99), 99);
           const minPrioB = Math.min(...(b.tasks || []).map((task) => prioOrder[task.priority] ?? 99), 99);
           if (minPrioA !== minPrioB) return minPrioA - minPrioB;
 
+          // Si la priorité est égale, compare les échéances les plus proches de chaque projet.
           const minDateA = Math.min(...(a.tasks || []).map((task) => task.dueDate ? new Date(task.dueDate).getTime() : Infinity), Infinity);
           const minDateB = Math.min(...(b.tasks || []).map((task) => task.dueDate ? new Date(task.dueDate).getTime() : Infinity), Infinity);
           return minDateA - minDateB;
@@ -85,6 +95,7 @@ export default function ProjectsPage() {
       }
     }
 
+    // Recharge la liste après une mise à jour, un retour sur la page ou quand elle redevient visible.
     const refreshProjects = () => loadProjects();
     const refreshWhenVisible = () => {
       if (document.visibilityState === "visible") loadProjects();
@@ -106,12 +117,14 @@ export default function ProjectsPage() {
       document.removeEventListener("visibilitychange", refreshWhenVisible);
     };
   }, []);
-  // Recherche dynamique des utilisateurs
+  // Recherche les personnes à ajouter au projet lorsque deux caractères ou plus sont saisis.
   useEffect(() => {
     if (search.trim().length < 2) return;
 
+    // Permet d’ignorer une réponse si la recherche a changé entre-temps.
     let isCurrentSearch = true;
 
+    // Demande au serveur les personnes correspondant à la recherche.
     async function searchUsers() {
       try {
         const res = await fetch(`/api/users?query=${search}`);
@@ -129,11 +142,12 @@ export default function ProjectsPage() {
     };
   }, [search]);
 
-  // Création d’un projet
+  // Envoie au serveur le titre, la description et les adresses des contributeurs choisis.
   async function handleCreateProject(e) {
     e.preventDefault();
 
     try {
+      // Envoie le titre, la description et les personnes sélectionnées au serveur.
       const res = await fetch("/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -154,8 +168,10 @@ export default function ProjectsPage() {
     }
   }
 
+  // Affiche une erreur au lieu de la liste si le chargement a échoué.
   if (error) return <p>{error}</p>;
 
+  // Affiche le titre, le formulaire de création et les cartes des projets.
   return (
   <div className={styles.page}>
     <div className={styles.header}>

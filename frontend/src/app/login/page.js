@@ -2,32 +2,42 @@
 
 import styles from "./login.module.css";
 import Image from "next/image";
+// Link permet de naviguer entre les pages du site sans recharger toute la page.
 import Link from "next/link";
 import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/context/AuthContext";
 
+// Affiche la page de connexion et gère les informations saisies par l'utilisateur.
 export default function LoginPage() {
+  // Permet de rediriger l'utilisateur après sa connexion.
   const router = useRouter();
+  // Récupère la fonction qui vérifie les identifiants et connecte l'utilisateur.
   const { login } = useContext(AuthContext);
 
+  // Mémorise les champs du formulaire, le message d'erreur et l'état de chargement.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Traite l'envoi du formulaire et lance la connexion.
   async function handleSubmit(e) {
+    // Empêche le formulaire de recharger la page.
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
+      // Vérifie les identifiants, puis ouvre le tableau de bord si la connexion réussit.
       await login(email, password);
 
       router.replace("/dashboard");
     } catch (err) {
+      // Affiche le message si la connexion échoue.
       setError(err.message);
     } finally {
+      // Réactive le bouton une fois la tentative terminée.
       setLoading(false);
     }
   }

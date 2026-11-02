@@ -1,17 +1,20 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function POST(request) {
+  // Récupère la session et refuse les requêtes des utilisateurs non connectés.
   const token = (await cookies()).get("session")?.value;
   if (!token) {
     return NextResponse.json({ error: "Vous devez être connecté pour générer des tâches." }, { status: 401 });
   }
 
+  // Vérifie que la clé d'accès à l'API Mistral est configurée côté serveur.
   const apiKey = process.env.MISTRAL_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ error: "La génération IA n'est pas configurée : ajoutez MISTRAL_API_KEY au serveur frontend." }, { status: 503 });
   }
 
+  // Lit la description du projet et vérifie son format et sa longueur.
   let prompt;
   try {
     ({ prompt } = await request.json());
@@ -23,6 +26,7 @@ export async function POST(request) {
   }
 
   try {
+    // Demande à Mistral de proposer trois tâches au format JSON.
     const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
@@ -42,11 +46,13 @@ export async function POST(request) {
     });
 
     const result = await response.json();
+    // Transforme les erreurs de l'API Mistral en réponse adaptée au client.
     if (!response.ok) {
       console.error("Mistral task generation failed:", response.status, result);
       return NextResponse.json({ error: "Mistral n'a pas pu générer les propositions. Réessayez." }, { status: 502 });
     }
 
+    // Extrait les tâches générées, puis nettoie et limite leurs champs.
     const content = result.choices?.[0]?.message?.content;
     const parsed = typeof content === "string" ? JSON.parse(content) : content;
     const tasks = Array.isArray(parsed?.tasks)
@@ -56,11 +62,14 @@ export async function POST(request) {
         })).filter((task) => task.title && task.description)
       : [];
 
+    // Vérifie que trois tâches complètes ont bien été générées.
     if (tasks.length !== 3) {
       return NextResponse.json({ error: "Les propositions générées sont incomplètes. Essayez une autre description." }, { status: 502 });
     }
+    // Renvoie les trois propositions validées au client.
     return NextResponse.json({ tasks });
   } catch (error) {
+    // Journalise les erreurs inattendues et signale l'indisponibilité du service.
     console.error("Mistral task generation error:", error);
     return NextResponse.json({ error: "Impossible de contacter Mistral pour le moment." }, { status: 502 });
   }

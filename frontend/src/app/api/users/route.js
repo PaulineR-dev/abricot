@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 const API_URL = "http://localhost:8000";
 
 export async function GET(req) {
+  // Recupere le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -27,14 +28,14 @@ export async function GET(req) {
     );
   }
 
-  // Appel backend pour rechercher des utilisateurs
+  // Envoie le texte recherche au serveur pour trouver des utilisateurs.
   const res = await fetch(`${API_URL}/users/search?query=${query}`, {
     headers: {
       Authorization: `Bearer ${token}`, 
     },
   });
 
-  const data = await res.json(); // Lecture JSON
+  const data = await res.json(); // Convertit la reponse du serveur en donnees utilisables.
 
   // Si le backend renvoie une erreur : on la transmet
   if (!res.ok) {
@@ -44,6 +45,6 @@ export async function GET(req) {
     );
   }
 
-  // Succès : renvoie la liste des utilisateurs trouvés
+  // Envoie au navigateur la liste des utilisateurs trouves.
   return NextResponse.json(data.data.users);
 }

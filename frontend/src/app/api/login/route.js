@@ -3,9 +3,11 @@ import { cookies } from "next/headers";
 
 // Route POST — gère la connexion utilisateur
 export async function POST(req) {
+  // Lit l'adresse e-mail et le mot de passe envoyés par le formulaire.
   const { email, password } = await req.json(); 
   // On récupère les infos envoyées par le formulaire
 
+  // Envoie les identifiants au serveur backend pour vérifier la connexion.
   const res = await fetch("http://localhost:8000/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -32,6 +34,7 @@ export async function POST(req) {
     );
   }
 
+  // Récupère la session de connexion et les informations de l'utilisateur.
   const token = data.data.token; // Token JWT renvoyé par le backend
   const user = data.data.user;   // Informations utilisateur
 
@@ -43,7 +46,7 @@ export async function POST(req) {
     value: token,
     httpOnly: true,   // Protège le cookie contre l'accès JS
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "lax", // Limite l'envoi du cookie depuis d'autres sites.
     path: "/",
     maxAge: 60 * 60 * 24 * 7, // Expire dans 7 jours
   });

@@ -41,7 +41,7 @@ export async function GET() {
     );
   }
 
-  // Succès : renvoie la liste des projets
+  // Envoie au navigateur la liste des projets fournie par le serveur.
   return NextResponse.json(data.data.projects, {
     headers: { "Cache-Control": "no-store, max-age=0" },
   });
@@ -60,7 +60,7 @@ export async function POST(req) {
     );
   }
 
-  // Corps de la requête contenant les données du projet
+  // Lit les informations du nouveau projet saisies dans le formulaire.
   const body = await req.json();
 
   // Appel backend pour créer un nouveau projet
@@ -92,6 +92,6 @@ export async function POST(req) {
     );
   }
 
-  // Succès : renvoie le projet créé
+  // Envoie au navigateur le projet créé par le serveur.
   return NextResponse.json(data.data.project);
 }

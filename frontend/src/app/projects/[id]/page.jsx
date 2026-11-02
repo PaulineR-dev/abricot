@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import styles from "./ProjectDetail.module.css";
 
+// Crée les initiales affichées pour une personne, à partir de son nom ou de son e-mail.
 function getInitialsFull(nameOrEmail) {
   if (!nameOrEmail) return "?";
 
@@ -18,6 +19,7 @@ function getInitialsFull(nameOrEmail) {
     return name.slice(0, 2).toUpperCase();
   }
 
+  // Découpe le nom à chaque espace : par exemple, « Prénom Nom » devient ["Prénom", "Nom"].
   const parts = name.split(" ");
   if (parts.length >= 2) {
     return (parts[0][0] + parts[1][0]).toUpperCase();
@@ -26,15 +28,19 @@ function getInitialsFull(nameOrEmail) {
   return name[0].toUpperCase();
 }
 
+// Affiche les informations et les outils de gestion du projet sélectionné.
 export default function ProjectDetail(props) {
+  // Récupère l’identifiant du projet dans l’adresse de la page.
   const { id } = use(props.params);
   const router = useRouter();
 
+  // Mémorise le projet chargé et les erreurs à afficher.
   const [project, setProject] = useState(null);
   const [error, setError] = useState("");
 
   const { user: currentUser } = useContext(AuthContext);
 
+  // Suit l’ouverture des fenêtres et les champs de création de tâche ou d’aide IA.
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showAiTaskModal, setShowAiTaskModal] = useState(false);
   const [aiPrompt, setAiPrompt] = useState("");
@@ -52,6 +58,7 @@ export default function ProjectDetail(props) {
   const [taskStatus, setTaskStatus] = useState("TODO");
   const [taskAssignees, setTaskAssignees] = useState([]);
 
+  // Stocke le texte saisi pour rechercher des personnes à ajouter au projet.
   const [searchUser, setSearchUser] = useState("");
   const [userResults, setUserResults] = useState([]);
   const [showEditProjectContributorSelector, setShowEditProjectContributorSelector] = useState(false);
@@ -69,6 +76,7 @@ export default function ProjectDetail(props) {
   const [editDescription, setEditDescription] = useState("");
   const [editMembers, setEditMembers] = useState([]);
 
+  // Permet de fermer les fenêtres avec Échap.
   useEscapeKey(showTaskModal, () => setShowTaskModal(false));
   useEscapeKey(showAiTaskModal, () => {
     if (!aiLoading) setShowAiTaskModal(false);
@@ -97,12 +105,14 @@ export default function ProjectDetail(props) {
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [taskSearch, setTaskSearch] = useState("");
 
+  // Filtre les tâches selon le statut choisi et le texte recherché.
   const filteredTasks = (project?.project?.tasks || []).filter((task) => {
     const matchesStatus = !taskStatusFilter || task.status?.toUpperCase().trim() === taskStatusFilter;
     const matchesSearch = task.title?.toLowerCase().includes(taskSearch.trim().toLowerCase());
     return matchesStatus && matchesSearch;
   });
 
+  // Recharge les informations du projet et la liste de ses membres.
   async function reloadProject() {
     const res = await fetch(`/api/projects/${id}`);
     const data = await res.json();
@@ -112,6 +122,7 @@ export default function ProjectDetail(props) {
     setEditMembers(data.project?.members || []);
   }
 
+  // Demande à l’IA de proposer des tâches à partir de la description saisie.
   async function generateAiTasks() {
     if (!aiPrompt.trim() || aiLoading) return;
     setAiLoading(true);
@@ -130,12 +141,14 @@ export default function ProjectDetail(props) {
     }
   }
 
+  // Ajoute une proposition à la sélection ou l’en retire.
   function toggleAiTask(index) {
     setSelectedAiTasks((selected) => selected.includes(index)
       ? selected.filter((item) => item !== index)
       : [...selected, index]);
   }
 
+  // Crée dans le projet les tâches IA sélectionnées.
   async function addSelectedAiTasks() {
     if (!selectedAiTasks.length || aiSaving) return;
     setAiSaving(true);
@@ -157,11 +170,12 @@ export default function ProjectDetail(props) {
       setSelectedAiTasks([]);
     } catch (err) {
       setAiError(err.message || "Impossible d'ajouter les tâches sélectionnées.");
-      try { await reloadTasks(Date.now()); } catch { /* Keep the original creation error visible. */ }
+      try { await reloadTasks(Date.now()); } catch { /* Garde visible l’erreur initiale si le rechargement échoue aussi. */ }
     } finally {
       setAiSaving(false);
     }
   }
+  // Recharge les tâches et met à jour le projet affiché.
   async function reloadTasks(force) {
     const res = await fetch(`/api/projects/${id}/tasks?force=${force}`);
     const tasks = await res.json();
@@ -176,6 +190,7 @@ export default function ProjectDetail(props) {
     }) : prev);
   }
 
+  // Recharge les commentaires d’une tâche et actualise cette tâche à l’écran.
   async function reloadComments(taskId) {
     const res = await fetch(`/api/projects/${id}/tasks/${taskId}/comments`);
     const comments = await res.json();
@@ -192,6 +207,7 @@ export default function ProjectDetail(props) {
   }
 
   useEffect(() => {
+    // Charge le projet et ses tâches quand la page s'ouvre.
     async function load() {
       try {
         await reloadProject();
@@ -203,6 +219,7 @@ export default function ProjectDetail(props) {
     load();
   }, [id]);
 
+  // Détermine les droits de la personne et les données utiles aux formulaires.
   const role = project?.project?.userRole?.toLowerCase();
   const isOwner = ["owner", "admin"].includes(role);
   const isMember = ["contributor", "member"].includes(role);
@@ -218,6 +235,7 @@ export default function ProjectDetail(props) {
         .filter((user, index, users) => user && users.findIndex((candidate) => candidate?.id === user.id) === index)
     : [];
 
+  // Supprime le projet après confirmation, puis revient à la liste des projets.
   async function handleDeleteProject() {
     if (!canDeleteProject || !window.confirm("Supprimer définitivement ce projet et ses tâches ?")) return;
 
@@ -233,12 +251,14 @@ export default function ProjectDetail(props) {
   }
 
   useEffect(() => {
+    // Attend au moins deux caractères avant de lancer la recherche.
     if (searchUser.trim().length < 2) {
       return;
     }
 
     let isCurrentSearch = true;
 
+    // Demande au serveur les personnes correspondant à la recherche.
     async function search() {
       const res = await fetch(`/api/users?query=${searchUser}`);
       const data = await res.json();
@@ -254,6 +274,7 @@ export default function ProjectDetail(props) {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!project) return <p>Chargement...</p>;
 
+  // Affiche le contenu du projet après le chargement des données.
   return (
     <div className={styles.pageWrapper}>
       {/* HEADER */}
@@ -532,7 +553,7 @@ export default function ProjectDetail(props) {
                                     );
 
                                     if (res.ok) {
-                                     await reloadTasks(Date.now());
+                                      await reloadTasks(Date.now());
 
                                     } else {
                                       alert("Erreur lors de la suppression de la tâche");
@@ -713,6 +734,7 @@ export default function ProjectDetail(props) {
 
         </div>
 
+        {/* MODALE IA : génère des propositions de tâches à sélectionner pour le projet */}
         {showAiTaskModal && (
           <div className={styles.modalOverlay} onMouseDown={(e) => { if (e.target === e.currentTarget && !aiLoading) setShowAiTaskModal(false); }}>
             <div className={`${styles.modalCard} ${styles.aiTaskModal} ${aiTasks.length ? styles.aiTaskModalWithResults : ""}`} role="dialog" aria-modal="true" aria-labelledby="ai-task-modal-title">
@@ -760,7 +782,7 @@ export default function ProjectDetail(props) {
           </div>
         )}
         
-        {/* MODALE CRÉATION TÂCHE */}
+        {/* MODALE DE CRÉATION : saisie des informations et des personnes assignées à une tâche */}
         {showTaskModal && (
           <div className={styles.modalOverlay}>
             <form
@@ -847,7 +869,7 @@ export default function ProjectDetail(props) {
                         dateInput.showPicker();
                         return;
                       } catch {
-                        // Fall back to the browser's native date input interaction.
+                        // Si cela échoue, laisse le navigateur ouvrir son sélecteur de date habituel.
                       }
                     }
                     dateInput.focus();
@@ -941,7 +963,7 @@ export default function ProjectDetail(props) {
           </div>
         )}
 
-        {/* MODALE ÉDITION TÂCHE */}
+        {/* MODALE DE MODIFICATION : permet de changer les informations et les personnes assignées à une tâche */}
         {showEditModal && taskToEdit && (
           <div className={styles.modalOverlay}>
             <div className={`${styles.modalCard} ${styles.taskFormModal} ${styles.editTaskFormModal}`} role="dialog" aria-modal="true" aria-labelledby="edit-task-modal-title">
@@ -987,7 +1009,7 @@ export default function ProjectDetail(props) {
                         dateInput.showPicker();
                         return;
                       } catch {
-                        // Fall back to the browser's native date input interaction.
+                        // Si cela échoue, laisse le navigateur ouvrir son sélecteur de date habituel.
                       }
                     }
                     dateInput.focus();
@@ -1070,40 +1092,40 @@ export default function ProjectDetail(props) {
                   className={styles.modalPrimaryBtn}
                   onClick={async () => {
                     const body = {
-                  title: taskToEdit.title,
-                  description: taskToEdit.description,
-                  dueDate: taskToEdit.dueDate || null,
-                  status: taskToEdit.status,
-                  assigneeIds: editAssignees,
-                };
+                      title: taskToEdit.title,
+                      description: taskToEdit.description,
+                      dueDate: taskToEdit.dueDate || null,
+                      status: taskToEdit.status,
+                      assigneeIds: editAssignees,
+                    };
 
 
-                const res = await fetch(
-                  `/api/projects/${id}/tasks/${taskToEdit.id}`,
-                  {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body),
-                  }
-                );
+                    const res = await fetch(
+                      `/api/projects/${id}/tasks/${taskToEdit.id}`,
+                      {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body),
+                      }
+                    );
 
                     const data = await res.json();
 
 
-                const check = await fetch(
-                  `/api/projects/${id}/tasks/${taskToEdit.id}`
-                );
+                    const check = await fetch(
+                      `/api/projects/${id}/tasks/${taskToEdit.id}`
+                    );
 
-                const checkData = await check.json();
+                    const checkData = await check.json();
 
 
-                if (res.ok) {
-                  await reloadTasks(Date.now());
-                  setShowEditModal(false);
-                  setTaskToEdit(null);
-                } else {
-                  alert("Erreur lors de la mise à jour de la tâche");
-                }
+                    if (res.ok) {
+                      await reloadTasks(Date.now());
+                      setShowEditModal(false);
+                      setTaskToEdit(null);
+                    } else {
+                      alert("Erreur lors de la mise à jour de la tâche");
+                    }
                   }}
                 >
                   Enregistrer
@@ -1123,7 +1145,7 @@ export default function ProjectDetail(props) {
           </div>
         )}
 
-        {/* MODALE ÉDITION PROJET */}
+        {/* MODALE DE MODIFICATION DU PROJET : change son titre, sa description et ses contributeurs */}
         {showEditProjectModal && (
           <div className={`${styles.modalOverlay} ${styles.projectEditOverlay}`}>
             <div className={`${styles.modalCard} ${styles.projectFormModal}`} role="dialog" aria-modal="true" aria-labelledby="edit-project-modal-title">
@@ -1219,48 +1241,48 @@ export default function ProjectDetail(props) {
 
                   <p className={styles.currentContributorsTitle}>Contributeurs actuels</p>
                   <div className={styles.contributorsEditList}>
-                {editMembers.map((m) => (
-                  <div key={m.id} className={styles.contributorEditItem}>
-                    <span>{m.user.email}</span>
+                    {editMembers.map((m) => (
+                      <div key={m.id} className={styles.contributorEditItem}>
+                        <span>{m.user.email}</span>
 
-                    {m.role !== "OWNER" && (
-                      
-                  <button
-                    type="button"
-                    className={styles.contributorRemoveBtn}
-                    onClick={async () => {
+                        {m.role !== "OWNER" && (
 
-                    try {
-                      const res = await fetch(
-                        `/api/projects/${id}/contributors/${m.user.id}`,
-                        { method: "DELETE" }
-                      );
+                          <button
+                            type="button"
+                            className={styles.contributorRemoveBtn}
+                            onClick={async () => {
 
-                      const data = await res.json().catch(() => ({}));
-                      if (!res.ok) {
-                        alert(data.error || `Erreur HTTP ${res.status}`);
-                        return;
-                      }
+                              try {
+                                const res = await fetch(
+                                  `/api/projects/${id}/contributors/${m.user.id}`,
+                                  { method: "DELETE" }
+                                );
 
-                      // Mise à jour visuelle immédiate de la liste dans la modale
-                      setEditMembers((prev) =>
-                        prev.filter((member) => member.user.id !== m.user.id)
-                      );
+                                const data = await res.json().catch(() => ({}));
+                                if (!res.ok) {
+                                  alert(data.error || `Erreur HTTP ${res.status}`);
+                                  return;
+                                }
 
-                      // Actualisation globale
-                      await reloadProject();
-                      await reloadTasks(Date.now());
-                          } catch (error) {
+                                // Mise à jour visuelle immédiate de la liste dans la modale
+                                setEditMembers((prev) =>
+                                  prev.filter((member) => member.user.id !== m.user.id)
+                                );
 
-                            alert("Impossible de contacter le serveur.");
-                          }
-                        }}
-                      >
-                        Retirer
-                      </button>
-                    )}
-                  </div>
-                ))}
+                                // Actualisation globale
+                                await reloadProject();
+                                await reloadTasks(Date.now());
+                              } catch (error) {
+
+                                alert("Impossible de contacter le serveur.");
+                              }
+                            }}
+                          >
+                            Retirer
+                          </button>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -1271,25 +1293,25 @@ export default function ProjectDetail(props) {
                   className={styles.modalPrimaryBtn}
                   disabled={!editTitle.trim() || !editDescription.trim()}
                   onClick={async () => {
-                  const body = {
-                    name: editTitle,
-                    description: editDescription,
-                  };
+                    const body = {
+                      name: editTitle,
+                      description: editDescription,
+                    };
 
-                  const res = await fetch(`/api/projects/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body),
-                  });
+                    const res = await fetch(`/api/projects/${id}`, {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(body),
+                    });
 
-                  if (res.ok) {
-                    await reloadProject();
-                    await reloadTasks(Date.now());
-                    setShowEditProjectModal(false);
-                  } else {
-                    alert("Erreur lors de la mise à jour du projet");
-                  }
-                }}
+                    if (res.ok) {
+                      await reloadProject();
+                      await reloadTasks(Date.now());
+                      setShowEditProjectModal(false);
+                    } else {
+                      alert("Erreur lors de la mise à jour du projet");
+                    }
+                  }}
                 >
                   Enregistrer
                 </button>

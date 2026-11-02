@@ -6,9 +6,12 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "@/context/AuthContext";
 import styles from "./profile.module.css";
 
+// Affiche le profil et gère la modification des informations du compte.
 export default function ProfilePage() {
+  // Récupère les actions communes pour actualiser le profil et fermer la session.
   const { updateUser, logout } = useContext(AuthContext);
   const router = useRouter();
+  // Stocke les informations du profil, les champs du formulaire et les messages.
   const [user, setUser] = useState(null);
   const [form, setForm] = useState(null);
   const [error, setError] = useState("");
@@ -16,12 +19,14 @@ export default function ProfilePage() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
+  // Déconnecte l'utilisateur puis le redirige vers la page de connexion.
   async function handleLogout() {
     await logout();
     router.replace("/login");
   }
 
   useEffect(() => {
+    // Charge le profil depuis le serveur lorsque la page s'ouvre.
     async function loadProfile() {
       try {
         const res = await fetch("/api/profile");
@@ -29,7 +34,9 @@ export default function ProfilePage() {
 
         if (!res.ok) throw new Error(data.error || "Impossible de charger le profil");
 
-        const parts = String(data.name || "").split(" ");
+        // Sépare le nom complet reçu du serveur en prénom et nom.
+        // Sépare le nom renvoyé en prénom et nom pour actualiser la page.
+      const parts = String(data.name || "").split(" ");
         const firstName = parts[0] || "";
         const lastName = parts.slice(1).join(" ") || "";
 
@@ -49,20 +56,24 @@ export default function ProfilePage() {
     loadProfile();
   }, []);
 
+  // Affiche une erreur ou un message de chargement avant le formulaire.
   if (error) return <p>{error}</p>;
   if (!user || !form) return <p>Chargement du profil...</p>;
 
+  // Enregistre les changements du profil et, si demandé, du mot de passe.
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setSuccess("");
 
+    // Exige les deux champs de mot de passe, ou aucun des deux.
     if (Boolean(currentPassword) !== Boolean(newPassword)) {
       setError("Renseignez le mot de passe actuel et le nouveau mot de passe.");
       return;
     }
 
     try {
+      // Envoie les nouvelles informations du profil au serveur.
       const res = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -72,6 +83,7 @@ export default function ProfilePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
+      // Sépare le nom renvoyé en prénom et nom pour actualiser la page.
       const parts = String(data.name || "").split(" ");
       const firstName = parts[0] || "";
       const lastName = parts.slice(1).join(" ");
@@ -79,6 +91,7 @@ export default function ProfilePage() {
       setUser({ ...data, firstName, lastName });
       updateUser?.(data);
 
+      // Change aussi le mot de passe si les deux champs ont été remplis.
       if (currentPassword && newPassword) {
         const pwdRes = await fetch("/api/password", {
           method: "PUT",

@@ -8,6 +8,7 @@ export async function GET(req, context) {
   const { id, taskId } = await context.params;
   // id = projet, taskId = tâche
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -41,7 +42,7 @@ export async function GET(req, context) {
     );
   }
 
-  // Renvoie la tâche
+  // Envoie au navigateur les informations de la tâche fournies par le serveur.
   return NextResponse.json(data.data.task);
 }
 
@@ -50,6 +51,7 @@ export async function PUT(req, context) {
   const { id, taskId } = await context.params;
   // id = projet, taskId = tâche
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -58,6 +60,7 @@ export async function PUT(req, context) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
+  // Lit les nouvelles informations de la tâche envoyées par le formulaire.
   const body = await req.json(); 
   // Données de mise à jour envoyées par le frontend
 
@@ -88,7 +91,7 @@ export async function PUT(req, context) {
     );
   }
 
-  // Renvoie la tâche mise à jour
+  // Envoie au navigateur les informations de la tâche fournies par le serveur.
   return NextResponse.json(data.data.task);
 }
 
@@ -97,6 +100,7 @@ export async function DELETE(req, context) {
   const { id, taskId } = await context.params;
   // id = projet, taskId = tâche
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -130,6 +134,6 @@ export async function DELETE(req, context) {
     );
   }
 
-  // Succès : tâche supprimée
+  // Confirme au navigateur que la tâche a bien été supprimée.
   return NextResponse.json({ success: true });
 }

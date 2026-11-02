@@ -10,6 +10,7 @@ export async function GET(req, context) {
   const { id } = await context.params; 
   // id = projet dont on veut récupérer les tâches
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -24,6 +25,7 @@ export async function GET(req, context) {
     cache: "no-store",
   });
 
+  // Récupère la réponse du serveur sous forme de texte.
   const raw = await res.text(); 
 
   let data;
@@ -46,6 +48,7 @@ export async function GET(req, context) {
     );
   }
 
+  // Envoie au navigateur la liste des tâches fournie par le serveur.
   return NextResponse.json(data.data.tasks, {
     headers: { "Cache-Control": "no-store, max-age=0" },
   });
@@ -57,6 +60,7 @@ export async function GET(req, context) {
 export async function POST(req, context) {
   const { id } = await context.params; 
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -65,6 +69,7 @@ export async function POST(req, context) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
+  // Lit les informations de la nouvelle tâche saisies dans le formulaire.
   const body = await req.json(); 
 
   // Appel backend pour créer la tâche
@@ -96,6 +101,6 @@ export async function POST(req, context) {
     );
   }
 
-  // Renvoie la tâche créée
+  // Envoie au navigateur la tâche créée par le serveur.
   return NextResponse.json(data.data.task);
 }

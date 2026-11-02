@@ -1,8 +1,7 @@
 "use client";
 
 /**
- * Hook raccourci pour accéder à AuthContext sans répéter useContext(AuthContext).
- * Permet de garder les composants plus simples, lisibles et faciles à maintenir.
+ * Évite de répéter useContext(AuthContext) dans les composants et facilite l'accès aux informations de connexion.
  */
 
 import { useContext } from "react";

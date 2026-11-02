@@ -6,11 +6,15 @@ import styles from "./header.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
+// Affiche l'en-tête du site et adapte ses liens à la page et à la connexion.
 export default function Header() {
+  // Récupère le profil de l'utilisateur et l'état de son chargement.
   const { user, loading } = useContext(AuthContext);
+  // Permet de naviguer vers les pages quand un bouton est sélectionné.
   const router = useRouter();
   const pathname = usePathname();
 
+  // Prépare les lettres affichées dans l'avatar à partir du nom ou de l'e-mail.
   const initials = (() => {
     if (!user) return "";
 

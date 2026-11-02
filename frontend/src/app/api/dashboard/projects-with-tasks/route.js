@@ -5,10 +5,10 @@ const API_URL = "http://localhost:8000";
 
 // Récupère les projets et leurs tâches pour l'utilisateur connecté
 export async function GET() {
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
-  // Vérifie que l'utilisateur est bien authentifié via le cookie "session"
   if (!token) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
@@ -18,6 +18,7 @@ export async function GET() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
+  // Récupère la réponse du serveur sous forme de texte.
   const raw = await res.text();
 
   let data;
@@ -40,5 +41,6 @@ export async function GET() {
     );
   }
 
+  // Envoie au navigateur la liste des projets fournie par le serveur.
   return NextResponse.json(data.data.projects);
 }

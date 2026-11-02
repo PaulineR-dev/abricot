@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 
 // Récupère le profil de l'utilisateur connecté
 export async function GET() {
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -35,12 +36,13 @@ export async function GET() {
     );
   }
 
-  // Renvoie les informations utilisateur
+  // Envoie au navigateur les informations du profil renvoyées par le serveur.
   return NextResponse.json(data.data.user);
 }
 
 // Route PUT pour mettre à jour les informations du profil
 export async function PUT(req) {
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -48,6 +50,7 @@ export async function PUT(req) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
+  // Lit les nouvelles informations envoyées par le formulaire.
   const body = await req.json();
   const name = `${body.firstName} ${body.lastName}`.trim(); 
   // On reconstruit le champ "name" attendu par le backend
@@ -85,6 +88,6 @@ export async function PUT(req) {
     );
   }
 
-  // Renvoie le profil mis à jour
+  // Envoie au navigateur les informations du profil renvoyées par le serveur.
   return NextResponse.json(data.data.user);
 }

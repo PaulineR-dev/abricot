@@ -8,6 +8,7 @@ export async function GET(req, context) {
   const { id, taskId } = await context.params;
   // On récupère l'id du projet et l'id de la tâche
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -41,7 +42,7 @@ export async function GET(req, context) {
     );
   }
 
-  // Renvoie la liste des commentaires
+  // Envoie au navigateur la liste des commentaires fournie par le serveur.
   return NextResponse.json(data.data.comments);
 }
 
@@ -50,6 +51,7 @@ export async function POST(req, context) {
   const { id, taskId } = await context.params;
   // On récupère l'id du projet et de la tâche
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -58,6 +60,7 @@ export async function POST(req, context) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
+  // Lit le texte du commentaire saisi dans le formulaire.
   const body = await req.json(); 
   // Contenu du commentaire envoyé par le frontend
 
@@ -91,6 +94,6 @@ export async function POST(req, context) {
     );
   }
 
-  // Renvoie le commentaire créé
+  // Envoie au navigateur le commentaire créé par le serveur.
   return NextResponse.json(data.data.comment);
 }

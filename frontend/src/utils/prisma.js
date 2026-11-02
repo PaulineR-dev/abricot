@@ -1,14 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 
-// Stockage global pour éviter plusieurs instances en développement
+// Garde Prisma accessible partout pour réutiliser la même connexion en développement.
 const globalForPrisma = global;
 
-// Instance Prisma unique (évite les doublons)
+// Crée Prisma une seule fois, ou reprend l'instance déjà gardée.
 export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    log: ["query"], // Log des requêtes
+    log: ["query"], // Affiche les requêtes envoyées à la base de données.
   });
 
-// En développement : réutilise l'instance existante
+// En développement, conserve cette instance pour la prochaine utilisation.
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

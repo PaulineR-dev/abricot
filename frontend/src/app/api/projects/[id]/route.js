@@ -10,6 +10,7 @@ export async function GET(req, context) {
   const { id } = await context.params; 
   // id = projet à récupérer
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -46,7 +47,7 @@ export async function GET(req, context) {
     );
   }
 
-  // Renvoie les données du projet
+  // Envoie au navigateur les informations du projet fournies par le serveur.
   return NextResponse.json(data.data);
 }
 
@@ -57,6 +58,7 @@ export async function PUT(req, context) {
   const { id } = await context.params; 
   // id = projet à mettre à jour
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -65,6 +67,7 @@ export async function PUT(req, context) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
+  // Lit les nouvelles informations du projet saisies dans le formulaire.
   const body = await req.json(); 
   // Données de mise à jour envoyées par le frontend
 
@@ -100,7 +103,7 @@ export async function PUT(req, context) {
     );
   }
 
-  // Renvoie le projet mis à jour
+  // Envoie au navigateur les informations du projet fournies par le serveur.
   return NextResponse.json(data.data);
 }
 
@@ -111,6 +114,7 @@ export async function DELETE(req, context) {
   const { id } = await context.params; 
   // id = projet à supprimer
 
+  // Récupère le cookie qui contient la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -149,6 +153,6 @@ export async function DELETE(req, context) {
     );
   }
 
-  // Succès : projet supprimé
+  // Confirme au navigateur que le projet a bien été supprimé.
   return NextResponse.json({ success: true });
 }

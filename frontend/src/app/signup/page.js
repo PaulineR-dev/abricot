@@ -6,8 +6,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+// Affiche le formulaire et gère la création d'un compte utilisateur.
 export default function SignupPage() {
+  // Permet de rediriger vers la page de connexion après l'inscription.
   const router = useRouter();
+  // Mémorise les champs du formulaire, le message d'erreur et le chargement.
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,13 +18,17 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Envoie les informations saisies pour créer le compte.
   async function handleSubmit(e) {
+    // Empêche le formulaire de recharger la page.
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
+      // Réunit le prénom et le nom dans le champ attendu par le serveur.
       const name = `${firstName.trim()} ${lastName.trim()}`.trim();
+      // Envoie le nom, l'adresse e-mail et le mot de passe au serveur.
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,10 +41,13 @@ export default function SignupPage() {
         throw new Error(data.error || "Erreur lors de l'inscription");
       }
 
+      // Après la création du compte, ouvre la page de connexion.
       router.push("/login");
     } catch (err) {
+      // Affiche le message si la création du compte échoue.
       setError(err.message);
     } finally {
+      // Réactive le bouton lorsque la tentative est terminée.
       setLoading(false);
     }
   }

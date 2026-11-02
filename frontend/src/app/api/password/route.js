@@ -3,10 +3,10 @@ import { cookies } from "next/headers";
 
 // Route pour changement de mot de passe
 export async function PUT(req) {
+  // Récupère les cookies pour retrouver la session de l'utilisateur.
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
-  // Vérifie que l'utilisateur est authentifié
   if (!token) {
     return NextResponse.json(
       { error: "Non authentifié" },
@@ -14,14 +14,15 @@ export async function PUT(req) {
     );
   }
 
+  // Lit les mots de passe envoyés par le formulaire.
   const body = await req.json(); 
   // On récupère l'ancien et le nouveau mot de passe envoyés par le frontend
 
-  // Appel backend pour modifier le mot de passe
+  // Envoie les deux mots de passe au serveur pour effectuer le changement.
   const res = await fetch("http://localhost:8000/auth/password", {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${token}`, // Token pour prouver l'identité
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
