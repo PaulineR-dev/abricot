@@ -574,6 +574,10 @@
     padding-right: 10px;
   }
 
+  .statusBadgeKanban {
+    right: 20px;
+  }
+
   .taskCard {
     height: auto;
     padding-bottom: 80px;
@@ -718,7 +722,7 @@
 }
 
 .kanbanCard .cardTitle {
-  max-width: 180px;
+  max-width: min(180px, calc(100% - 120px));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -900,7 +904,10 @@
     right: 40px;
   }
 
-  .kanbanCard .cardTitle,
+  .kanbanCard .cardTitle {
+    max-width: min(180px, calc(100% - 120px));
+  }
+
   .kanbanCard .cardDesc {
     max-width: 180px;
   }
@@ -925,11 +932,14 @@
   }
 
   .statusBadgeKanban {
-    right: 40px;
+    right: 20px;
     top: 20px;
   }
 
-  .kanbanCard .cardTitle,
+  .kanbanCard .cardTitle {
+    max-width: min(180px, calc(100% - 120px));
+  }
+
   .kanbanCard .cardDesc {
     max-width: 180px;
   }
@@ -954,7 +964,7 @@
   }
 
   .statusBadgeKanban {
-    right: 40px;
+    right: 20px;
     top: 16px;
   }
 
@@ -984,7 +994,7 @@
   }
 
   .statusBadgeKanban {
-    right: 40px;
+    right: 20px;
     top: 25px;
     padding: 3px 12px;
     font-size: 12px;
