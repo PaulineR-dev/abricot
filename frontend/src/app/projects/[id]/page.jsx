@@ -1258,10 +1258,13 @@ export default function ProjectDetail(props) {
                                 // Retire d'abord le contributeur de toutes les tâches du projet.
                                 for (const task of tasks) {
                                   const assigneeIds = (task.assignees || [])
-                                    .map((assignee) => assignee.id)
+                                    .map((assignee) => assignee.user?.id || assignee.userId || assignee.id)
                                     .filter((assigneeId) => assigneeId !== m.user.id);
 
-                                  if (assigneeIds.length === (task.assignees || []).length) continue;
+                                  const wasAssigned = (task.assignees || []).some(
+                                    (assignee) => (assignee.user?.id || assignee.userId || assignee.id) === m.user.id
+                                  );
+                                  if (!wasAssigned) continue;
 
                                   const taskRes = await fetch(
                                     `/api/projects/${id}/tasks/${task.id}`,
@@ -1296,6 +1299,17 @@ export default function ProjectDetail(props) {
                                 // Actualisation globale
                                 await reloadProject();
                                 await reloadTasks(Date.now());
+                                setTaskToEdit((currentTask) =>
+                                  currentTask
+                                    ? {
+                                        ...currentTask,
+                                        assignees: (currentTask.assignees || []).filter(
+                                          (assignee) => (assignee.user?.id || assignee.userId || assignee.id) !== m.user.id
+                                        ),
+                                      }
+                                    : currentTask
+                                );
+                                setEditAssignees((current) => current.filter((assigneeId) => assigneeId !== m.user.id));
                               } catch (error) {
                                 alert(error.message || "Impossible de contacter le serveur.");
                               }

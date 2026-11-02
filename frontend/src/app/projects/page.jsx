@@ -154,12 +154,12 @@ export default function ProjectsPage() {
         body: JSON.stringify({
           name: title,
           description,
-          contributors,
+          contributors: selectedUsers.map((user) => user.email),
         }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) throw new Error(data.error || data.message || "Impossible de créer le projet.");
 
       setShowModal(false);
       window.location.reload();
@@ -259,8 +259,10 @@ export default function ProjectsPage() {
                       className={styles.projectContributorOption}
                       onClick={() => {
                         if (!contributors.includes(u.email)) {
-                          setContributors([...contributors, u.email]);
-                          setSelectedUsers([...selectedUsers, u]);
+                          setContributors((current) => [...current, u.email]);
+                          setSelectedUsers((current) =>
+                            current.some((user) => user.id === u.id) ? current : [...current, u]
+                          );
                         }
                         setSearch("");
                         setResults([]);
