@@ -1253,6 +1253,30 @@ export default function ProjectDetail(props) {
                             onClick={async () => {
 
                               try {
+                                const tasks = project.project.tasks || [];
+
+                                // Retire d'abord le contributeur de toutes les tâches du projet.
+                                for (const task of tasks) {
+                                  const assigneeIds = (task.assignees || [])
+                                    .map((assignee) => assignee.id)
+                                    .filter((assigneeId) => assigneeId !== m.user.id);
+
+                                  if (assigneeIds.length === (task.assignees || []).length) continue;
+
+                                  const taskRes = await fetch(
+                                    `/api/projects/${id}/tasks/${task.id}`,
+                                    {
+                                      method: "PUT",
+                                      headers: { "Content-Type": "application/json" },
+                                      body: JSON.stringify({ assigneeIds }),
+                                    }
+                                  );
+                                  const taskData = await taskRes.json().catch(() => ({}));
+                                  if (!taskRes.ok) {
+                                    throw new Error(taskData.error || taskData.message || "Impossible de retirer le contributeur des tâches.");
+                                  }
+                                }
+
                                 const res = await fetch(
                                   `/api/projects/${id}/contributors/${m.user.id}`,
                                   { method: "DELETE" }
@@ -1273,8 +1297,7 @@ export default function ProjectDetail(props) {
                                 await reloadProject();
                                 await reloadTasks(Date.now());
                               } catch (error) {
-
-                                alert("Impossible de contacter le serveur.");
+                                alert(error.message || "Impossible de contacter le serveur.");
                               }
                             }}
                           >
