@@ -524,7 +524,9 @@ export default function ProjectDetail(props) {
                               className={styles.taskMenuDropdown}
                               onClick={(e) => e.stopPropagation()}
                             >
-                              {isOwner && (
+                              {(isOwner || (isMember && (task.assignees || []).some((assignee) =>
+                                (assignee.user?.id || assignee.userId || assignee.id) === currentUser?.id
+                              ))) && (
                                 <button
                                   type="button"
                                   className={styles.taskMenuItem}
@@ -1035,47 +1037,47 @@ export default function ProjectDetail(props) {
                 />
               </div>
 
-              <label htmlFor="edit-task-assignee-trigger">Assigner à :</label>
+              {isOwner && (
+                <>
+                  <label htmlFor="edit-task-assignee-trigger">Assigner à :</label>
 
-              <button
-                type="button"
-                id="edit-task-assignee-trigger"
-                aria-label="Modifier les collaborateurs assignés"
-                aria-expanded={showEditAssigneeSelector}
-                className={styles.assigneeSelector}
-                onClick={() =>
-                  setShowEditAssigneeSelector(!showEditAssigneeSelector)
-                }
-              >
-                {editAssignees.length === 0
-                  ? "Choisir un ou plusieurs collaborateurs"
-                  : assignableUsers
-                      .filter((user) => editAssignees.includes(user.id))
-                      .map((user) => user.name || user.email)
-                      .join(", ")}
-              </button>
+                  <button
+                    type="button"
+                    id="edit-task-assignee-trigger"
+                    aria-label="Modifier les collaborateurs assignés"
+                    aria-expanded={showEditAssigneeSelector}
+                    className={styles.assigneeSelector}
+                    onClick={() => setShowEditAssigneeSelector(!showEditAssigneeSelector)}
+                  >
+                    {editAssignees.length === 0
+                      ? "Choisir un ou plusieurs collaborateurs"
+                      : assignableUsers
+                          .filter((user) => editAssignees.includes(user.id))
+                          .map((user) => user.name || user.email)
+                          .join(", ")}
+                  </button>
 
-              {showEditAssigneeSelector && (
-                <div id="edit-task-assignees" className={styles.assigneeDropdown}>
-                  {assignableUsers.map((user) => (
-                    <label key={user.id} className={styles.assigneeOption}>
-                      <input
-                        type="checkbox"
-                        checked={editAssignees.includes(user.id)}
-                        onChange={() => {
-                          if (editAssignees.includes(user.id)) {
-                            setEditAssignees(
-                              editAssignees.filter((id) => id !== user.id)
-                            );
-                          } else {
-                            setEditAssignees([...editAssignees, user.id]);
-                          }
-                        }}
-                      />
-                      {user.name || user.email}
-                    </label>
-                  ))}
-                </div>
+                  {showEditAssigneeSelector && (
+                    <div id="edit-task-assignees" className={styles.assigneeDropdown}>
+                      {assignableUsers.map((user) => (
+                        <label key={user.id} className={styles.assigneeOption}>
+                          <input
+                            type="checkbox"
+                            checked={editAssignees.includes(user.id)}
+                            onChange={() => {
+                              if (editAssignees.includes(user.id)) {
+                                setEditAssignees(editAssignees.filter((assigneeId) => assigneeId !== user.id));
+                              } else {
+                                setEditAssignees([...editAssignees, user.id]);
+                              }
+                            }}
+                          />
+                          {user.name || user.email}
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
 
               <fieldset className={styles.taskStatusFieldset}>
@@ -1096,9 +1098,8 @@ export default function ProjectDetail(props) {
                       description: taskToEdit.description,
                       dueDate: taskToEdit.dueDate || null,
                       status: taskToEdit.status,
-                      assigneeIds: editAssignees,
+                      ...(isOwner ? { assigneeIds: editAssignees } : {}),
                     };
-
 
                     const res = await fetch(
                       `/api/projects/${id}/tasks/${taskToEdit.id}`,
@@ -1211,26 +1212,19 @@ export default function ProjectDetail(props) {
                       type="button"
                       key={u.id}
                       className={styles.userResultItem}
-                      onClick={async () => {
-                        const res = await fetch(
-                          `/api/projects/${id}/contributors`,
+                      onClick={() => {
+                        setEditMembers((prev) => [
+                          ...prev,
                           {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ email: u.email }),
-                          }
-                        );
-
-                        if (res.ok) {
-                          await reloadProject();
-                          await reloadTasks(Date.now());
-
-                          setSearchUser("");
-                          setUserResults([]);
-                          setShowEditProjectContributorSelector(false);
-                        } else {
-                          alert("Erreur lors de l'ajout du contributeur");
-                        }
+                            id: `pending-${u.id}`,
+                            role: "MEMBER",
+                            user: { id: u.id, email: u.email, name: u.name },
+                            pendingAdd: true,
+                          },
+                        ]);
+                        setSearchUser("");
+                        setUserResults([]);
+                        setShowEditProjectContributorSelector(false);
                       }}
                     >
                       {u.name} ({u.email})
@@ -1250,69 +1244,10 @@ export default function ProjectDetail(props) {
                           <button
                             type="button"
                             className={styles.contributorRemoveBtn}
-                            onClick={async () => {
-
-                              try {
-                                const tasks = project.project.tasks || [];
-
-                                // Retire d'abord le contributeur de toutes les tâches du projet.
-                                for (const task of tasks) {
-                                  const assigneeIds = (task.assignees || [])
-                                    .map((assignee) => assignee.user?.id || assignee.userId || assignee.id)
-                                    .filter((assigneeId) => assigneeId !== m.user.id);
-
-                                  const wasAssigned = (task.assignees || []).some(
-                                    (assignee) => (assignee.user?.id || assignee.userId || assignee.id) === m.user.id
-                                  );
-                                  if (!wasAssigned) continue;
-
-                                  const taskRes = await fetch(
-                                    `/api/projects/${id}/tasks/${task.id}`,
-                                    {
-                                      method: "PUT",
-                                      headers: { "Content-Type": "application/json" },
-                                      body: JSON.stringify({ assigneeIds }),
-                                    }
-                                  );
-                                  const taskData = await taskRes.json().catch(() => ({}));
-                                  if (!taskRes.ok) {
-                                    throw new Error(taskData.error || taskData.message || "Impossible de retirer le contributeur des tâches.");
-                                  }
-                                }
-
-                                const res = await fetch(
-                                  `/api/projects/${id}/contributors/${m.user.id}`,
-                                  { method: "DELETE" }
-                                );
-
-                                const data = await res.json().catch(() => ({}));
-                                if (!res.ok) {
-                                  alert(data.error || `Erreur HTTP ${res.status}`);
-                                  return;
-                                }
-
-                                // Mise à jour visuelle immédiate de la liste dans la modale
-                                setEditMembers((prev) =>
-                                  prev.filter((member) => member.user.id !== m.user.id)
-                                );
-
-                                // Actualisation globale
-                                await reloadProject();
-                                await reloadTasks(Date.now());
-                                setTaskToEdit((currentTask) =>
-                                  currentTask
-                                    ? {
-                                        ...currentTask,
-                                        assignees: (currentTask.assignees || []).filter(
-                                          (assignee) => (assignee.user?.id || assignee.userId || assignee.id) !== m.user.id
-                                        ),
-                                      }
-                                    : currentTask
-                                );
-                                setEditAssignees((current) => current.filter((assigneeId) => assigneeId !== m.user.id));
-                              } catch (error) {
-                                alert(error.message || "Impossible de contacter le serveur.");
-                              }
+                            onClick={() => {
+                              setEditMembers((prev) =>
+                                prev.filter((member) => member.user.id !== m.user.id)
+                              );
                             }}
                           >
                             Retirer
@@ -1330,23 +1265,61 @@ export default function ProjectDetail(props) {
                   className={styles.modalPrimaryBtn}
                   disabled={!editTitle.trim() || !editDescription.trim()}
                   onClick={async () => {
-                    const body = {
-                      name: editTitle,
-                      description: editDescription,
-                    };
+                    try {
+                      const originalMembers = project.project.members || [];
+                      const originalMemberIds = new Set(originalMembers.map((member) => member.user.id));
+                      const editedMemberIds = new Set(editMembers.map((member) => member.user.id));
+                      const addedMembers = editMembers.filter((member) => !originalMemberIds.has(member.user.id));
+                      const removedMembers = originalMembers.filter((member) => !editedMemberIds.has(member.user.id));
 
-                    const res = await fetch(`/api/projects/${id}`, {
-                      method: "PUT",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(body),
-                    });
+                      const projectRes = await fetch(`/api/projects/${id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name: editTitle, description: editDescription }),
+                      });
+                      const projectData = await projectRes.json().catch(() => ({}));
+                      if (!projectRes.ok) throw new Error(projectData.error || "Erreur lors de la mise à jour du projet");
 
-                    if (res.ok) {
+                      for (const member of addedMembers) {
+                        const addRes = await fetch(`/api/projects/${id}/contributors`, {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ email: member.user.email }),
+                        });
+                        const addData = await addRes.json().catch(() => ({}));
+                        if (!addRes.ok) throw new Error(addData.error || "Erreur lors de l'ajout du contributeur");
+                      }
+
+                      for (const member of removedMembers) {
+                        for (const task of project.project.tasks || []) {
+                          const assignees = task.assignees || [];
+                          const wasAssigned = assignees.some((assignee) =>
+                            (assignee.user?.id || assignee.userId || assignee.id) === member.user.id
+                          );
+                          if (!wasAssigned) continue;
+
+                          const assigneeIds = assignees
+                            .map((assignee) => assignee.user?.id || assignee.userId || assignee.id)
+                            .filter((assigneeId) => assigneeId !== member.user.id);
+                          const taskRes = await fetch(`/api/projects/${id}/tasks/${task.id}`, {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ assigneeIds }),
+                          });
+                          const taskData = await taskRes.json().catch(() => ({}));
+                          if (!taskRes.ok) throw new Error(taskData.error || taskData.message || "Impossible de retirer le contributeur des tâches.");
+                        }
+
+                        const removeRes = await fetch(`/api/projects/${id}/contributors/${member.user.id}`, { method: "DELETE" });
+                        const removeData = await removeRes.json().catch(() => ({}));
+                        if (!removeRes.ok) throw new Error(removeData.error || `Erreur HTTP ${removeRes.status}`);
+                      }
+
                       await reloadProject();
                       await reloadTasks(Date.now());
                       setShowEditProjectModal(false);
-                    } else {
-                      alert("Erreur lors de la mise à jour du projet");
+                    } catch (error) {
+                      alert(error.message || "Impossible de contacter le serveur.");
                     }
                   }}
                 >
